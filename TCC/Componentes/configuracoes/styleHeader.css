@@ -1,0 +1,115 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;color:#eaeaea}
+:root{
+  --neon-purple:#bd00ff;
+  --neon-blue:#00d9ff;
+  --neon-pink:#ff00c8;
+  --neon-white:#fff
+}
+.navbar{
+  background-color:#14001a;
+  box-shadow:0 0 30px rgba(189,0,255,.6);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  position:sticky;
+  top:0;
+  z-index:999
+}
+.navbar-brand{
+  color:#fff;
+  font-size:1.5rem;
+  font-weight:700;
+  text-shadow:0 0 6px #fff,0 0 10px var(--neon-purple),0 0 16px var(--neon-purple),0 0 28px var(--neon-purple)
+}
+.navbar-brand img{
+  filter:drop-shadow(0 0 6px #fff)
+}
+.brand-name{
+  animation:glowWhitePulse 2.5s infinite alternatebrand
+}
+.navbar-nav .nav-link{
+  color:var(--neon-white);
+  font-weight:500;
+  font-size:1rem;
+  position:relative;
+  padding:.5rem 1rem;
+  transition:all .3s ease
+}
+.navbar-nav .nav-link::after{
+  content:'';
+  display:block;
+  height:2px;
+  background-color:var(--neon-purple);
+  width:0;
+  transition:.4s ease;
+  margin-top:4px;
+  box-shadow:0 0 10px var(--neon-purple)
+}
+.navbar-nav .nav-link:hover::after{
+  width:100%
+}
+.navbar-nav .nav-link:hover{
+  color:var(--neon-purple);
+  text-shadow:0 0 6px var(--neon-purple),0 0 12px var(--neon-purple)
+}
+.btn-outline-light{
+  border-color:var(--neon-purple);
+  color:var(--neon-purple);
+  font-weight:700;
+  transition:all .3s ease;
+  box-shadow:0 0 10px transparent
+}
+.btn-outline-light:hover{
+  background-color:var(--neon-purple);
+  color:#000;
+  box-shadow:0 0 12px var(--neon-purple),0 0 20px var(--neon-purple)
+}
+.btn-warning{
+  background-color:var(--neon-pink);
+  border:none;
+  font-weight:700;
+  color:#000;
+  transition:all .3s ease;
+  box-shadow:0 0 10px var(--neon-pink)
+}
+.btn-warning:hover{
+  background-color:#ff33cc;
+  color:#000;
+  box-shadow:0 0 20px var(--neon-pink),0 0 30px var(--neon-pink)
+}
+.navbar-toggler{
+  border:none
+}
+.navbar-toggler-icon{
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(189,0,255,0.8)' stroke-width='2' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")
+}
+@media(max-width:991.98px){
+  .navbar-collapse{
+    background-color:#1a0024;
+    border-top:1px solid rgba(255,255,255,.05);
+    margin-top:1rem;
+    padding-top:1rem
+  }
+  .navbar-nav{
+    text-align:center
+  }
+  .navbar-nav .nav-link{
+    font-size:1.1rem;
+    padding:.8rem
+  }
+}
+@keyframes glowPulse{
+  0%{
+    text-shadow:0 0 6px var(--neon-purple),0 0 10px var(--neon-purple)
+  }
+  100%{
+    text-shadow:0 0 16px var(--neon-purple),0 0 28px var(--neon-purple)
+  }
+}
+@keyframes glowWhitePulse{
+  0%{
+    text-shadow:0 0 6px snow,0 0 10px snow
+  }
+  100%{
+    text-shadow:0 0 16px snow,0 0 28px snow
+  }
+}
