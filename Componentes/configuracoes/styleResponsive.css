@@ -1,0 +1,29 @@
+@media (max-width: 768px) {
+  body {
+    margin-left: 0 !important;
+  }
+  
+  .navbar-brand {
+    font-size: 1.2rem !important;
+  }
+  
+  .navbar-nav .nav-link {
+    font-size: 0.9rem !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+  
+  footer {
+    padding: 15px !important;
+    min-height: 80px !important;
+  }
+  
+  footer p, footer a, footer .nav-link {
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (min-width: 769px) {
+  body {
+    margin-left: 300px;
+  }
+}
