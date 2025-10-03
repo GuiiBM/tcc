@@ -9,4 +9,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
     <link rel="stylesheet" href="Componentes/configuracoes/styleHeader.css">
     <link rel="stylesheet" href="Componentes/configuracoes/styleFooter.css">
+    <link rel="stylesheet" href="Componentes/configuracoes/styleAside.css">
 </head>

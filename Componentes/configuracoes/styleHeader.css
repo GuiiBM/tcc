@@ -18,13 +18,14 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
   color:#fff;
   font-size:1.5rem;
   font-weight:700;
-  text-shadow:0 0 6px #fff,0 0 10px var(--neon-purple),0 0 16px var(--neon-purple),0 0 28px var(--neon-purple)
+  text-shadow:0 0 6px #fff,0 0 10px var(--neon-purple),0 0 16px var(--neon-purple),0 0 28px var(--neon-purple);
 }
 .navbar-brand img{
   filter:drop-shadow(0 0 6px #fff)
 }
 .brand-name{
-  animation:glowWhitePulse 2.5s infinite alternatebrand
+  animation:glowWhitePulse 2.5s infinite alternate;
+  transition:all 5s ease-in-out;
 }
 .navbar-nav .nav-link{
   color:var(--neon-white);
