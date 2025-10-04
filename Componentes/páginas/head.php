@@ -11,4 +11,7 @@
     <link rel="stylesheet" href="Componentes/configuracoes/styleHeader.css">
     <link rel="stylesheet" href="Componentes/configuracoes/styleFooter.css">
     <link rel="stylesheet" href="Componentes/configuracoes/styleAside.css">
+    <link rel="stylesheet" href="Componentes/configuracoes/stylePrincipal.css">
+    <link rel="stylesheet" href="Componentes/configuracoes/styleMain.css">
 </head>
+<body>

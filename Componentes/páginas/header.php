@@ -1,5 +1,5 @@
 <header class="navbar navbar-expand-lg py-3">
-    <div class="container">
+    <div class="container-fluid px-3">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="Componentes/icones/icone2.png" alt="Ícone" width="48" height="48" class="me-2">
             <span class="brand-name">Ressonance</span>
@@ -22,4 +22,3 @@
         </div>
     </div>
 </header>
-<body> 

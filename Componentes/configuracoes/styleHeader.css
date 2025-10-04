@@ -1,5 +1,5 @@
 *{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;zoom:1;max-zoom:1.5;min-zoom:1}
+html{font-size:16px;zoom:1;max-zoom:1;min-zoom:1;}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;color:#eaeaea;transform-origin:0 0;max-width:100vw;overflow-x:hidden}
 :root{
   --neon-purple:#bd00ff;
@@ -13,7 +13,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
   border-bottom:1px solid rgba(255,255,255,.05);
   position:sticky;
   top:0;
-  z-index:999
+  z-index:999;
+  width:100vw;
+  margin:0;
+  padding:0;
 }
 .navbar-brand{
   color:#fff;
