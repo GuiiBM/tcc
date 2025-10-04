@@ -75,9 +75,27 @@ footer {
     box-shadow: 0 0 12px var(--neon-purple), 0 0 20px var(--neon-purple);
     cursor: pointer;
     transition: all 0.3s ease;
+    filter: brightness(0) invert(1);
 }
 
 .circulo:hover {
+  background-color: var(--neon-purple);
+  box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
+  transform: scale(1.1);
+}
+.circulo2 {
+    border: 2px solid var(--neon-purple);
+    border-radius: 100%;
+    padding: 0px 5px 5px 5px;
+    display: inline-block;
+    background-color: #1a0024;
+    box-shadow: 0 0 12px var(--neon-purple), 0 0 20px var(--neon-purple);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: brightness(0) invert(1);
+}
+
+.circulo2:hover {
   background-color: var(--neon-purple);
   box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
   transform: scale(1.1);
