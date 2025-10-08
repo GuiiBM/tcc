@@ -1,8 +1,6 @@
 footer {
   background-color: #14001a;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 -2px 20px rgba(189, 0, 255, 0.4);
-  color: var(--neon-white);
+  color: var(--neon-purple);
   border-radius: 20px 20px 0 0;
   padding: 20px;
   margin: 0 !important;
@@ -17,7 +15,7 @@ footer {
 footer p,
 footer a,
 footer .nav-link {
-  color: var(--neon-white);
+  color: var(--neon-purple);
   font-size: 0.95rem;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
@@ -49,7 +47,7 @@ footer svg {
 }
 
 footer .border-top {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
 }
 
 footer .text-body-secondary {
@@ -60,6 +58,9 @@ footer .text-body-secondary {
 body {
   background: #000;
   color: #eaeaea;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 120px;
 }
 
 footer {
@@ -75,7 +76,6 @@ footer {
     box-shadow: 0 0 12px var(--neon-purple), 0 0 20px var(--neon-purple);
     cursor: pointer;
     transition: all 0.3s ease;
-    filter: brightness(0) invert(1);
 }
 
 .circulo:hover {
@@ -83,20 +83,7 @@ footer {
   box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
   transform: scale(1.1);
 }
-.circulo2 {
-    border: 2px solid var(--neon-purple);
-    border-radius: 100%;
-    padding: 0px 5px 5px 5px;
-    display: inline-block;
-    background-color: #1a0024;
-    box-shadow: 0 0 12px var(--neon-purple), 0 0 20px var(--neon-purple);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    filter: brightness(0) invert(1);
-}
 
-.circulo2:hover {
-  background-color: var(--neon-purple);
-  box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
-  transform: scale(1.1);
+.circulo2 {
+  padding: 10px;
 }

@@ -5,19 +5,19 @@
     </p>
     <ul class="nav col-md-4 justify-content-center">
       <li class="nav-item d-flex align-items-center">
-        <img src="Componentes/icones/retrocederMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo2 mx-2">
+        <img src="Componentes/icones/retrocederMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
       </li>
       <li class="nav-item d-flex align-items-center">
-        <img src="Componentes/icones/retrocederCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo2 mx-2">
+        <img src="Componentes/icones/retrocederCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
       </li>
       <li class="nav-item d-flex align-items-center">
         <img src="Componentes/icones/icone2.png" alt="Ícone" width="96" height="96" class="circulo mx-2">
       </li>
       <li class="nav-item d-flex align-items-center">
-        <img src="Componentes/icones/avancaCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo2 mx-2">
+        <img src="Componentes/icones/avancaCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
       </li>
       <li class="nav-item d-flex align-items-center">
-        <img src="Componentes/icones/avancarMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo2 mx-2">
+        <img src="Componentes/icones/avancarMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
       </li>
     </ul>
     <ul class="nav col-md-4 justify-content-end">
