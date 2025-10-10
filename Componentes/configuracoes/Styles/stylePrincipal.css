@@ -1,6 +1,4 @@
 section.principal {
-  border: 3px solid #ff0000 !important;
-  background-color: rgba(255, 0, 0, 0.2) !important;
   padding: 20px !important;
   margin: 10px !important;
   display: block !important;
@@ -8,10 +6,7 @@ section.principal {
 }
 
 .principal-content {
-  border: 2px solid #0000ff !important;
-  background-color: rgba(0, 0, 255, 0.1) !important;
   padding: 15px !important;
-  min-height: 100px !important;
 }
 
 .principal::-webkit-scrollbar {
@@ -19,19 +14,19 @@ section.principal {
 }
 
 .principal::-webkit-scrollbar-track {
-  background: #000;
+  background: var(--bg-gradient-2);
   border-radius: 4px;
 }
 
 .principal::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00d9ff 0%, #bd00ff 100%);
+  background: linear-gradient(180deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
   border-radius: 4px;
-  border: 1px solid #000;
+  border: 1px solid var(--bg-gradient-2);
   box-shadow: inset 0 0 8px rgba(0, 217, 255, 0.6), 0 0 12px rgba(0, 217, 255, 0.4);
 }
 
 .principal::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #bd00ff 0%, #00d9ff 100%);
+  background: linear-gradient(180deg, var(--neon-purple) 0%, var(--neon-blue) 100%);
   box-shadow: inset 0 0 12px rgba(0, 217, 255, 0.8), 0 0 20px rgba(0, 217, 255, 0.6);
 }
 .scroll-container {
@@ -67,19 +62,19 @@ section.principal {
   width: 35px;
   height: 35px;
   border-radius: 8px;
-  background: linear-gradient(145deg, #14001a, #1a0024);
+  background: linear-gradient(145deg, var(--bg-primary), var(--bg-secondary));
   border: 2px solid var(--neon-purple);
   color: var(--neon-purple);
   font-size: 18px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(189, 0, 255, 0.3);
+  box-shadow: 0 4px 16px var(--shadow-purple);
 }
 
 .scroll-btn:hover {
   background: var(--neon-purple);
-  color: #fff;
-  box-shadow: 0 6px 20px rgba(189, 0, 255, 0.5);
+  color: var(--text-white);
+  box-shadow: 0 6px 20px var(--shadow-purple-medium);
   transform: scale(1.1);
 }
 
@@ -89,10 +84,10 @@ section.principal {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(145deg, #14001a 0%, #1a0024 100%);
+  background: linear-gradient(145deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   border-radius: 16px;
-  border: 1px solid rgba(189, 0, 255, 0.3);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 8px rgba(189, 0, 255, 0.2);
+  border: 1px solid var(--border-purple-light);
+  box-shadow: 0 4px 16px var(--shadow-dark), 0 0 8px rgba(189, 0, 255, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
   padding: 16px;
@@ -100,7 +95,7 @@ section.principal {
 
 .grid-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(189, 0, 255, 0.5);
+  box-shadow: 0 8px 24px var(--shadow-dark-strong), 0 0 16px var(--shadow-purple-medium);
   border-color: rgba(189, 0, 255, 0.7);
 }
 
@@ -128,7 +123,7 @@ section.principal {
   border-radius: 12px;
   margin-bottom: 16px;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--shadow-theme-purple);
   transition: all 0.3s ease;
 }
 

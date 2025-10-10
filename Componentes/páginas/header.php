@@ -13,7 +13,6 @@
                 <li class="nav-item"><a class="nav-link" href="#">Músicas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Autistas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Álbuns</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Recomendações</a></li>
             </ul>
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-light me-2" type="button">Login</button>

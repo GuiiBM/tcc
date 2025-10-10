@@ -24,21 +24,21 @@
             </li>
         </ul>
         
-        <ul class="nav col-md-4 justify-content-end">
+        <ul class="nav col-md-4 justify-content-end" id="transparent">
             <li class="nav-item">
-                <a href="#" class="nav-link px-2 text-body-secondary">Home</a>
+                <a href="#" class="nav-link px-2 text-body-secondary">_______</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link px-2 text-body-secondary">Features</a>
+                <a href="#" class="nav-link px-2 text-body-secondary">_______</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link px-2 text-body-secondary">Pricing</a>
+                <a href="#" class="nav-link px-2 text-body-secondary">_______</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
+                <a href="#" class="nav-link px-2 text-body-secondary">_______</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link px-2 text-body-secondary">About</a>
+                <a href="#" class="nav-link px-2 text-body-secondary">_______</a>
             </li>
         </ul>
         <div class="container">

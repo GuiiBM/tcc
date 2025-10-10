@@ -1,6 +1,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;zoom:1;max-zoom:1;min-zoom:1;}
-body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;color:#eaeaea;transform-origin:0 0;max-width:100vw;overflow-x:hidden}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-gradient-2);color:var(--text-primary);transform-origin:0 0;max-width:100vw;overflow-x:hidden}
 :root{
   --neon-purple:#bd00ff;
   --neon-blue:#00d9ff;
@@ -8,9 +8,9 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
   --neon-white:#fff
 }
 .navbar{
-  background-color:#14001a;
-  box-shadow:0 0 30px rgba(189,0,255,.6);
-  border-bottom:1px solid rgba(255,255,255,.05);
+  background-color:var(--bg-primary);
+  box-shadow:0 0 30px var(--shadow-purple-medium);
+  border-bottom:1px solid var(--border-light);
   position:sticky;
   top:0;
   z-index:999;
@@ -19,13 +19,13 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
   padding:0;
 }
 .navbar-brand{
-  color:#fff;
+  color:var(--text-white);
   font-size:1.5rem;
   font-weight:700;
-  text-shadow:0 0 6px #fff,0 0 10px var(--neon-purple),0 0 16px var(--neon-purple),0 0 28px var(--neon-purple);
+  text-shadow:0 0 6px var(--text-white),0 0 10px var(--neon-purple),0 0 16px var(--neon-purple),0 0 28px var(--neon-purple);
 }
 .navbar-brand img{
-  filter:drop-shadow(0 0 6px #fff)
+  filter:drop-shadow(0 0 6px var(--text-white))
 }
 .brand-name{
   animation:glowWhitePulse 2.5s infinite alternate;
@@ -72,13 +72,13 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
   background-color:var(--neon-pink);
   border:none;
   font-weight:700;
-  color:#000;
+  color:var(--bg-gradient-2);
   transition:all .3s ease;
   box-shadow:0 0 10px var(--neon-pink)
 }
 .btn-warning:hover{
   background-color:#ff33cc;
-  color:#000;
+  color:var(--bg-gradient-2);
   box-shadow:0 0 20px var(--neon-pink),0 0 30px var(--neon-pink)
 }
 .navbar-toggler{
@@ -89,8 +89,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
 }
 @media(max-width:991.98px){
   .navbar-collapse{
-    background-color:#1a0024;
-    border-top:1px solid rgba(255,255,255,.05);
+    background-color:var(--bg-secondary);
+    border-top:1px solid var(--border-light);
     margin-top:1rem;
     padding-top:1rem
   }
@@ -112,9 +112,9 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#000;col
 }
 @keyframes glowWhitePulse{
   0%{
-    text-shadow:0 0 6px snow,0 0 10px snow
+    text-shadow:0 0 6px var(--text-white),0 0 10px var(--text-white)
   }
   100%{
-    text-shadow:0 0 16px snow,0 0 28px snow
+    text-shadow:0 0 16px var(--text-white),0 0 28px var(--text-white)
   }
 }
