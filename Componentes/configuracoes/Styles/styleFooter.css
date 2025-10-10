@@ -1,0 +1,191 @@
+footer {
+  background-color: #14001a;
+  color: var(--neon-purple);
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  margin: 0 !important;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+
+footer p,
+footer a,
+footer .nav-link {
+  color: var(--neon-purple);
+  font-size: 0.95rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+footer a:hover,
+footer .nav-link:hover {
+  color: var(--neon-purple);
+  text-shadow: 0 0 6px var(--neon-purple), 0 0 12px var(--neon-purple);
+  text-decoration: none;
+}
+
+footer .nav-link::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background-color: var(--neon-purple);
+  width: 0;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--neon-purple);
+  margin-top: 4px;
+}
+
+footer .nav-link:hover::after {
+  width: 100%;
+}
+
+footer svg {
+  filter: drop-shadow(0 0 6px var(--neon-purple));
+}
+
+footer .border-top {
+  border: none !important;
+}
+
+footer .text-body-secondary {
+  color: #ccc !important;
+}
+
+
+body {
+  background: #000;
+  color: #eaeaea;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 120px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.circulo {
+    border: 2px solid var(--neon-purple);
+    border-radius: 100%;
+    padding: 0px 2px 5px 2px;
+    display: inline-block;
+    background-color: #1a0024;
+    box-shadow: 0 0 12px var(--neon-purple), 0 0 20px var(--neon-purple);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.circulo:hover {
+  background-color: var(--neon-purple);
+  box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
+  transform: scale(1.1);
+}
+
+.circulo2 {
+  padding: 10px;
+}
+
+.music-bar {
+  background: linear-gradient(145deg, #1a0024, #14001a);
+  border: 1px solid rgba(189, 0, 255, 0.3);
+  border-radius: 15px 15px 0 0;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 -2px 20px rgba(189, 0, 255, 0.2);
+}
+
+.music-info {
+  min-width: 200px;
+}
+
+#songTitle {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+#songArtist {
+  color: var(--neon-purple);
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #bd00ff, #8a00cc);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(189, 0, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn img {
+  filter: brightness(0) invert(1);
+}
+
+.control-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(189, 0, 255, 0.5);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: #14001a;
+  border-bottom: 1px solid rgba(189, 0, 255, 0.2);
+  margin-top: 15px;
+  position: relative;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: linear-gradient(90deg, #bd00ff, #00d9ff);
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+#currentTime, #totalTime {
+  color: #ccc;
+  font-size: 0.8rem;
+  min-width: 35px;
+  text-align: center;
+}
+
+img.circulo.mx-2#playBtn.paused:hover {
+  background-color: #ff0040 !important;
+  box-shadow: 0 0 20px #ff0040, 0 0 30px #ff0040 !important;
+  border-color: #ff0040 !important;
+  transform: scale(1.1) !important;
+}

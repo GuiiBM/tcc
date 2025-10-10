@@ -1,17 +1,15 @@
 <section class="principal">
     <div class="principal-content">
         <h1>Conteúdo Principal</h1>
-        <p>Esta é a área principal do site.</p>
-        <!-- Conteúdo adicional aqui -->
     </div>
     <div class="scroll-container">
         <div class="scroll-controls">
-            <button class="scroll-btn scroll-btn-left" onclick="scrollToLeft()">‹</button>
-            <button class="scroll-btn scroll-btn-right" onclick="scrollRight()">›</button>
+            <button class="scroll-btn" data-direction="left" data-container="cardContainer">‹</button>
+            <button class="scroll-btn" data-direction="right" data-container="cardContainer">›</button>
         </div>
         <div class="grid-container" id="cardContainer">
 
-        <div class="grid-card">
+        <div class="grid-card" onclick="playMusic('https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', 'Música Teste', 'Artista Exemplo')">
             <div class="title-card">
                 <h2>Título do card</h2>
             </div>
@@ -72,19 +70,5 @@
         </div>
     </div>
 
-    <script>
-    function scrollToLeft() {
-        document.getElementById('cardContainer').scrollBy({
-            left: -300,
-            behavior: 'smooth'
-        });
-    }
-    
-    function scrollRight() {
-        document.getElementById('cardContainer').scrollBy({
-            left: 300,
-            behavior: 'smooth'
-        });
-    }
-    </script>
+    <script src="Componentes/configuracoes/JS/botton.js"></script>
 </section>

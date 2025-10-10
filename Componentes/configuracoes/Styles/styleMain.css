@@ -1,5 +1,7 @@
 .main {
   overflow-y: visible;
+  flex: 1;
+  display: flex;
 }
 
 .main::-webkit-scrollbar {
