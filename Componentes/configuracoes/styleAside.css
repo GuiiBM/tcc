@@ -1,6 +1,6 @@
 .content-wrapper {
   display: flex;
-  height: calc(100vh - 76px - 120px);
+  min-height: 100%;
 }
 
 aside {
@@ -12,9 +12,11 @@ aside {
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 2px 0 20px rgba(189, 0, 255, 0.4);
   padding: 20px 15px;
-  width: 400px;
+  width: 20vw;
   overflow-y: auto;
   flex-shrink: 0;
+  border-radius: 30px;
+  height: calc(100vh - 75px - 170px);
 }
 
 .aside-title {
@@ -29,7 +31,7 @@ aside {
   text-transform: uppercase;
   letter-spacing: 2px;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
-  text-stroke: 1.5px rgba(255, 255, 255, 0.25);
+  --text-stroke: 1.5px rgba(255, 255, 255, 0.25);
 }
 
 .aside-ul {
