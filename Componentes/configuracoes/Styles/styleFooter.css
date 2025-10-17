@@ -1,0 +1,194 @@
+footer {
+  background-color: var(--bg-primary);
+  color: var(--theme-purple-dark);
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  margin: 0 !important;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+
+footer p,
+footer a,
+footer .nav-link {
+  color: var(--theme-purple-dark);
+  font-size: 0.95rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+footer a:hover,
+footer .nav-link:hover {
+  color: var(--neon-purple);
+  text-shadow: 0 0 6px var(--neon-purple), 0 0 12px var(--neon-purple);
+  text-decoration: none;
+}
+
+footer .nav-link::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background-color: var(--neon-purple);
+  width: 0;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--neon-purple);
+  margin-top: 4px;
+}
+
+footer .nav-link:hover::after {
+  width: 100%;
+}
+
+footer svg {
+  filter: drop-shadow(0 0 6px var(--neon-purple));
+}
+
+footer .border-top {
+  border: none !important;
+}
+
+footer .text-body-secondary {
+  color: var(--text-secondary) !important;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.circulo {
+    border: 2px solid var(--theme-purple-dark);
+    border-radius: 100%;
+    padding: 0px 2px 5px 2px;
+    display: inline-block;
+    background-color: var(--bg-dark);
+    box-shadow: 0 0 12px var(--theme-purple-dark), 0 0 20px var(--theme-purple-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.circulo:hover {
+  background-color: var(--theme-purple-dark);
+  box-shadow: 0 0 20px var(--theme-purple-dark), 0 0 30px var(--theme-purple-medium);
+  transform: scale(1.1);
+}
+
+.circulo2 {
+  padding: 10px;
+}
+
+.music-bar {
+  background: linear-gradient(145deg, var(--bg-dark), var(--theme-purple-dark));
+  border: 1px solid var(--border-purple);
+  border-radius: 15px 15px 0 0;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 -2px 20px var(--shadow-theme-purple);
+}
+
+.music-info {
+  min-width: 200px;
+}
+
+#songTitle {
+  color: var(--text-white);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+#songArtist {
+  color: var(--neon-purple);
+  font-size: 0.8rem;
+  opacity: 0.9;
+  text-shadow: 0 0 8px var(--neon-purple);
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--theme-purple-dark), var(--neon-purple));
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow-theme-purple-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn img {
+  filter: brightness(0) invert(1);
+}
+
+.control-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px var(--shadow-purple-medium);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--shadow-theme-purple);
+  margin-top: 15px;
+  position: relative;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-white-light);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: linear-gradient(90deg, var(--theme-purple-dark), var(--theme-purple-medium));
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+#currentTime, #totalTime {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  min-width: 35px;
+  text-align: center;
+}
+
+img.circulo.mx-2#playBtn.paused:hover {
+  background-color: var(--theme-red-hover) !important;
+  box-shadow: 0 0 20px var(--theme-red-hover), 0 0 30px var(--theme-red-hover) !important;
+  border-color: var(--theme-red-hover) !important;
+  transform: scale(1.1) !important;
+}
+
+#transparent {
+  pointer-events: none;
+}
+
+#transparent .nav-link {
+  color: var(--text-transparent) !important;
+  cursor: default;
+}
+
+#transparent .nav-link:hover {
+  color: var(--text-transparent) !important;
+  text-shadow: none !important;
+}

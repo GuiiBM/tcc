@@ -1,0 +1,26 @@
+.main {
+  overflow-y: visible;
+  flex: 1;
+  display: flex;
+}
+
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: var(--bg-gradient-2);
+  border-radius: 4px;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
+  border-radius: 4px;
+  border: 1px solid var(--bg-gradient-2);
+  box-shadow: inset 0 0 8px rgba(0, 217, 255, 0.6), 0 0 12px rgba(0, 217, 255, 0.4);
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--neon-purple) 0%, var(--neon-blue) 100%);
+  box-shadow: inset 0 0 12px rgba(0, 217, 255, 0.8), 0 0 20px rgba(0, 217, 255, 0.6);
+}
