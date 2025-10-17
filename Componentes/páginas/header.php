@@ -9,9 +9,9 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Músicas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Autistas</a></li>
+                <li class="nav-item"><a class="nav-link" href="artistas.php">Autistas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Álbuns</a></li>
             </ul>
             <div class="d-flex align-items-center">

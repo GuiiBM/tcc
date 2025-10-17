@@ -16,5 +16,15 @@
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/stylePrincipal.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleMain.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistas.css">
 </head>
 <body>
+
+<?php
+    $host="localhost:33060";
+    $usuario="root";
+    $senha="";
+    $banco="musicas";
+    $conexao = mysqli_connect($host, $usuario, $senha) or die ("Não foi possivel fazer a conexão com o servidor");
+    mysqli_select_db($conexao,$banco) or die ("Não foi possível fazer a conexão com o banco de dados");
+?>
