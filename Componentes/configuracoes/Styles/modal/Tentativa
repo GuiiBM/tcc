@@ -1,0 +1,67 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Entrar na Conta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-col-full">
+                        <label for="loginEmail" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-col-full">
+                        <label for="loginPassword" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Digite sua senha" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn-neon">Entrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">Criar Nova Conta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="signupName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-col">
+                            <label for="signupLastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="signupLastName" placeholder="Seu sobrenome" required>
+                        </div>
+                    </div>
+                    <div class="form-col-full">
+                        <label for="signupEmail" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="signupEmail" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-col-full">
+                        <label for="signupPassword" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="signupPassword" placeholder="Crie uma senha" required>
+                    </div>
+                    <div class="form-col-full">
+                        <label for="signupConfirmPassword" class="form-label">Confirmar Senha</label>
+                        <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirme sua senha" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn-neon">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+</div>

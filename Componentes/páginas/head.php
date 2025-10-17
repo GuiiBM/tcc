@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="Componentes/configuracoes/JS/zoomControl.js" defer></script>
     <script src="Componentes/configuracoes/JS/musicPlayer.js" defer></script>
+    <script src="Componentes/configuracoes/JS/artistaAutocomplete.js" defer></script>
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/variables.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleHeader.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleFooter.css">
@@ -17,14 +18,10 @@
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleMain.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistas.css">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleForms.css">
 </head>
 <body>
 
 <?php
-    $host="localhost:33060";
-    $usuario="root";
-    $senha="";
-    $banco="musicas";
-    $conexao = mysqli_connect($host, $usuario, $senha) or die ("Não foi possivel fazer a conexão com o servidor");
-    mysqli_select_db($conexao,$banco) or die ("Não foi possível fazer a conexão com o banco de dados");
+    include "Componentes/páginas/DBConection.php";
 ?>

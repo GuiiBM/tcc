@@ -10,13 +10,14 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Músicas</a></li>
+                <li class="nav-item"><a class="nav-link" href="músicas.php">Músicas</a></li>
                 <li class="nav-item"><a class="nav-link" href="artistas.php">Autistas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Álbuns</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin.php">ADM</a></li>
             </ul>
             <div class="d-flex align-items-center">
-                <button class="btn btn-outline-light me-2" type="button">Login</button>
-                <button class="btn btn-warning" type="button">Sign-up</button>
+                <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#signupModal">Sign-up</button>
             </div>
         </div>
     </div>
