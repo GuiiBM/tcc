@@ -24,12 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_query($conexao, $sql_musica);
     
     echo "<div class='alert alert-success'>Música cadastrada com sucesso!</div>";
+    echo "<script>document.addEventListener('DOMContentLoaded', function() { showForm('musica'); });</script>";
 }
 ?>
 
 <div class="form-container">
     <h2 class="form-title">Cadastrar Nova Música</h2>
     <form method="POST">
+        <input type="hidden" name="form_type" value="musica">
         <div class="form-row">
             <div class="form-col" style="position: relative;">
                 <label for="artista_nome" class="form-label">Nome do Artista</label>

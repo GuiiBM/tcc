@@ -1,5 +1,5 @@
 <?php
-    include "Componentes/páginas/DBConection.php";
+    include "DBConection.php";
 
 if (isset($_GET['q'])) {
     $query = mysqli_real_escape_string($conexao, $_GET['q']);

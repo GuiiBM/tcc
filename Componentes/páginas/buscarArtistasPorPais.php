@@ -1,5 +1,5 @@
 <?php
-    include "Componentes/páginas/DBConection.php";
+    include "DBConection.php";
 
 if (isset($_GET['pais'])) {
     $pais = mysqli_real_escape_string($conexao, $_GET['pais']);

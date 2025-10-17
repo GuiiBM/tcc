@@ -18,21 +18,67 @@
             </div>
             
             <div style="margin-top: 50px; margin-bottom: 150px;">
-                <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
-                <div class="grid-container" id="cardContainer">
-                    <?php
-                    include "Componentes/páginas/funcoesMusicas.php";
-                    $musicas = buscarMusicas($conexao);
-                    if (count($musicas) > 0) {
-                        exibirMusicas($musicas);
-                    } else {
-                        echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhuma música cadastrada ainda.</p>";
-                    }
-                    ?>
+                <div id="musicasSection">
+                    <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
+                    <div class="grid-container" id="cardContainer">
+                        <?php
+                        include "Componentes/páginas/funcoesMusicas.php";
+                        $musicas = buscarMusicas($conexao);
+                        if (count($musicas) > 0) {
+                            exibirMusicas($musicas);
+                        } else {
+                            echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhuma música cadastrada ainda.</p>";
+                        }
+                        ?>
+                    </div>
+                </div>
+                
+                <div id="artistasSection" style="display: none;">
+                    <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Artistas Cadastrados</h2>
+                    <div class="grid-container" id="artistaContainer">
+                        <?php
+                        include "Componentes/páginas/funcoesArtistas.php";
+                        $artistas = buscarArtistas($conexao);
+                        if (count($artistas) > 0) {
+                            exibirArtistas($artistas);
+                        } else {
+                            echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhum artista cadastrado ainda.</p>";
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 </main>
 
-<script src="Componentes/configuracoes/JS/mostrarMusica.js"></script>
+<script>
+function showForm(tipo) {
+    const formMusica = document.getElementById('formMusica');
+    const formArtista = document.getElementById('formArtista');
+    const btnMusica = document.getElementById('btnMusica');
+    const btnArtista = document.getElementById('btnArtista');
+    const musicasSection = document.getElementById('musicasSection');
+    const artistasSection = document.getElementById('artistasSection');
+    
+    if (tipo === 'musica') {
+        formMusica.style.display = 'block';
+        formArtista.style.display = 'none';
+        musicasSection.style.display = 'block';
+        artistasSection.style.display = 'none';
+        btnMusica.style.opacity = '1';
+        btnArtista.style.opacity = '0.6';
+    } else {
+        formMusica.style.display = 'none';
+        formArtista.style.display = 'block';
+        musicasSection.style.display = 'none';
+        artistasSection.style.display = 'block';
+        btnMusica.style.opacity = '0.6';
+        btnArtista.style.opacity = '1';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    showForm('musica');
+});
+</script>
