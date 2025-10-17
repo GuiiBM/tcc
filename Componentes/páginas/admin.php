@@ -17,15 +17,20 @@
                 <?php include "Componentes/páginas/formArtista.php"; ?>
             </div>
             
-            <div style="margin-top: 50px;">
+            <div style="margin-top: 50px; margin-bottom: 150px;">
                 <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
                 <div class="grid-container" id="cardContainer">
                     <?php
                     include "Componentes/páginas/funcoesMusicas.php";
                     $musicas = buscarMusicas($conexao);
-                    exibirMusicas($musicas);
+                    if (count($musicas) > 0) {
+                        exibirMusicas($musicas);
+                    } else {
+                        echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhuma música cadastrada ainda.</p>";
+                    }
                     ?>
                 </div>
+            </div>
         </section>
     </div>
 </main>

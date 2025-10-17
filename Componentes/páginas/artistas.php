@@ -4,68 +4,21 @@
         <h1 style="text-align:center;">Todos os Artistas</h1>
     </div>
         <div class="grid-container" id="cardContainer">
-
-        <div class="grid-card" onclick="playMusic('https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', 'Música Teste', 'Artista Exemplo')">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
-        </div>
-
-        <div class="grid-card">
-            <div class="title-card">
-                <h2>Título do card</h2>
-            </div>
-            <img src="https://i.ytimg.com/vi/yWjCY_CHQeY/maxresdefault.jpg" alt="" class="image-music-card">
+            <?php
+            $sql = "SELECT * FROM artista";
+            $result = mysqli_query($conexao, $sql);
+            
+            while ($artista = mysqli_fetch_assoc($result)) {
+                echo "<div class='grid-card'>";
+                echo "<div class='title-card'>";
+                echo "<h2>" . $artista['artista_nome'] . "</h2>";
+                echo "</div>";
+                
+                $imagem = $artista['artista_image'] ? $artista['artista_image'] : 'https://via.placeholder.com/300x280?text=Sem+Foto';
+                echo "<img src='" . $imagem . "' alt='" . $artista['artista_nome'] . "' class='image-music-card'>";
+                echo "</div>";
+            }
+            ?>
         </div>
 </section>
 </main>
