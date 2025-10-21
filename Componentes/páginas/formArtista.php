@@ -34,6 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
             <label for="artista_image_form" class="form-label">URL da Foto</label>
             <input type="url" class="form-control" id="artista_image_form" name="artista_image" placeholder="https://exemplo.com/foto.jpg" required>
         </div>
+
+        <input name="img" class="form-editar-input" type="file" required>
         <div class="form-col-full" style="text-align: center; margin-top: 30px;">
             <button type="submit" name="cadastrar_artista" class="btn-neon">Cadastrar Artista</button>
         </div>

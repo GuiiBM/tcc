@@ -23,5 +23,5 @@
 <body>
 
 <?php
-    include "Componentes/páginas/DBConection.php";
+    include "Componentes/páginas/php/DBConection.php";
 ?>

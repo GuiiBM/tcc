@@ -1,9 +1,9 @@
 <?php
-    include "php/DBConection.php";
+    include "DBConection.php";
 
-if (isset($_GET['pais'])) {
-    $pais = mysqli_real_escape_string($conexao, $_GET['pais']);
-    $sql = "SELECT * FROM artista WHERE artista_pais = '$pais'";
+if (isset($_GET['q'])) {
+    $query = mysqli_real_escape_string($conexao, $_GET['q']);
+    $sql = "SELECT * FROM artista WHERE artista_nome LIKE '%$query%' LIMIT 5";
     $result = mysqli_query($conexao, $sql);
     
     $artistas = [];

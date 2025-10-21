@@ -9,7 +9,7 @@
         </div>
         <div class="grid-container" id="cardContainer">
             <?php
-            include "funcoesMusicas.php";
+            include "Componentes/páginas/php/funcoesMusicas.php";
             $musicas = buscarMusicas($conexao);
             exibirMusicas($musicas);
             ?>
