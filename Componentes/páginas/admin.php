@@ -9,6 +9,28 @@
                 <button class="btn-neon" onclick="showForm('artista')" id="btnArtista" style="margin-left: 20px;">Cadastrar Artista</button>
             </div>
             
+            <script>
+            function showForm(tipo) {
+                console.log('Chamando showForm com:', tipo);
+                const formMusica = document.getElementById('formMusica');
+                const formArtista = document.getElementById('formArtista');
+                const musicasSection = document.getElementById('musicasSection');
+                const artistasSection = document.getElementById('artistasSection');
+                
+                if (tipo === 'artista') {
+                    formMusica.style.display = 'none';
+                    formArtista.style.display = 'block';
+                    musicasSection.style.display = 'none';
+                    artistasSection.style.display = 'block';
+                } else {
+                    formMusica.style.display = 'block';
+                    formArtista.style.display = 'none';
+                    musicasSection.style.display = 'block';
+                    artistasSection.style.display = 'none';
+                }
+            }
+            </script>
+            
             <div id="formMusica">
                 <?php include "Componentes/páginas/formMusica.php"; ?>
             </div>
@@ -37,12 +59,16 @@
                     <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Artistas Cadastrados</h2>
                     <div class="grid-container" id="artistaContainer">
                         <?php
-                        include "Componentes/páginas/php/funcoesArtistas.php";
-                        $artistas = buscarArtistas($conexao);
-                        if (count($artistas) > 0) {
-                            exibirArtistas($artistas);
+                        if (file_exists("Componentes/páginas/php/funcoesArtistas.php")) {
+                            include "Componentes/páginas/php/funcoesArtistas.php";
+                            $artistas = buscarArtistas($conexao);
+                            if (count($artistas) > 0) {
+                                exibirArtistas($artistas);
+                            } else {
+                                echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhum artista cadastrado ainda.</p>";
+                            }
                         } else {
-                            echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhum artista cadastrado ainda.</p>";
+                            echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Erro ao carregar artistas.</p>";
                         }
                         ?>
                     </div>
@@ -52,4 +78,3 @@
     </div>
 </main>
 
-<script src="Componentes/configuracoes/JS/mostrarMusica.js"></script>

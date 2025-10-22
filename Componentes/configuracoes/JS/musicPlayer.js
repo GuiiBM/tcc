@@ -161,9 +161,14 @@ document.addEventListener('DOMContentLoaded', function() {
     window.musicPlayer = new MusicPlayer();
 });
 
-function playMusic(src, title, artist) {
+function playMusic(src, title, artist, musicaId) {
     if (window.musicPlayer) {
         window.musicPlayer.loadSong(src, title, artist);
         window.musicPlayer.togglePlay();
+        
+        // Definir música atual para curtidas
+        if (typeof setMusicaAtual === 'function' && musicaId) {
+            setMusicaAtual(musicaId);
+        }
     }
 }

@@ -28,7 +28,7 @@ function exibirArtistas($artistas) {
         echo "<div class='title-card'>";
         echo "<h2>$nome</h2>";
         echo "</div>";
-        echo "<img src='$imagem' alt='$nome' class='image-music-card'>";
+        echo "<img src='$imagem' alt='$nome' class='image-music-card' onerror='this.src=\"Componentes/icones/icone.png\"'>";
         echo "<div class='autor-card'>";
         echo "<h4>$cidade</h4>";
         echo "</div>";

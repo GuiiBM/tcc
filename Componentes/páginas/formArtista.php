@@ -1,18 +1,19 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
-    include 'php/DBConection.php';
-    include 'php/processarUpload.php';
-    
-    $artista_nome = trim($_POST['artista_nome']);
-    $artista_cidade = trim($_POST['artista_cidade']);
-    
-    // Processar upload da imagem
-    $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
-    
-    if (isset($resultadoUpload['erro'])) {
-        echo "<div class='alert alert-error'>Erro no upload da imagem: " . $resultadoUpload['erro'] . "</div>";
-    } else {
-        $artista_image = $resultadoUpload['caminho'];
+    try {
+        if (file_exists('php/processarUpload.php')) {
+            include 'php/processarUpload.php';
+        }
+        
+        $artista_nome = trim($_POST['artista_nome']);
+        $artista_cidade = trim($_POST['artista_cidade']);
+        
+        if (isset($_FILES['artista_image']) && function_exists('processarUpload')) {
+            $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
+            $artista_image = isset($resultadoUpload['caminho']) ? $resultadoUpload['caminho'] : 'Componentes/icones/icone.png';
+        } else {
+            $artista_image = 'Componentes/icones/icone.png';
+        }
         
         $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
         mysqli_stmt_bind_param($stmt, "sss", $artista_nome, $artista_cidade, $artista_image);
@@ -20,11 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
         if (mysqli_stmt_execute($stmt)) {
             echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
         } else {
-            error_log("Erro ao cadastrar artista: " . mysqli_stmt_error($stmt));
-            echo "<div class='alert alert-error'>Erro ao cadastrar artista. Tente novamente.</div>";
+            echo "<div class='alert alert-error'>Erro ao cadastrar artista.</div>";
         }
+        echo "<script>setTimeout(function() { showForm('artista'); }, 100);</script>";
+    } catch (Exception $e) {
+        echo "<div class='alert alert-error'>Erro: " . $e->getMessage() . "</div>";
     }
-    echo "<script>setTimeout(function() { showForm('artista'); }, 100);</script>";
 }
 ?>
 

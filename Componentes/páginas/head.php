@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="Componentes/configuracoes/JS/zoomControl.js" defer></script>
     <script src="Componentes/configuracoes/JS/musicPlayer.js" defer></script>
+    <script src="Componentes/configuracoes/JS/curtidas.js" defer></script>
     <script src="Componentes/configuracoes/JS/artistaAutocomplete.js?v=3" defer></script>
     <style>
     /* Inputs sofisticados com harmonia dourado-roxo - FORÇADO */
