@@ -2,7 +2,7 @@
 $sql = 'CREATE TABLE IF NOT EXISTS artista(
 artista_id INT PRIMARY KEY AUTO_INCREMENT,
 artista_nome VARCHAR(50) NOT NULL,
-artista_pais VARCHAR(50),
+artista_cidade VARCHAR(50),
 artista_image VARCHAR(255)
 );';
 

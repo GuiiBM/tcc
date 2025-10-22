@@ -1,11 +1,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
     $artista_nome = mysqli_real_escape_string($conexao, $_POST['artista_nome']);
-    $artista_pais = mysqli_real_escape_string($conexao, $_POST['artista_pais']);
+    $artista_cidade = mysqli_real_escape_string($conexao, $_POST['artista_cidade']);
     $artista_image = mysqli_real_escape_string($conexao, $_POST['artista_image']);
     
-    $sql_artista = "INSERT INTO artista (artista_nome, artista_pais, artista_image) 
-                    VALUES ('$artista_nome', '$artista_pais', '$artista_image')";
+    $sql_artista = "INSERT INTO artista (artista_nome, artista_cidade, artista_image) 
+                    VALUES ('$artista_nome', '$artista_cidade', '$artista_image')";
     
     if (mysqli_query($conexao, $sql_artista)) {
         echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
                 <input type="text" class="form-control" id="artista_nome_form" name="artista_nome" placeholder="Digite o nome do artista" required>
             </div>
             <div class="form-col">
-                <label for="artista_pais_form" class="form-label">País de Origem</label>
-                <input type="text" class="form-control" id="artista_pais_form" name="artista_pais" placeholder="Digite o país de origem" required>
+                <label for="artista_cidade_form" class="form-label">Cidade de Origem</label>
+                <input type="text" class="form-control" id="artista_cidade_form" name="artista_cidade" placeholder="Digite a cidade de origem" required>
             </div>
         </div>
         <div class="form-col-full">

@@ -21,7 +21,7 @@ function exibirArtistas($artistas) {
         echo "</div>";
         echo "<div class='card-content'>";
         echo "<h3 class='card-title'>" . htmlspecialchars($artista['artista_nome']) . "</h3>";
-        echo "<p class='card-artist'>" . htmlspecialchars($artista['artista_pais']) . "</p>";
+        echo "<p class='card-artist'>" . htmlspecialchars($artista['artista_cidade']) . "</p>";
         echo "</div>";
         echo "</div>";
     }

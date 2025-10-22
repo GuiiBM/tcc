@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $artista_nome = mysqli_real_escape_string($conexao, $_POST['artista_nome']);
-    $artista_pais = mysqli_real_escape_string($conexao, $_POST['artista_pais']);
+    $artista_cidade = mysqli_real_escape_string($conexao, $_POST['artista_cidade']);
     $musica_titulo = mysqli_real_escape_string($conexao, $_POST['musica_titulo']);
     $musica_capa = mysqli_real_escape_string($conexao, $_POST['musica_capa']);
     $musica_link = mysqli_real_escape_string($conexao, $_POST['musica_link']);
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $artista_id = $row['artista_id'];
     } else {
         $artista_image = mysqli_real_escape_string($conexao, $_POST['artista_image']);
-        $sql_artista = "INSERT INTO artista (artista_nome, artista_pais, artista_image) VALUES ('$artista_nome', '$artista_pais', '$artista_image')";
+        $sql_artista = "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES ('$artista_nome', '$artista_cidade', '$artista_image')";
         mysqli_query($conexao, $sql_artista);
         $artista_id = mysqli_insert_id($conexao);
     }
@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id="artistaSuggestions" class="artist-suggestions"></div>
             </div>
             <div class="form-col" style="position: relative;">
-                <label for="artista_pais" class="form-label">País do Artista</label>
-                <input type="text" class="form-control" id="artista_pais" name="artista_pais" placeholder="Digite o país de origem" required autocomplete="off">
-                <div id="paisSuggestions" class="artist-suggestions"></div>
-                <div id="artistasPorPais" class="artist-selection-modal" style="display: none;">
+                <label for="artista_cidade" class="form-label">Cidade do Artista</label>
+                <input type="text" class="form-control" id="artista_cidade" name="artista_cidade" placeholder="Digite a cidade de origem" required autocomplete="off">
+                <div id="cidadeSuggestions" class="artist-suggestions"></div>
+                <div id="artistasPorCidade" class="artist-selection-modal" style="display: none;">
                     <div class="modal-header-custom">
                         <h5>Selecione o Artista</h5>
                         <button type="button" class="close-modal" onclick="closeArtistModal()">&times;</button>

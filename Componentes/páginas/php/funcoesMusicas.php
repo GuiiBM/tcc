@@ -1,6 +1,6 @@
 <?php
 function buscarMusicas($conexao) {
-    $sql = "SELECT m.*, a.artista_nome, a.artista_pais 
+    $sql = "SELECT m.*, a.artista_nome, a.artista_cidade 
             FROM musica m 
             INNER JOIN artista a ON m.musica_artista = a.artista_id 
             ORDER BY m.musica_id DESC";
@@ -29,7 +29,7 @@ function exibirMusicas($musicas) {
             </div>
             <img src='{$musica['musica_capa']}' alt='{$musica['musica_titulo']}' class='image-music-card'>
             <div class='autor-card'>
-                <h4>{$musica['artista_nome']} - {$musica['artista_pais']}</h4>
+                <h4>{$musica['artista_nome']} - {$musica['artista_cidade']}</h4>
             </div>
         </div>";
     }
