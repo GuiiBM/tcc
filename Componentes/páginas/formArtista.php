@@ -1,16 +1,28 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
-    $artista_nome = mysqli_real_escape_string($conexao, $_POST['artista_nome']);
-    $artista_cidade = mysqli_real_escape_string($conexao, $_POST['artista_cidade']);
-    $artista_image = mysqli_real_escape_string($conexao, $_POST['artista_image']);
+    include 'php/DBConection.php';
+    include 'php/processarUpload.php';
     
-    $sql_artista = "INSERT INTO artista (artista_nome, artista_cidade, artista_image) 
-                    VALUES ('$artista_nome', '$artista_cidade', '$artista_image')";
+    $artista_nome = trim($_POST['artista_nome']);
+    $artista_cidade = trim($_POST['artista_cidade']);
     
-    if (mysqli_query($conexao, $sql_artista)) {
-        echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
+    // Processar upload da imagem
+    $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
+    
+    if (isset($resultadoUpload['erro'])) {
+        echo "<div class='alert alert-error'>Erro no upload da imagem: " . $resultadoUpload['erro'] . "</div>";
     } else {
-        echo "<div class='alert alert-error'>Erro: " . mysqli_error($conexao) . "</div>";
+        $artista_image = $resultadoUpload['caminho'];
+        
+        $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sss", $artista_nome, $artista_cidade, $artista_image);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
+        } else {
+            error_log("Erro ao cadastrar artista: " . mysqli_stmt_error($stmt));
+            echo "<div class='alert alert-error'>Erro ao cadastrar artista. Tente novamente.</div>";
+        }
     }
     echo "<script>setTimeout(function() { showForm('artista'); }, 100);</script>";
 }
@@ -18,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
 
 <div class="form-container">
     <h2 class="form-title">Cadastrar Novo Artista</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <input type="hidden" name="form_type" value="artista">
         <div class="form-row">
             <div class="form-col">
@@ -31,11 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
             </div>
         </div>
         <div class="form-col-full">
-            <label for="artista_image_form" class="form-label">URL da Foto</label>
-            <input type="url" class="form-control" id="artista_image_form" name="artista_image" placeholder="https://exemplo.com/foto.jpg" required>
+            <label for="artista_image_form" class="form-label">Foto do Artista</label>
+            <input type="file" class="form-control" id="artista_image_form" name="artista_image" accept="image/*" required>
         </div>
-
-        <input name="img" class="form-editar-input" type="file" required>
         <div class="form-col-full" style="text-align: center; margin-top: 30px;">
             <button type="submit" name="cadastrar_artista" class="btn-neon">Cadastrar Artista</button>
         </div>

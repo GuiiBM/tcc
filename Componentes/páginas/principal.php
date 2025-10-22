@@ -9,9 +9,13 @@
         </div>
         <div class="grid-container" id="cardContainer">
             <?php
-            include "Componentes/páginas/php/funcoesMusicas.php";
-            $musicas = buscarMusicas($conexao);
-            exibirMusicas($musicas);
+            if (isset($conexao)) {
+                include "Componentes/páginas/php/funcoesMusicas.php";
+                $musicas = buscarMusicas($conexao);
+                exibirMusicas($musicas);
+            } else {
+                echo "<p>Erro de conexão com o banco de dados.</p>";
+            }
             ?>
         </div>
     </div>

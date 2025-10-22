@@ -5,18 +5,24 @@
     </div>
         <div class="grid-container" id="cardContainer">
             <?php
-            $sql = "SELECT * FROM artista";
-            $result = mysqli_query($conexao, $sql);
+            $stmt = mysqli_prepare($conexao, "SELECT artista_nome, artista_cidade, artista_image FROM artista ORDER BY artista_nome");
             
-            while ($artista = mysqli_fetch_assoc($result)) {
-                echo "<div class='grid-card'>";
-                echo "<div class='title-card'>";
-                echo "<h2>" . $artista['artista_nome'] . "</h2>";
-                echo "</div>";
-                
-                $imagem = $artista['artista_image'] ? $artista['artista_image'] : 'https://via.placeholder.com/300x280?text=Sem+Foto';
-                echo "<img src='" . $imagem . "' alt='" . $artista['artista_nome'] . "' class='image-music-card'>";
-                echo "</div>";
+            if ($stmt && mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                while ($artista = mysqli_fetch_assoc($result)) {
+                    $nome = htmlspecialchars($artista['artista_nome'], ENT_QUOTES, 'UTF-8');
+                    $imagem = $artista['artista_image'] ? htmlspecialchars($artista['artista_image'], ENT_QUOTES, 'UTF-8') : 'https://via.placeholder.com/300x280?text=Sem+Foto';
+                    
+                    echo "<div class='grid-card'>";
+                    echo "<div class='title-card'>";
+                    echo "<h2>$nome</h2>";
+                    echo "</div>";
+                    echo "<img src='$imagem' alt='$nome' class='image-music-card'>";
+                    echo "</div>";
+                }
+                mysqli_stmt_close($stmt);
+            } else {
+                echo "<p>Erro ao carregar artistas.</p>";
             }
             ?>
         </div>

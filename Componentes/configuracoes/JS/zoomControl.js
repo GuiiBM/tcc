@@ -1,21 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let currentScale = 1;
-    const maxScale = 1.2;
-    const minScale = 0.5;
+    const config = {
+        currentScale: 1,
+        maxScale: 1.2,
+        minScale: 0.5,
+        step: 0.1,
+        baseFontSize: 16
+    };
     
     function updateZoom() {
-        document.documentElement.style.fontSize = `${currentScale * 16}px`;
+        document.documentElement.style.fontSize = `${config.currentScale * config.baseFontSize}px`;
     }
     
     document.addEventListener('wheel', function(e) {
         if (e.ctrlKey) {
             e.preventDefault();
             
-            if (e.deltaY < 0) {
-                currentScale = Math.min(currentScale + 0.1, maxScale);
-            } else {
-                currentScale = Math.max(currentScale - 0.1, minScale);
-            }
+            const delta = e.deltaY < 0 ? config.step : -config.step;
+            config.currentScale = Math.max(config.minScale, Math.min(config.maxScale, config.currentScale + delta));
             
             updateZoom();
         }
@@ -25,15 +26,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.ctrlKey) {
             if (e.key === '+' || e.key === '=') {
                 e.preventDefault();
-                currentScale = Math.min(currentScale + 0.1, maxScale);
+                config.currentScale = Math.min(config.currentScale + config.step, config.maxScale);
                 updateZoom();
             } else if (e.key === '-') {
                 e.preventDefault();
-                currentScale = Math.max(currentScale - 0.1, minScale);
+                config.currentScale = Math.max(config.currentScale - config.step, config.minScale);
                 updateZoom();
             } else if (e.key === '0') {
                 e.preventDefault();
-                currentScale = 1;
+                config.currentScale = 1;
                 updateZoom();
             }
         }

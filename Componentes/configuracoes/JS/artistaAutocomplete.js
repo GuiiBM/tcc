@@ -18,11 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             timeout = setTimeout(() => {
-                fetch(`Componentes/páginas/buscarArtistas.php?q=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
+                fetch(`Componentes/páginas/php/buscarArtistas.php?q=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
                     .then(data => {
                         suggestions.innerHTML = '';
-                        if (data.length > 0) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            const fragment = document.createDocumentFragment();
                             data.forEach(artista => {
                                 const item = document.createElement('div');
                                 item.className = 'suggestion-item';
@@ -30,14 +34,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 item.onclick = () => {
                                     artistaInput.value = artista.artista_nome;
                                     if (cidadeInput) cidadeInput.value = artista.artista_cidade;
-                                    if (document.getElementById('artista_id')) {
-                                        document.getElementById('artista_id').value = artista.artista_id;
-                                    }
+                                    const artistaIdField = document.getElementById('artista_id');
+                                    if (artistaIdField) artistaIdField.value = artista.artista_id;
                                     artistaExistente = true;
                                     suggestions.style.display = 'none';
                                 };
-                                suggestions.appendChild(item);
+                                fragment.appendChild(item);
                             });
+                            suggestions.appendChild(fragment);
                             suggestions.style.display = 'block';
                         } else {
                             suggestions.style.display = 'none';
@@ -62,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             cidadeTimeout = setTimeout(() => {
-                fetch(`Componentes/páginas/buscarCidades.php?q=${encodeURIComponent(query)}`)
+                fetch(`Componentes/páginas/php/buscarCidades.php?q=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(data => {
                         cidadeSuggestions.innerHTML = '';
@@ -93,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para mostrar artistas por cidade
     window.showArtistsByCity = function(cidade) {
-        fetch(`Componentes/páginas/buscarArtistasPorCidade.php?cidade=${encodeURIComponent(cidade)}`)
+        fetch(`Componentes/páginas/php/buscarArtistasPorCidade.php?cidade=${encodeURIComponent(cidade)}`)
             .then(response => response.json())
             .then(data => {
                 const artistList = document.getElementById('artistList');
@@ -147,6 +151,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const newFields = document.getElementById('newArtistFields');
         if (newFields) newFields.style.display = 'block';
     };
+    
+    // Mostrar campo de foto apenas quando necessário
+    if (artistaInput) {
+        artistaInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                if (!artistaExistente && this.value.trim() !== '') {
+                    const newFields = document.getElementById('newArtistFields');
+                    if (newFields) newFields.style.display = 'block';
+                }
+            }, 500);
+        });
+    }
 
     // Fechar sugestões ao clicar fora
     document.addEventListener('click', function(e) {

@@ -23,5 +23,7 @@
 <body>
 
 <?php
-    include "Componentes/páginas/php/DBConection.php";
+    if (file_exists("Componentes/páginas/php/DBConection.php")) {
+        include "Componentes/páginas/php/DBConection.php";
+    }
 ?>

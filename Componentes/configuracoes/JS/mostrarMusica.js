@@ -6,6 +6,8 @@ function showForm(tipo) {
     const musicasSection = document.getElementById('musicasSection');
     const artistasSection = document.getElementById('artistasSection');
     
+    if (!formMusica || !formArtista) return;
+    
     if (tipo === 'musica') {
         formMusica.style.display = 'block';
         formArtista.style.display = 'none';

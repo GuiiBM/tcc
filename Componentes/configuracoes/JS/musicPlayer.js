@@ -16,15 +16,25 @@ class MusicPlayer {
         this.audio.addEventListener('timeupdate', () => this.updateProgress());
         this.audio.addEventListener('ended', () => this.onSongEnd());
         
-        this.progressBar.addEventListener('click', (e) => this.seekTo(e));
+        if (this.progressBar) {
+            this.progressBar.addEventListener('click', (e) => this.seekTo(e));
+        }
         
-        this.playBtn.addEventListener('click', () => this.togglePlay());
+        if (this.playBtn) {
+            this.playBtn.addEventListener('click', () => this.togglePlay());
+        }
     }
     
     loadSong(src, title, artist) {
+        if (!this.audio) return;
+        
         this.audio.src = src;
-        document.getElementById('songTitle').textContent = title || 'Música';
-        document.getElementById('songArtist').textContent = artist || 'Artista';
+        const songTitle = document.getElementById('songTitle');
+        const songArtist = document.getElementById('songArtist');
+        
+        if (songTitle) songTitle.textContent = title || 'Música';
+        if (songArtist) songArtist.textContent = artist || 'Artista';
+        
         this.updateTotalTime();
     }
     
@@ -39,13 +49,23 @@ class MusicPlayer {
     }
     
     updateProgress() {
+        if (!this.audio || !this.audio.duration) return;
+        
         const progress = (this.audio.currentTime / this.audio.duration) * 100;
-        this.progressBar.style.setProperty('--progress', `${progress}%`);
-        this.currentTime.textContent = this.formatTime(this.audio.currentTime);
+        
+        if (this.progressBar) {
+            this.progressBar.style.setProperty('--progress', `${progress}%`);
+        }
+        
+        if (this.currentTime) {
+            this.currentTime.textContent = this.formatTime(this.audio.currentTime);
+        }
     }
     
     updateTotalTime() {
-        this.totalTime.textContent = this.formatTime(this.audio.duration || 0);
+        if (this.totalTime && this.audio) {
+            this.totalTime.textContent = this.formatTime(this.audio.duration || 0);
+        }
     }
     
     seekTo(e) {

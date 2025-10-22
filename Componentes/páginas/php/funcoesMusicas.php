@@ -1,17 +1,20 @@
 <?php
 function buscarMusicas($conexao) {
-    $sql = "SELECT m.*, a.artista_nome, a.artista_cidade 
-            FROM musica m 
-            INNER JOIN artista a ON m.musica_artista = a.artista_id 
-            ORDER BY m.musica_id DESC";
+    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, a.artista_nome, a.artista_cidade FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id ORDER BY m.musica_id DESC");
     
-    $result = mysqli_query($conexao, $sql);
+    if (!$stmt || !mysqli_stmt_execute($stmt)) {
+        error_log("Erro ao buscar músicas: " . mysqli_error($conexao));
+        return [];
+    }
+    
+    $result = mysqli_stmt_get_result($stmt);
     $musicas = [];
     
     while ($row = mysqli_fetch_assoc($result)) {
         $musicas[] = $row;
     }
     
+    mysqli_stmt_close($stmt);
     return $musicas;
 }
 
@@ -22,14 +25,19 @@ function exibirMusicas($musicas) {
     }
     
     foreach ($musicas as $musica) {
-        echo "
-        <div class='grid-card' onclick=\"playMusic('{$musica['musica_link']}', '{$musica['musica_titulo']}', '{$musica['artista_nome']}')\">
+        $titulo = htmlspecialchars($musica['musica_titulo'], ENT_QUOTES, 'UTF-8');
+        $artista = htmlspecialchars($musica['artista_nome'], ENT_QUOTES, 'UTF-8');
+        $cidade = htmlspecialchars($musica['artista_cidade'], ENT_QUOTES, 'UTF-8');
+        $capa = htmlspecialchars($musica['musica_capa'], ENT_QUOTES, 'UTF-8');
+        $link = htmlspecialchars($musica['musica_link'], ENT_QUOTES, 'UTF-8');
+        
+        echo "<div class='grid-card' onclick=\"playMusic('$link', '$titulo', '$artista')\">
             <div class='title-card'>
-                <h3>{$musica['musica_titulo']}</h3>
+                <h3>$titulo</h3>
             </div>
-            <img src='{$musica['musica_capa']}' alt='{$musica['musica_titulo']}' class='image-music-card'>
+            <img src='$capa' alt='$titulo' class='image-music-card'>
             <div class='autor-card'>
-                <h4>{$musica['artista_nome']} - {$musica['artista_cidade']}</h4>
+                <h4>$artista - $cidade</h4>
             </div>
         </div>";
     }
