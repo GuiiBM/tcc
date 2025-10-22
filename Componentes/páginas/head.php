@@ -285,16 +285,24 @@
         box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5) !important;
         transform: translateY(-3px) !important;
     }
+    
+    .btn-neon.btn-active {
+        background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%) !important;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.3) !important;
+        border: 2px solid #ffd700 !important;
+        transform: translateY(-2px) !important;
+        color: #0d1117 !important;
+    }
     </style>
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/variables.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleHeader.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleFooter.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleAside.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/stylePrincipal.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleMain.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistas.css?v=2">
-    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleForms.css?v=3">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/variables.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleHeader.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleFooter.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleAside.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/stylePrincipal.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleMain.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistas.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleForms.css?v=<?php echo time(); ?>">
 </head>
 <body>
 

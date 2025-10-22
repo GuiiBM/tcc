@@ -1,39 +1,11 @@
 <section class="principal">
     <div class="principal-content">
-        <h1>Últimos Artistas Adicionados</h1>
+        <h1>Recomendações</h1>
     </div>
+    
+    <!-- Últimas Músicas -->
     <div class="scroll-container">
-        <div class="scroll-controls">
-            <button class="scroll-btn" data-direction="left" data-container="artistasContainer">‹</button>
-            <button class="scroll-btn" data-direction="right" data-container="artistasContainer">›</button>
-        </div>
-        <div class="grid-container" id="artistasContainer">
-            <?php
-            if (isset($conexao)) {
-                include_once "Componentes/páginas/php/funcoesMusicas.php";
-                try {
-                    $artistas = buscarUltimosArtistas($conexao, 5);
-                    if (!empty($artistas)) {
-                        exibirArtistasRecomendados($artistas);
-                    } else {
-                        echo "<p>Nenhum artista encontrado.</p>";
-                    }
-                } catch (Exception $e) {
-                    echo "<p>Erro ao carregar artistas.</p>";
-                }
-            } else {
-                echo "<p>Erro de conexão com o banco de dados.</p>";
-            }
-            ?>
-        </div>
-    </div>
-</section>
-
-<section class="principal">
-    <div class="principal-content">
-        <h1>Últimas Músicas Adicionadas</h1>
-    </div>
-    <div class="scroll-container">
+        <h2>Últimas Músicas Adicionadas</h2>
         <div class="scroll-controls">
             <button class="scroll-btn" data-direction="left" data-container="ultimasMusicasContainer">‹</button>
             <button class="scroll-btn" data-direction="right" data-container="ultimasMusicasContainer">›</button>
@@ -41,6 +13,7 @@
         <div class="grid-container" id="ultimasMusicasContainer">
             <?php
             if (isset($conexao)) {
+                include_once "Componentes/páginas/php/funcoesMusicas.php";
                 try {
                     $ultimasMusicas = buscarUltimasMusicas($conexao, 5);
                     if (!empty($ultimasMusicas)) {
@@ -50,6 +23,60 @@
                     }
                 } catch (Exception $e) {
                     echo "<p>Erro ao carregar músicas.</p>";
+                }
+            } else {
+                echo "<p>Erro de conexão com o banco de dados.</p>";
+            }
+            ?>
+        </div>
+    </div>
+    
+    <!-- Músicas com Menos Curtidas -->
+    <div class="scroll-container">
+        <h2>Descubra Novas Músicas</h2>
+        <div class="scroll-controls">
+            <button class="scroll-btn" data-direction="left" data-container="menosCurtidasContainer">‹</button>
+            <button class="scroll-btn" data-direction="right" data-container="menosCurtidasContainer">›</button>
+        </div>
+        <div class="grid-container" id="menosCurtidasContainer">
+            <?php
+            if (isset($conexao)) {
+                try {
+                    $musicasMenosCurtidas = buscarMusicasMenosCurtidas($conexao, 5);
+                    if (!empty($musicasMenosCurtidas)) {
+                        exibirMusicasRecomendadas($musicasMenosCurtidas);
+                    } else {
+                        echo "<p>Nenhuma música encontrada.</p>";
+                    }
+                } catch (Exception $e) {
+                    echo "<p>Erro ao carregar músicas.</p>";
+                }
+            } else {
+                echo "<p>Erro de conexão com o banco de dados.</p>";
+            }
+            ?>
+        </div>
+    </div>
+    
+    <!-- Últimos Artistas -->
+    <div class="scroll-container">
+        <h2>Novos Artistas</h2>
+        <div class="scroll-controls">
+            <button class="scroll-btn" data-direction="left" data-container="artistasContainer">‹</button>
+            <button class="scroll-btn" data-direction="right" data-container="artistasContainer">›</button>
+        </div>
+        <div class="grid-container" id="artistasContainer">
+            <?php
+            if (isset($conexao)) {
+                try {
+                    $artistas = buscarUltimosArtistas($conexao, 5);
+                    if (!empty($artistas)) {
+                        exibirArtistasRecomendados($artistas);
+                    } else {
+                        echo "<p>Nenhum artista encontrado.</p>";
+                    }
+                } catch (Exception $e) {
+                    echo "<p>Erro ao carregar artistas.</p>";
                 }
             } else {
                 echo "<p>Erro de conexão com o banco de dados.</p>";

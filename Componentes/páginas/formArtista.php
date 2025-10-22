@@ -1,14 +1,14 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
     try {
-        if (file_exists('php/processarUpload.php')) {
-            include 'php/processarUpload.php';
+        if (file_exists('Componentes/páginas/php/processarUpload.php')) {
+            include 'Componentes/páginas/php/processarUpload.php';
         }
         
         $artista_nome = trim($_POST['artista_nome']);
         $artista_cidade = trim($_POST['artista_cidade']);
         
-        if (isset($_FILES['artista_image']) && function_exists('processarUpload')) {
+        if (isset($_FILES['artista_image']) && $_FILES['artista_image']['error'] === UPLOAD_ERR_OK && function_exists('processarUpload')) {
             $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
             $artista_image = isset($resultadoUpload['caminho']) ? $resultadoUpload['caminho'] : 'Componentes/icones/icone.png';
         } else {
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
         } else {
             echo "<div class='alert alert-error'>Erro ao cadastrar artista.</div>";
         }
-        echo "<script>setTimeout(function() { showForm('artista'); }, 100);</script>";
+
     } catch (Exception $e) {
         echo "<div class='alert alert-error'>Erro: " . $e->getMessage() . "</div>";
     }

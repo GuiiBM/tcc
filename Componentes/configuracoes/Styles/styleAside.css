@@ -1,6 +1,7 @@
 .content-wrapper {
   display: flex;
   min-height: 100%;
+  align-items: stretch;
 }
 
 aside {
@@ -9,11 +10,13 @@ aside {
   border-right: 1px solid rgba(255, 215, 0, 0.2);
   box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
   padding: 20px 15px;
+  padding-bottom: 170px;
   width: 20vw;
   overflow-y: auto;
   flex-shrink: 0;
   border-radius: 0 15px 15px 0;
-  height: calc(100vh - 75px - 170px);
+  min-height: calc(100vh - 75px - 170px);
+  height: auto;
 }
 
 .aside-title {

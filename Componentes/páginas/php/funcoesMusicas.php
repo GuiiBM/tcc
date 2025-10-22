@@ -66,6 +66,30 @@ function buscarUltimasMusicas($conexao, $limite = 5) {
     return $musicas;
 }
 
+function buscarMusicasMenosCurtidas($conexao, $limite = 5) {
+    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, m.musica_data_adicao, a.artista_nome, a.artista_cidade, COALESCE(c.total_curtidas, 0) as curtidas FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id LEFT JOIN (SELECT musica_id, COUNT(*) as total_curtidas FROM curtidas WHERE tipo_curtida = 'curtida' GROUP BY musica_id) c ON m.musica_id = c.musica_id ORDER BY curtidas ASC, m.musica_data_adicao DESC LIMIT ?");
+    
+    if (!$stmt) {
+        return [];
+    }
+    
+    mysqli_stmt_bind_param($stmt, "i", $limite);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        return [];
+    }
+    
+    $result = mysqli_stmt_get_result($stmt);
+    $musicas = [];
+    
+    while ($row = mysqli_fetch_assoc($result)) {
+        $musicas[] = $row;
+    }
+    
+    mysqli_stmt_close($stmt);
+    return $musicas;
+}
+
 function curtirMusica($conexao, $musica_id, $tipo) {
     $ip = $_SERVER['REMOTE_ADDR'];
     

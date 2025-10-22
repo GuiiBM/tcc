@@ -34,6 +34,16 @@ section.principal {
   padding: 20px;
 }
 
+.scroll-container h2 {
+  color: #ffd700;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  border-left: 3px solid #ffd700;
+  padding-left: 12px;
+}
+
 .grid-container {
   display: flex;
   gap: 20px;

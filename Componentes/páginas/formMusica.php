@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['musica_titulo'])) {
             echo "<div class='alert alert-error'>Erro ao cadastrar música. Tente novamente.</div>";
         }
     }
-    echo "<script>document.addEventListener('DOMContentLoaded', function() { showForm('musica'); });</script>";
+
 }
 ?>
 
