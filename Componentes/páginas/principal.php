@@ -84,13 +84,10 @@
             ?>
         </div>
     </div>
-</section>
-
-<section class="principal">
-    <div class="principal-content">
-        <h1>Músicas Disponíveis</h1>
-    </div>
+    
+    <!-- Músicas Disponíveis -->
     <div class="scroll-container">
+        <h2>Músicas Disponíveis</h2>
         <div class="scroll-controls">
             <button class="scroll-btn" data-direction="left" data-container="cardContainer">‹</button>
             <button class="scroll-btn" data-direction="right" data-container="cardContainer">›</button>
