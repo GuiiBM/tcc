@@ -1,33 +1,27 @@
 :root {
-  --neon-purple: #bd00ff;
-  --neon-blue: #00d9ff;
-  --neon-pink: #ff00c8;
-  --neon-white: #fff;
-  --bg-primary: #14001a;
-  --bg-secondary: #1a0024;
-  --bg-dark: #030014;
-  --bg-gradient-1: #210405;
-  --bg-gradient-2: #000;
-  --bg-gradient-3: #030021;
-  --bg-gradient-4: #032020;
-  --bg-gradient-5: #000000;
-  --theme-purple-dark: #1e0069;
-  --theme-purple-medium: #18009b;
-  --theme-red-hover: #ff0040;
-  --text-primary: #eaeaea;
-  --text-secondary: #ccc;
-  --text-white: #fff;
-  --text-transparent: transparent;
-  --border-light: rgba(255, 255, 255, 0.05);
-  --border-purple: rgba(30, 0, 105, 0.5);
-  --border-purple-light: rgba(189, 0, 255, 0.3);
-  --shadow-dark: rgba(0, 0, 0, 0.4);
-  --shadow-dark-strong: rgba(0, 0, 0, 0.7);
-  --shadow-purple: rgba(189, 0, 255, 0.3);
-  --shadow-purple-medium: rgba(189, 0, 255, 0.5);
-  --shadow-purple-strong: rgba(189, 0, 255, 0.8);
-  --shadow-theme-purple: rgba(30, 0, 105, 0.3);
-  --shadow-theme-purple-medium: rgba(30, 0, 105, 0.4);
-  --bg-purple-light: rgba(189, 0, 255, 0.1);
-  --bg-white-light: rgba(255, 255, 255, 0.2);
+  /* Paleta Premium Homogênea */
+  --primary-gold: #ffd700;
+  --primary-gold-light: #ffed4e;
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --text-white: #ffffff;
+  --border-primary: rgba(255, 215, 0, 0.3);
+  --border-secondary: rgba(255, 215, 0, 0.2);
+  --shadow-primary: rgba(255, 215, 0, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-dark-strong: rgba(0, 0, 0, 0.5);
+  --accent-hover: rgba(255, 215, 0, 0.1);
+  
+  /* Compatibilidade */
+  --neon-purple: #ffd700;
+  --neon-blue: #ffed4e;
+  --neon-white: #f0f6fc;
+  --bg-dark: #0d1117;
+  --border-purple-light: rgba(255, 215, 0, 0.3);
+  --shadow-purple: rgba(255, 215, 0, 0.3);
+  --shadow-purple-medium: rgba(255, 215, 0, 0.5);
+  --bg-purple-light: rgba(255, 215, 0, 0.1);
 }

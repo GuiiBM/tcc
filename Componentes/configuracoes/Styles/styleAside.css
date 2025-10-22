@@ -4,30 +4,28 @@
 }
 
 aside {
-  background: var(--bg-primary);
-  border-right: 1px solid var(--border-light);
-  box-shadow: 2px 0 20px var(--shadow-purple-strong);
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+  backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
   padding: 20px 15px;
   width: 20vw;
   overflow-y: auto;
   flex-shrink: 0;
-  border-radius: 30px;
+  border-radius: 0 15px 15px 0;
   height: calc(100vh - 75px - 170px);
 }
 
 .aside-title {
-  color: var(--neon-purple);
-  font-size: 1.4rem;
-  font-weight: 700;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 25px;
-  text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple);
-  animation: glowPulse 2s infinite alternate;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
-  --text-stroke: 1.5px rgba(255, 255, 255, 0.25);
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: 0.5px;
 }
 
 .aside-ul {
@@ -42,7 +40,7 @@ aside {
 
 .aside-ul a,
 .aside-ul button {
-  color: var(--neon-white);
+  color: #f0f6fc;
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -53,9 +51,11 @@ aside {
   position: relative;
   background: none;
   border: none;
+  border-left: 3px solid transparent;
   width: 100%;
   text-align: left;
   cursor: pointer;
+  margin: 4px 0;
 }
 
 .aside-ul a::before,
@@ -74,10 +74,11 @@ aside {
 
 .aside-ul a:hover,
 .aside-ul button:hover {
-  background-color: var(--bg-purple-light);
-  color: var(--neon-purple);
-  text-shadow: 0 0 6px var(--neon-purple);
-  transform: translateX(5px);
+  background-color: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  transform: translateX(3px);
+  border-left: 3px solid #ffd700;
 }
 
 .aside-ul a:hover::before,
@@ -86,25 +87,26 @@ aside {
 }
 
 aside::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 aside::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: #0d1117;
   border-radius: 6px;
+  border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
 aside::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--neon-purple) 0%, var(--neon-pink) 100%);
+  background: linear-gradient(180deg, #ffd700 0%, #ffed4e 100%);
   border-radius: 6px;
-  border: 2px solid var(--bg-primary);
-  box-shadow: inset 0 0 10px var(--shadow-purple-strong), 0 0 15px var(--shadow-purple-medium);
-  animation: scrollbarPulse 2s infinite alternate;
+  border: 1px solid #0d1117;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 aside::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--neon-pink) 0%, var(--neon-purple) 100%);
-  box-shadow: inset 0 0 15px rgba(189, 0, 255, 1), 0 0 25px var(--shadow-purple-strong);
+  background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 @keyframes scrollbarPulse {
