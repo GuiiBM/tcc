@@ -283,3 +283,76 @@ img.circulo.mx-2#playBtn.paused:hover {
   min-width: 30px;
   text-align: center;
 }
+
+/* Indicador de Status da Música */
+.play-status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.play-status.playing {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+
+.play-status.paused {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+}
+
+.play-status.no-music {
+  color: #9ca3af;
+  background: rgba(156, 163, 175, 0.1);
+  border: 1px solid rgba(156, 163, 175, 0.3);
+  text-shadow: 0 0 8px rgba(156, 163, 175, 0.3);
+}
+
+/* Tooltips customizados */
+.circulo[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(189, 0, 255, 0.95), rgba(30, 0, 105, 0.95));
+  color: var(--neon-white);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1001;
+  border: 1px solid rgba(189, 0, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(189, 0, 255, 0.4);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  animation: tooltipFade 0.2s ease-in;
+}
+
+.circulo[data-tooltip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(189, 0, 255, 0.95);
+  z-index: 1001;
+}
+
+.circulo {
+  position: relative;
+}
+
+@keyframes tooltipFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}

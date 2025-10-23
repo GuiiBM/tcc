@@ -1,0 +1,31 @@
+.custom-tooltip {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(189, 0, 255, 0.95), rgba(30, 0, 105, 0.95));
+  color: #f0f6fc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1001;
+  border: 1px solid rgba(189, 0, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(189, 0, 255, 0.4);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.custom-tooltip.show {
+  opacity: 1;
+}
+
+.custom-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(189, 0, 255, 0.95);
+}

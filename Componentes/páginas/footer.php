@@ -4,23 +4,18 @@
         <div class="music-info col-md-4">
             <div id="songTitle">Selecione uma música</div>
             <div id="songArtist">Artista</div>
+            <div id="playStatus" class="play-status no-music">🎵 Nenhuma música</div>
         </div>
         
         <ul class="nav col-md-4 justify-content-center">
             <li class="nav-item d-flex align-items-center">
-                <img src="Componentes/icones/setas azuis/retrocederMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
+                <img src="Componentes/icones/setas azuis/retrocederCincoSegundosEditado.png" alt="Retroceder 5 segundos" title="Retroceder 5 segundos" width="60" height="60" class="circulo circulo2 mx-2" id="rewindBtn">
             </li>
             <li class="nav-item d-flex align-items-center">
-                <img src="Componentes/icones/setas azuis/retrocederCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
+                <img src="Componentes/icones/icone2.png" alt="Play/Pause" title="Play/Pause" width="96" height="96" class="circulo mx-2 paused" id="playBtn">
             </li>
             <li class="nav-item d-flex align-items-center">
-                <img src="Componentes/icones/icone2.png" alt="Ícone" width="96" height="96" class="circulo mx-2 paused" id="playBtn">
-            </li>
-            <li class="nav-item d-flex align-items-center">
-                <img src="Componentes/icones/setas azuis/avancaCincoSegundosEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
-            </li>
-            <li class="nav-item d-flex align-items-center">
-                <img src="Componentes/icones/setas azuis/avancarMusicaEditado.png" alt="Ícone" width="60" height="60" class="circulo circulo2 mx-2">
+                <img src="Componentes/icones/setas azuis/avancaCincoSegundosEditado.png" alt="Avançar 5 segundos" title="Avançar 5 segundos" width="60" height="60" class="circulo circulo2 mx-2" id="forwardBtn">
             </li>
         </ul>
         

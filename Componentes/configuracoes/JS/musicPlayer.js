@@ -5,10 +5,13 @@ class MusicPlayer {
         this.currentTime = document.getElementById('currentTime');
         this.totalTime = document.getElementById('totalTime');
         this.playBtn = document.getElementById('playBtn');
+        this.rewindBtn = document.getElementById('rewindBtn');
+        this.forwardBtn = document.getElementById('forwardBtn');
         this.volumeSlider = document.getElementById('volumeSlider');
         this.volumePercentage = document.getElementById('volumePercentage');
         this.volumeIcon = document.getElementById('volumeIcon');
         this.volumeSvg = document.getElementById('volumeSvg');
+        this.playStatus = document.getElementById('playStatus');
         this.previousVolume = 50;
         this.isMuted = false;
         
@@ -38,6 +41,14 @@ class MusicPlayer {
         if (this.volumeIcon) {
             this.volumeIcon.addEventListener('click', () => this.toggleMute());
         }
+        
+        if (this.rewindBtn) {
+            this.rewindBtn.addEventListener('click', () => this.rewind());
+        }
+        
+        if (this.forwardBtn) {
+            this.forwardBtn.addEventListener('click', () => this.forward());
+        }
     }
     
     loadSong(src, title, artist) {
@@ -51,15 +62,18 @@ class MusicPlayer {
         if (songArtist) songArtist.textContent = artist || 'Artista';
         
         this.updateTotalTime();
+        this.updatePlayStatus(false);
     }
     
     togglePlay() {
         if (this.audio.paused) {
             this.audio.play();
             this.playBtn.classList.remove('paused');
+            this.updatePlayStatus(true);
         } else {
             this.audio.pause();
             this.playBtn.classList.add('paused');
+            this.updatePlayStatus(false);
         }
     }
     
@@ -92,6 +106,7 @@ class MusicPlayer {
     onSongEnd() {
         this.playBtn.classList.add('paused');
         this.progressBar.style.setProperty('--progress', '0%');
+        this.updatePlayStatus(false);
     }
     
     setVolume(value) {
@@ -147,6 +162,33 @@ class MusicPlayer {
         }
         
         this.volumeSvg.innerHTML = `<path d="${path}"/>`;
+    }
+    
+    rewind() {
+        if (this.audio) {
+            this.audio.currentTime = Math.max(0, this.audio.currentTime - 5);
+        }
+    }
+    
+    forward() {
+        if (this.audio && this.audio.duration) {
+            this.audio.currentTime = Math.min(this.audio.duration, this.audio.currentTime + 5);
+        }
+    }
+    
+    updatePlayStatus(isPlaying) {
+        if (!this.playStatus) return;
+        
+        if (!this.audio.src) {
+            this.playStatus.className = 'play-status no-music';
+            this.playStatus.textContent = '🎵 Nenhuma música';
+        } else if (isPlaying) {
+            this.playStatus.className = 'play-status playing';
+            this.playStatus.textContent = '▶️ Tocando';
+        } else {
+            this.playStatus.className = 'play-status paused';
+            this.playStatus.textContent = '⏸️ Pausado';
+        }
     }
     
     formatTime(seconds) {

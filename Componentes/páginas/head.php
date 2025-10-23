@@ -13,6 +13,7 @@
     <script src="Componentes/configuracoes/JS/artistaAutocomplete.js?v=3" defer></script>
     <script src="Componentes/configuracoes/JS/randomizeMusics.js" defer></script>
     <script src="Componentes/configuracoes/JS/artistsLayout.js" defer></script>
+    <script src="Componentes/configuracoes/JS/tooltip.js" defer></script>
     <style>
     /* Inputs sofisticados com harmonia dourado-roxo - FORÇADO */
     input[type="file"],
@@ -305,6 +306,7 @@
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistas.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleForms.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/tooltip.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
