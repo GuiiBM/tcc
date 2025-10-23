@@ -68,7 +68,7 @@ function buscarUltimasMusicas($conexao, $limite = 5) {
 
 function buscarMusicasMenosCurtidas($conexao, $limite = 5) {
     $stmt = mysqli_prepare($conexao, "
-        SELECT ´
+        SELECT 
             m.musica_id, 
             m.musica_titulo, 
             m.musica_capa, 
@@ -282,7 +282,7 @@ function exibirMusicasRecomendadas($musicas) {
             </div>
             <img src='$capa' alt='$titulo' class='image-music-card'>
             <div class='autor-card'>
-                <h4>$artista - $cidade</h4>
+                <h4>$artista <br> $cidade</h4>
             </div>
         </div>";
     }

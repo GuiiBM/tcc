@@ -122,22 +122,106 @@ section.principal {
   padding: 16px;
 }
 
+.title-card {
+  margin: 0 0 8px 0;
+  color: var(--neon-white);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  width: 100%;
+}
+
+.title-card h2, .title-card h3 {
+  margin: 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+  width: 97%;
+  max-width: 97%;
+  overflow-wrap: break-word;
+}
+
+.autor-card {
+  margin: 0;
+  color: var(--neon-purple);
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-align: center;
+  text-shadow: 0 0 6px var(--neon-purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  width: 100%;
+}
+
+.autor-card h4 {
+  margin: 0;
+  line-height: 1.3;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+  width: 97%;
+  max-width: 97%;
+  overflow-wrap: break-word;
+}
+
+.image-music-card {
+  width: 100%;
+  height: 280px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px var(--shadow-theme-purple);
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
 .page-artistas .grid-card {
   width: 300px;
   max-width: 300px;
+  height: 320px;
   flex-shrink: 1;
   padding: 0;
-  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .page-artistas .title-card {
   text-align: center;
-  margin: 10px 0;
+  margin: 0;
+  padding: 15px 10px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.page-artistas .title-card h2 {
+  margin: 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+  width: 100%;
 }
 
 .page-artistas .image-music-card {
-  margin-bottom: 0;
+  width: 100%;
+  height: calc(100% - 80px);
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
   border-radius: 0 0 16px 16px;
+  display: block;
 }
 
 .grid-card:hover {

@@ -56,12 +56,15 @@ function processarUpload($arquivo, $tipo) {
         }
     }
     
-    // Verificar permissões
+    // Verificar e corrigir permissões
     if (!is_writable($pastaDestino)) {
         chmod($pastaDestino, 0777);
-        if (!is_writable($pastaDestino)) {
-            return ['erro' => 'Pasta sem permissão de escrita'];
+        // Tentar criar arquivo de teste
+        $teste = $pastaDestino . 'teste_' . time() . '.tmp';
+        if (!file_put_contents($teste, 'teste')) {
+            return ['erro' => 'Pasta sem permissão de escrita: ' . $pastaDestino];
         }
+        unlink($teste);
     }
     
     $destino = $pastaDestino . $nomeUnico;
