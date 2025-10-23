@@ -19,10 +19,15 @@ function buscarArtistas($conexao) {
 }
 
 function exibirArtistas($artistas) {
+    if (empty($artistas)) {
+        echo "<p>Nenhum artista cadastrado.</p>";
+        return;
+    }
+    
     foreach ($artistas as $artista) {
         $nome = htmlspecialchars($artista['artista_nome'], ENT_QUOTES, 'UTF-8');
         $cidade = htmlspecialchars($artista['artista_cidade'], ENT_QUOTES, 'UTF-8');
-        $imagem = $artista['artista_image'] ? htmlspecialchars($artista['artista_image'], ENT_QUOTES, 'UTF-8') : 'https://via.placeholder.com/300x280?text=Sem+Foto';
+        $imagem = $artista['artista_image'] ? htmlspecialchars($artista['artista_image'], ENT_QUOTES, 'UTF-8') : 'Componentes/icones/icone.png';
         
         echo "<div class='grid-card'>
             <div class='title-card'>
@@ -33,6 +38,7 @@ function exibirArtistas($artistas) {
                 <h4>$cidade</h4>
             </div>
         </div>";
+        echo "\n";
     }
 }
 ?>

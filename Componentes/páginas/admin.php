@@ -19,18 +19,23 @@
                 const btnMusica = document.getElementById('btnMusica');
                 const btnArtista = document.getElementById('btnArtista');
                 
+                btnMusica.classList.remove('btn-active');
+                btnArtista.classList.remove('btn-active');
+                
                 if (tipo === 'artista') {
                     formMusica.style.display = 'none';
                     formArtista.style.display = 'block';
                     musicasSection.style.display = 'none';
                     btnMusica.style.opacity = '0.6';
                     btnArtista.style.opacity = '1';
+                    btnArtista.classList.add('btn-active');
                 } else {
                     formMusica.style.display = 'block';
                     formArtista.style.display = 'none';
                     musicasSection.style.display = 'block';
                     btnMusica.style.opacity = '1';
                     btnArtista.style.opacity = '0.6';
+                    btnMusica.classList.add('btn-active');
                 }
             }
             
@@ -47,8 +52,12 @@
             <div id="formArtista" style="display: none;">
                 <?php include "Componentes/páginas/formArtista.php"; ?>
                 
-                <div style="margin-top: 30px;">
+                <div class="scroll-container" style="margin-top: 30px;">
                     <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Artistas Cadastrados</h2>
+                    <div class="scroll-controls">
+                        <button class="scroll-btn" data-direction="left" data-container="artistaContainer">‹</button>
+                        <button class="scroll-btn" data-direction="right" data-container="artistaContainer">›</button>
+                    </div>
                     <div class="grid-container" id="artistaContainer">
                         <?php
                         include "Componentes/páginas/php/funcoesArtistas.php";
@@ -63,8 +72,12 @@
                 </div>
             </div>
             
-            <div id="musicasSection" style="margin-top: 50px; margin-bottom: 150px;">
+            <div class="scroll-container" id="musicasSection" style="margin-top: 50px; margin-bottom: 150px;">
                 <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
+                <div class="scroll-controls">
+                    <button class="scroll-btn" data-direction="left" data-container="cardContainer">‹</button>
+                    <button class="scroll-btn" data-direction="right" data-container="cardContainer">›</button>
+                </div>
                 <div class="grid-container" id="cardContainer">
                     <?php
                     include "Componentes/páginas/php/funcoesMusicas.php";

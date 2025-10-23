@@ -36,12 +36,12 @@ section.principal {
 }
 
 .scroll-container h2 {
-  color: #ffd700;
+  color: var(--primary-gold);
   font-size: 1.4rem;
   font-weight: 600;
   margin: 0 0 15px 0;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-  border-left: 3px solid #ffd700;
+  text-shadow: 0 0 8px var(--primary-gold-shadow);
+  border-left: 3px solid var(--primary-gold);
   padding-left: 12px;
 }
 
@@ -114,7 +114,7 @@ section.principal {
 
 .title-card {
   margin: 0 0 8px 0;
-  color: var(--neon-white);
+  color: var(--text-white);
   font-size: 1.1rem;
   font-weight: 700;
   text-align: left;
@@ -124,11 +124,11 @@ section.principal {
 .autor-card {
   margin: 0;
   min-height: 15px;
-  color: var(--neon-purple);
+  color: var(--text-gold) !important;
   font-size: 0.9rem;
   font-weight: 400;
   text-align: left;
-  text-shadow: 0 0 6px var(--neon-purple);
+  text-shadow: 0 0 6px var(--primary-gold-shadow) !important;
 }
 
 .image-music-card {
@@ -145,3 +145,37 @@ section.principal {
 .grid-card:hover .image-music-card {
   box-shadow: 0 4px 16px rgba(189, 0, 255, 0.2);
 }
+
+#artistaContainer {
+  display: flex !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 10px 0 !important;
+  width: calc(92vw * 0.8) !important;
+}
+
+.btn-active {
+  position: relative;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.btn-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px;
+  background:#ddd;
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+
