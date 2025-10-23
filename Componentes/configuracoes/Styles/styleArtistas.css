@@ -122,6 +122,12 @@ section.principal {
   padding: 16px;
 }
 
+.grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow-dark-strong), 0 0 16px var(--shadow-purple-medium);
+  border-color: rgba(189, 0, 255, 0.7);
+}
+
 .title-card {
   margin: 0 0 8px 0;
   color: var(--neon-white);
