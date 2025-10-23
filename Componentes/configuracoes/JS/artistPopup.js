@@ -88,13 +88,26 @@ class ArtistPopup {
         songs.forEach(song => {
             const songElement = document.createElement('div');
             songElement.className = 'song-item';
+            const isArtistPage = document.querySelector('.page-artistas');
+            const buttonAction = isArtistPage ? 
+                `this.closest('.song-item').querySelector('form').submit();` : 
+                `playMusic('${song.audio}', '${song.titulo}', '${artist.nome}', ${song.id}); window.artistPopup.closePopup();`;
+            
             songElement.innerHTML = `
                 <img src="${song.imagem || 'https://via.placeholder.com/60x60?text=♪'}" alt="${song.titulo}" class="song-thumb">
                 <div class="song-info">
                     <h4>${song.titulo}</h4>
                     <p class="song-duration" data-audio="${song.audioPath}">Carregando...</p>
                 </div>
-                <button class="play-song-btn" onclick="playMusic('${song.audio}', '${song.titulo}', '${artist.nome}', ${song.id}); window.artistPopup.closePopup();">
+                ${isArtistPage ? `
+                    <form method="POST" action="index.php" style="display: inline;">
+                        <input type="hidden" name="audio" value="${song.audio}">
+                        <input type="hidden" name="titulo" value="${song.titulo}">
+                        <input type="hidden" name="artista" value="${artist.nome}">
+                        <input type="hidden" name="id" value="${song.id}">
+                    </form>
+                ` : ''}
+                <button class="play-song-btn" onclick="${buttonAction}">
                     ▶️
                 </button>
             `;

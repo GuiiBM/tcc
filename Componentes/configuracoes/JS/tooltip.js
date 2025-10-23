@@ -17,6 +17,15 @@ document.addEventListener('DOMContentLoaded', function() {
             tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
             tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
             
+            // Garantir que o tooltip não saia da tela
+            const tooltipRect = tooltip.getBoundingClientRect();
+            if (tooltipRect.left < 0) {
+                tooltip.style.left = '10px';
+            }
+            if (tooltipRect.right > window.innerWidth) {
+                tooltip.style.left = window.innerWidth - tooltipRect.width - 10 + 'px';
+            }
+            
             setTimeout(() => tooltip.classList.add('show'), 10);
         });
         
