@@ -32,6 +32,7 @@ section.principal {
 .scroll-container {
   position: relative;
   padding: 20px;
+  margin-bottom: 30px;
 }
 
 .scroll-container h2 {
@@ -100,7 +101,9 @@ section.principal {
   box-shadow: 0 4px 16px var(--shadow-dark), 0 0 8px rgba(189, 0, 255, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
-  padding: 16px;
+  padding: 20px;
+  text-align:center;
+  align-items: center;
 }
 
 .grid-card:hover {
@@ -120,6 +123,7 @@ section.principal {
 
 .autor-card {
   margin: 0;
+  min-height: 15px;
   color: var(--neon-purple);
   font-size: 0.9rem;
   font-weight: 400;
@@ -132,6 +136,7 @@ section.principal {
   height: 280px;
   border-radius: 12px;
   margin-bottom: 16px;
+  max-height: 240px;
   object-fit: cover;
   box-shadow: 0 2px 8px var(--shadow-theme-purple);
   transition: all 0.3s ease;

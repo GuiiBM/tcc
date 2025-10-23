@@ -24,15 +24,15 @@ function exibirArtistas($artistas) {
         $cidade = htmlspecialchars($artista['artista_cidade'], ENT_QUOTES, 'UTF-8');
         $imagem = $artista['artista_image'] ? htmlspecialchars($artista['artista_image'], ENT_QUOTES, 'UTF-8') : 'https://via.placeholder.com/300x280?text=Sem+Foto';
         
-        echo "<div class='grid-card'>";
-        echo "<div class='title-card'>";
-        echo "<h2>$nome</h2>";
-        echo "</div>";
-        echo "<img src='$imagem' alt='$nome' class='image-music-card' onerror='this.src=\"Componentes/icones/icone.png\"'>";
-        echo "<div class='autor-card'>";
-        echo "<h4>$cidade</h4>";
-        echo "</div>";
-        echo "</div>";
+        echo "<div class='grid-card'>
+            <div class='title-card'>
+                <h3>$nome</h3>
+            </div>
+            <img src='$imagem' alt='$nome' class='image-music-card'>
+            <div class='autor-card'>
+                <h4>$cidade</h4>
+            </div>
+        </div>";
     }
 }
 ?>
