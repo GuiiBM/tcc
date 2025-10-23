@@ -3,33 +3,7 @@
         <h1>Recomendações</h1>
     </div>
     
-    <!-- Últimas Músicas -->
-    <div class="scroll-container">
-        <h2>Últimas Músicas Adicionadas</h2>
-        <div class="scroll-controls">
-            <button class="scroll-btn" data-direction="left" data-container="ultimasMusicasContainer">‹</button>
-            <button class="scroll-btn" data-direction="right" data-container="ultimasMusicasContainer">›</button>
-        </div>
-        <div class="grid-container" id="ultimasMusicasContainer">
-            <?php
-            if (isset($conexao)) {
-                include_once "Componentes/páginas/php/funcoesMusicas.php";
-                try {
-                    $ultimasMusicas = buscarUltimasMusicas($conexao, 5);
-                    if (!empty($ultimasMusicas)) {
-                        exibirMusicasRecomendadas($ultimasMusicas);
-                    } else {
-                        echo "<p>Nenhuma música encontrada.</p>";
-                    }
-                } catch (Exception $e) {
-                    echo "<p>Erro ao carregar músicas.</p>";
-                }
-            } else {
-                echo "<p>Erro de conexão com o banco de dados.</p>";
-            }
-            ?>
-        </div>
-    </div>
+    <?php include_once "Componentes/páginas/php/funcoesMusicas.php"; ?>
     
     <!-- Músicas com Menos Curtidas -->
     <div class="scroll-container">
@@ -77,6 +51,33 @@
                     }
                 } catch (Exception $e) {
                     echo "<p>Erro ao carregar artistas.</p>";
+                }
+            } else {
+                echo "<p>Erro de conexão com o banco de dados.</p>";
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Últimas Músicas -->
+    <div class="scroll-container">
+        <h2>Últimas Músicas Adicionadas</h2>
+        <div class="scroll-controls">
+            <button class="scroll-btn" data-direction="left" data-container="ultimasMusicasContainer">‹</button>
+            <button class="scroll-btn" data-direction="right" data-container="ultimasMusicasContainer">›</button>
+        </div>
+        <div class="grid-container" id="ultimasMusicasContainer">
+            <?php
+            if (isset($conexao)) {
+                try {
+                    $ultimasMusicas = buscarUltimasMusicas($conexao, 5);
+                    if (!empty($ultimasMusicas)) {
+                        exibirMusicasRecomendadas($ultimasMusicas);
+                    } else {
+                        echo "<p>Nenhuma música encontrada.</p>";
+                    }
+                } catch (Exception $e) {
+                    echo "<p>Erro ao carregar músicas.</p>";
                 }
             } else {
                 echo "<p>Erro de conexão com o banco de dados.</p>";

@@ -67,13 +67,98 @@ function buscarUltimasMusicas($conexao, $limite = 5) {
 }
 
 function buscarMusicasMenosCurtidas($conexao, $limite = 5) {
-    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, m.musica_data_adicao, a.artista_nome, a.artista_cidade, COALESCE(c.total_curtidas, 0) as curtidas FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id LEFT JOIN (SELECT musica_id, COUNT(*) as total_curtidas FROM curtidas WHERE tipo_curtida = 'curtida' GROUP BY musica_id) c ON m.musica_id = c.musica_id ORDER BY curtidas ASC, m.musica_data_adicao DESC LIMIT ?");
+    $stmt = mysqli_prepare($conexao, "
+        SELECT ´
+            m.musica_id, 
+            m.musica_titulo, 
+            m.musica_capa, 
+            m.musica_link, 
+            m.musica_data_adicao, 
+            a.artista_nome, 
+            a.artista_cidade,
+            COALESCE(likes.total_likes, 0) as total_likes,
+            COALESCE(dislikes.total_dislikes, 0) as total_dislikes
+        FROM musica m 
+        INNER JOIN artista a ON m.musica_artista = a.artista_id 
+        LEFT JOIN (
+            SELECT musica_id, COUNT(*) as total_likes 
+            FROM curtidas 
+            WHERE tipo_curtida = 'curtida' 
+            GROUP BY musica_id
+        ) likes ON m.musica_id = likes.musica_id
+        LEFT JOIN (
+            SELECT musica_id, COUNT(*) as total_dislikes 
+            FROM curtidas 
+            WHERE tipo_curtida = 'descurtida' 
+            GROUP BY musica_id
+        ) dislikes ON m.musica_id = dislikes.musica_id
+        ORDER BY 
+            (COALESCE(likes.total_likes, 0) + COALESCE(dislikes.total_dislikes, 0)) ASC,
+            (COALESCE(likes.total_likes, 0) - COALESCE(dislikes.total_dislikes, 0)) DESC
+        LIMIT ?
+    ");
     
     if (!$stmt) {
         return [];
     }
     
     mysqli_stmt_bind_param($stmt, "i", $limite);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        return [];
+    }
+    
+    $result = mysqli_stmt_get_result($stmt);
+    $musicas = [];
+    
+    while ($row = mysqli_fetch_assoc($result)) {
+        $musicas[] = $row;
+    }
+    
+    mysqli_stmt_close($stmt);
+    return $musicas;
+}
+
+function buscarMusicasOrdemPersonalizada($conexao, $limite = null) {
+    $limiteSql = $limite ? "LIMIT ?" : "";
+    $stmt = mysqli_prepare($conexao, "
+        SELECT 
+            m.musica_id, 
+            m.musica_titulo, 
+            m.musica_capa, 
+            m.musica_link, 
+            m.musica_data_adicao, 
+            a.artista_nome, 
+            a.artista_cidade,
+            COALESCE(likes.total_likes, 0) as total_likes,
+            COALESCE(dislikes.total_dislikes, 0) as total_dislikes
+        FROM musica m 
+        INNER JOIN artista a ON m.musica_artista = a.artista_id 
+        LEFT JOIN (
+            SELECT musica_id, COUNT(*) as total_likes 
+            FROM curtidas 
+            WHERE tipo_curtida = 'curtida' 
+            GROUP BY musica_id
+        ) likes ON m.musica_id = likes.musica_id
+        LEFT JOIN (
+            SELECT musica_id, COUNT(*) as total_dislikes 
+            FROM curtidas 
+            WHERE tipo_curtida = 'descurtida' 
+            GROUP BY musica_id
+        ) dislikes ON m.musica_id = dislikes.musica_id
+        ORDER BY 
+            (COALESCE(likes.total_likes, 0) + COALESCE(dislikes.total_dislikes, 0)) ASC,
+            (COALESCE(likes.total_likes, 0) - COALESCE(dislikes.total_dislikes, 0)) DESC
+        $limiteSql
+    ");
+    
+    if (!$stmt) {
+        return [];
+    }
+    
+    if ($limite) {
+        mysqli_stmt_bind_param($stmt, "i", $limite);
+    }
     
     if (!mysqli_stmt_execute($stmt)) {
         return [];
