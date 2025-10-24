@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include 'DBConection.php';
 include 'funcoesMusicas.php';
 
@@ -18,6 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'descurtidas' => $descurtidas
         ]);
     } elseif (isset($input['musica_id']) && isset($input['tipo'])) {
+        if (!isset($_SESSION['usuario_id'])) {
+            echo json_encode(['success' => false, 'error' => 'Faça login para curtir músicas']);
+            exit;
+        }
+        
         $musica_id = intval($input['musica_id']);
         $tipo = $input['tipo'];
         

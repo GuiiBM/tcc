@@ -30,6 +30,8 @@ section.principal {
   display: none;
 }
 
+
+
 .principal::-webkit-scrollbar {
   width: 8px;
 }
@@ -68,14 +70,14 @@ section.principal {
 }
 
 .page-artistas .grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+  display: flex;
   gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
   padding: 10px 0;
   width: 100%;
   height: auto;
   max-height: none;
-  justify-content: center;
 }
 
 

@@ -8,16 +8,29 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0" style="text-align: center;">
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="músicas.php">Músicas</a></li>
-                <li class="nav-item"><a class="nav-link" href="artistas.php">Autistas</a></li>
+                <li class="nav-item"><a class="nav-link" href="artistas.php">Artistas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Álbuns</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin.php">ADM</a></li>
             </ul>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#signupModal">Sign-up</button>
+            <div class="d-flex align-items-center" style="white-space: nowrap;">
+                <?php 
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                
+                if (isset($_SESSION['usuario_id'])): ?>
+                    <span class="navbar-text me-3" style="color: #ffd700; font-size: 14px; white-space: nowrap; text-align: right; display: inline-block;">Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>!</span>
+                    <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
+                        <a href="admin.php" class="btn btn-outline-warning me-2" style="white-space: nowrap;">Admin</a>
+                    <?php else: ?>
+                        <a href="músicas.php" class="btn btn-outline-warning me-2" style="white-space: nowrap;">Músicas</a>
+                    <?php endif; ?>
+                    <a href="logout.php" class="btn btn-outline-danger" style="white-space: nowrap;">Sair</a>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-light me-2" style="white-space: nowrap;">Login</a>
+                    <a href="login.php" class="btn btn-warning" style="white-space: nowrap;">Sign-UP</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

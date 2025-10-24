@@ -176,22 +176,30 @@ function buscarMusicasOrdemPersonalizada($conexao, $limite = null) {
 }
 
 function curtirMusica($conexao, $musica_id, $tipo) {
-    $ip = $_SERVER['REMOTE_ADDR'];
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (!isset($_SESSION['usuario_id'])) {
+        return false;
+    }
+    
+    $usuario_id = $_SESSION['usuario_id'];
     
     // Verificar se já existe curtida
-    $stmt = mysqli_prepare($conexao, "SELECT curtida_id FROM curtidas WHERE musica_id = ? AND ip_usuario = ?");
-    mysqli_stmt_bind_param($stmt, "is", $musica_id, $ip);
+    $stmt = mysqli_prepare($conexao, "SELECT curtida_id FROM curtidas WHERE musica_id = ? AND usuario_id = ?");
+    mysqli_stmt_bind_param($stmt, "ii", $musica_id, $usuario_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     
     if (mysqli_num_rows($result) > 0) {
         // Atualizar curtida existente
-        $stmt = mysqli_prepare($conexao, "UPDATE curtidas SET tipo_curtida = ?, data_curtida = CURRENT_TIMESTAMP WHERE musica_id = ? AND ip_usuario = ?");
-        mysqli_stmt_bind_param($stmt, "sis", $tipo, $musica_id, $ip);
+        $stmt = mysqli_prepare($conexao, "UPDATE curtidas SET tipo_curtida = ?, data_curtida = CURRENT_TIMESTAMP WHERE musica_id = ? AND usuario_id = ?");
+        mysqli_stmt_bind_param($stmt, "sii", $tipo, $musica_id, $usuario_id);
     } else {
         // Inserir nova curtida
-        $stmt = mysqli_prepare($conexao, "INSERT INTO curtidas (musica_id, ip_usuario, tipo_curtida) VALUES (?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "iss", $musica_id, $ip, $tipo);
+        $stmt = mysqli_prepare($conexao, "INSERT INTO curtidas (musica_id, usuario_id, tipo_curtida) VALUES (?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "iis", $musica_id, $usuario_id, $tipo);
     }
     
     return mysqli_stmt_execute($stmt);

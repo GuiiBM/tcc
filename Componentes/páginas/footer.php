@@ -19,6 +19,7 @@
             </li>
         </ul>
         
+        <?php if (isset($_SESSION['usuario_id'])): ?>
         <div class="like-controls col-md-2 d-flex justify-content-center align-items-center">
             <button class="like-btn" id="likeBtn" onclick="curtirMusica('curtida')">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -33,6 +34,18 @@
                 <span id="dislikeCount">0</span>
             </button>
         </div>
+        <?php else: ?>
+        <div class="col-md-2 d-flex justify-content-center align-items-center">
+            <div class="login-prompt">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 10px;">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10,17 15,12 10,7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <a href="login.php" class="login-link">Login para curtir</a>
+            </div>
+        </div>
+        <?php endif; ?>
         
         <div class="volume-control col-md-2 d-flex justify-content-end align-items-center">
             <div class="volume-icon" id="volumeIcon">
@@ -46,14 +59,15 @@
             </div>
         </div>
         <div class="container">
-    <div class="progress-container">
-        <span id="currentTime">0:00</span>
-        <div id="progressBar" class="progress-bar">
-            <div class="progress-fill"></div>
+            <div class="progress-container">
+                <span id="currentTime">0:00</span>
+                <div id="progressBar" class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <span id="totalTime">0:00</span>
+            </div>
         </div>
-        <span id="totalTime">0:00</span>
-    </div>
-    </footer>
-</div>
+</footer>
+
 </body>
 </html>

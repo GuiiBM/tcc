@@ -87,7 +87,7 @@
     </div>
     
     <!-- Músicas Disponíveis -->
-    <div class="scroll-container">
+    <div class="scroll-container" style="margin-bottom: 200px;">
         <h2>Músicas Disponíveis</h2>
         <div class="scroll-controls">
             <button class="scroll-btn" data-direction="left" data-container="cardContainer">‹</button>

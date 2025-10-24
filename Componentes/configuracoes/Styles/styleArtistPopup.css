@@ -21,21 +21,50 @@
 }
 
 .popup-content {
-  background: linear-gradient(135deg, rgba(189, 0, 255, 0.15), rgba(30, 0, 105, 0.2));
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(189, 0, 255, 0.6);
+  background: linear-gradient(145deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.95));
   border-radius: 20px;
   width: 90%;
   max-width: 800px;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(189, 0, 255, 0.4);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 215, 0, 0.1);
   transform: scale(0.8);
-  transition: transform 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.popup-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 .artist-popup.show .popup-content {
   transform: scale(1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .popup-header {
@@ -47,30 +76,47 @@
 }
 
 .popup-header h2 {
-  color: var(--neon-white);
+  color: #ffd700;
   margin: 0;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.popup-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #ffd700, transparent);
+  border-radius: 2px;
 }
 
 .close-btn {
-  background: none;
-  border: none;
-  color: var(--neon-white);
-  font-size: 2rem;
+  background: rgba(139, 148, 158, 0.1);
+  border: 1px solid rgba(139, 148, 158, 0.3);
+  border-radius: 50%;
+  color: #8b949e;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .close-btn:hover {
-  background: rgba(255, 0, 0, 0.2);
-  color: #ff4444;
-  transform: scale(1.1);
+  background: rgba(139, 148, 158, 0.2);
+  border-color: rgba(139, 148, 158, 0.5);
+  color: #f0f6fc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 148, 158, 0.2);
 }
 
 .popup-body {
@@ -134,17 +180,19 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(13, 17, 23, 0.9);
   padding: 15px;
   border-radius: 12px;
-  border: 1px solid rgba(189, 0, 255, 0.2);
-  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
 }
 
 .song-item:hover {
-  background: rgba(189, 0, 255, 0.1);
-  border-color: rgba(189, 0, 255, 0.4);
-  transform: translateX(5px);
+  border-color: #ffd700;
+  background: rgba(13, 17, 23, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
 }
 
 .song-thumb {
@@ -172,7 +220,8 @@
 }
 
 .play-song-btn {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+  background-size: 200% 200%;
   border: none;
   width: 40px;
   height: 40px;
@@ -180,11 +229,17 @@
   color: #0d1117;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .play-song-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+  animation-duration: 1s;
 }

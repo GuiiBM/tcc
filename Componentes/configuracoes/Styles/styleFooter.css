@@ -1,19 +1,19 @@
 footer {
-  background: linear-gradient(135deg, rgba(189, 0, 255, 0.15), rgba(30, 0, 105, 0.2));
-  backdrop-filter: blur(15px);
-  color: var(--neon-white);
-  border-radius: 20px 20px 0 0;
-  border-top: 1px solid rgba(189, 0, 255, 0.6);
-  padding: 20px;
-  margin: 0 !important;
-  width: 100vw;
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
   position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
-  box-shadow: 0 -4px 20px rgba(189, 0, 255, 0.4), 0 0 15px rgba(189, 0, 255, 0.3);
-  transition: all 0.3s ease;
+  color: var(--neon-white);
+  padding: 16px 20px;
+  margin: 0 !important;
+  width: 100vw;
 }
+
+
 
 
 footer p,
@@ -64,20 +64,21 @@ footer {
 }
 
 .circulo {
-    border: 2px solid var(--theme-purple-dark);
-    border-radius: 100%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 215, 0, 0.3);
     padding: 0px 2px 5px 2px;
     display: inline-block;
     background-color: var(--bg-dark);
-    box-shadow: 0 0 12px var(--theme-purple-dark), 0 0 20px var(--theme-purple-medium);
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 .circulo:hover {
-  background-color: var(--theme-purple-dark);
-  box-shadow: 0 0 20px var(--theme-purple-dark), 0 0 30px var(--theme-purple-medium);
-  transform: scale(1.1);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 215, 0, 0.6);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
 }
 
 .circulo2 {
@@ -98,21 +99,55 @@ footer {
 
 .music-info {
   min-width: 200px;
+  padding: 14px 20px;
+}
+
+.nav {
+  padding: 10px 15px;
+}
+
+.volume-control {
+  padding: 14px 18px;
+}
+
+.like-controls {
+  background: rgba(13, 17, 23, 0.8);
+  border-radius: 16px;
+  padding: 12px 18px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.like-controls:hover {
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+}
+
+#songTitle, #songArtist {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
 }
 
 #songTitle {
   color: var(--neon-white);
   font-size: 0.9rem;
-  font-weight: 600;
   margin-bottom: 2px;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
 }
 
 #songArtist {
   color: var(--text-secondary);
   font-size: 0.8rem;
   opacity: 0.9;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+#playStatus {
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .control-btn {
@@ -144,11 +179,83 @@ footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 20px;
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--shadow-theme-purple);
-  margin-top: 15px;
+  background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 12px 20px;
+  backdrop-filter: blur(10px);
+  margin-top: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  overflow: hidden;
+}
+
+.progress-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  transition: left 0.8s ease;
+}
+
+.progress-container:hover::before {
+  left: 100%;
+}
+
+.progress-container:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.progress-bar {
+  background: rgba(139, 148, 158, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.like-btn, .dislike-btn {
+  background: rgba(22, 27, 34, 0.8);
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  border-radius: 12px;
+  padding: 10px 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.like-btn::before, .dislike-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.like-btn:hover::before, .dislike-btn:hover::before {
+  left: 100%;
+}
+
+.like-btn:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.dislike-btn:hover {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: rgba(255, 107, 107, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
 }
 
 .progress-bar {
@@ -355,4 +462,85 @@ img.circulo.mx-2#playBtn.paused:hover {
 @keyframes tooltipFade {
   from { opacity: 0; transform: translateX(-50%) translateY(5px); }
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.login-prompt {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.login-prompt::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    transition: left 0.8s ease;
+}
+
+.login-prompt::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 237, 78, 0.02));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 14px;
+}
+
+.login-prompt:hover::before {
+    left: 100%;
+}
+
+.login-prompt:hover::after {
+    opacity: 1;
+}
+
+.login-prompt:hover {
+    border-color: rgba(255, 215, 0, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.login-link {
+    color: #ffd700;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.login-link:hover {
+    color: #ffed4e;
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.login-prompt svg {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.login-prompt:hover svg {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
 }
