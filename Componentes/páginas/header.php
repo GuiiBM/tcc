@@ -7,13 +7,16 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0" style="text-align: center;">
+        <div class="collapse navbar-collapse" id="navbarContent"> 
+                        <div class="flex-grow-1 d-none d-lg-block"></div>
+            <ul class="navbar-nav navbar-nav-centralizada mb-2 mb-lg-0"> 
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="artistas.php">Artistas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Álbuns</a></li>
             </ul>
-            <div class="d-flex align-items-center" style="white-space: nowrap;">
+                        <div class="flex-grow-1 d-none d-lg-block"></div> 
+
+            <div class="d-flex align-items-center ms-auto" style="white-space: nowrap;">
                 <?php 
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
@@ -24,7 +27,15 @@
                     <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
                         <a href="admin.php" class="btn btn-outline-warning me-2" style="white-space: nowrap;">Admin</a>
                     <?php else: ?>
-                        <a href="músicas.php" class="btn btn-outline-warning me-2" style="white-space: nowrap;">Músicas</a>
+                        <a href="músicas.php" 
+                            class="btn btn-lg btn-outline-warning me-2" 
+                            style="white-space: nowrap; 
+                                    display: flex !important; 
+                                    justify-content: center !important; 
+                                    align-items: center !important; 
+                                    padding: 15px 20px;">
+                                    Músicas
+                        </a>
                     <?php endif; ?>
                     <a href="logout.php" class="btn btn-outline-danger" style="white-space: nowrap;">Sair</a>
                 <?php else: ?>
