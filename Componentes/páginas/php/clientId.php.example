@@ -1,0 +1,4 @@
+<?php
+// Copie este arquivo para clientId.php e configure seu Google Client ID
+define('GOOGLE_CLIENT_ID', 'SEU_GOOGLE_CLIENT_ID_AQUI');
+?>

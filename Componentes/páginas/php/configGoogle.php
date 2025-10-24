@@ -1,8 +1,20 @@
 <?php
 // Configurações do Google OAuth
-// Para usar: substitua 'false' pelas suas credenciais reais
-define('GOOGLE_CLIENT_ID', false ? 'SUA_CREDENCIAL_REAL' : 'SEU_GOOGLE_CLIENT_ID_AQUI');
-define('GOOGLE_CLIENT_SECRET', false ? 'SUA_CREDENCIAL_REAL' : 'SEU_GOOGLE_CLIENT_SECRET_AQUI');
+// Carrega credenciais dos arquivos separados (ignorados pelo git)
+if (file_exists(__DIR__ . '/clientId.php')) {
+    include_once 'clientId.php';
+}
+if (file_exists(__DIR__ . '/clientSecret.php')) {
+    include_once 'clientSecret.php';
+}
+
+// Define valores padrão se não foram carregados
+if (!defined('GOOGLE_CLIENT_ID')) {
+    define('GOOGLE_CLIENT_ID', 'SEU_GOOGLE_CLIENT_ID_AQUI');
+}
+if (!defined('GOOGLE_CLIENT_SECRET')) {
+    define('GOOGLE_CLIENT_SECRET', 'SEU_GOOGLE_CLIENT_SECRET_AQUI');
+}
 
 define('GOOGLE_REDIRECT_URI', 'http://localhost/tcc/callbackGoogle.php');
 
