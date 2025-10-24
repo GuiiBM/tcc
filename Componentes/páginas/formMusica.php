@@ -57,6 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['musica_titulo'])) {
 }
 $alerts = ob_get_clean();
 ?>
+<main class="main">
+    <div class="content-wrapper container-fluid">
 <div class="form-container">
     <?= $alerts ?>
     <h2 class="form-title">Cadastrar Nova Música</h2>
@@ -129,6 +131,17 @@ $alerts = ob_get_clean();
         .user-info-display strong {
             color: #ffd700;
         }
+        .form-container {
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.1);
+  padding: 30px;
+  margin: 40px 0 40px 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  width: 100%;
+        }
         </style>
         <div class="form-col-full">
             <label for="musica_titulo" class="form-label">Título da Música</label>
@@ -147,3 +160,5 @@ $alerts = ob_get_clean();
         </div>
     </form>
 </div>
+</div>
+</main>

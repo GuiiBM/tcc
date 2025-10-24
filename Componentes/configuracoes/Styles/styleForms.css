@@ -1,3 +1,8 @@
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .form-container {
   background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
   border-radius: 16px;
@@ -7,6 +12,7 @@
   margin: 0 0 20px 0;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  width: 100%;
 }
 
 .form-container:hover {

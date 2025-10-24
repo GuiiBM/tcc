@@ -70,8 +70,7 @@
                         ?>
                     </div>
                 </div>
-            </div>
-            
+            </div>            
             <div class="scroll-container" id="musicasSection" style="margin-top: 50px; margin-bottom: 150px;">
                 <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
                 <div class="scroll-controls">
