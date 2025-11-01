@@ -71,8 +71,9 @@ if ($user = mysqli_fetch_assoc($result)) {
     
     // Primeiro criar o perfil de artista
     $foto_artista = $foto ?: 'Componentes/icones/icone.png';
-    $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, '', ?)");
-    mysqli_stmt_bind_param($stmt_artista, "ss", $nome, $foto_artista);
+    $descricao_padrao = "Artista conectado via Google. Complete seu perfil para personalizar esta descrição.";
+    $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, '', ?, ?)");
+    mysqli_stmt_bind_param($stmt_artista, "sss", $nome, $foto_artista, $descricao_padrao);
     
     if (mysqli_stmt_execute($stmt_artista)) {
         $artista_id = mysqli_insert_id($conexao);

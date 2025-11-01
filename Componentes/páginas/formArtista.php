@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
         
         $artista_nome = trim($_POST['artista_nome']);
         $artista_cidade = trim($_POST['artista_cidade']);
+        $artista_descricao = trim($_POST['artista_descricao'] ?? '');
         
         if (isset($_FILES['artista_image']) && $_FILES['artista_image']['error'] === UPLOAD_ERR_OK && function_exists('processarUpload')) {
             $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
@@ -15,8 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
             $artista_image = 'Componentes/icones/icone.png';
         }
         
-        $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "sss", $artista_nome, $artista_cidade, $artista_image);
+        // Se não há descrição, usar descrição do usuário logado
+        if (empty($artista_descricao) && isset($_SESSION['usuario_id'])) {
+            $stmt_user = mysqli_prepare($conexao, "SELECT usuario_descricao FROM usuarios WHERE usuario_id = ?");
+            mysqli_stmt_bind_param($stmt_user, "i", $_SESSION['usuario_id']);
+            mysqli_stmt_execute($stmt_user);
+            $result_user = mysqli_stmt_get_result($stmt_user);
+            if ($user_data = mysqli_fetch_assoc($result_user)) {
+                $artista_descricao = $user_data['usuario_descricao'] ?: "Artista talentoso de $artista_cidade. Explore suas músicas e descubra seu estilo único.";
+            }
+        }
+        
+        $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssss", $artista_nome, $artista_cidade, $artista_image, $artista_descricao);
         
         if (mysqli_stmt_execute($stmt)) {
             echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
@@ -43,6 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
                 <label for="artista_cidade_form" class="form-label">Cidade de Origem</label>
                 <input type="text" class="form-control" id="artista_cidade_form" name="artista_cidade" placeholder="Digite a cidade de origem" required>
             </div>
+        </div>
+        <div class="form-col-full">
+            <label for="artista_descricao_form" class="form-label">Descrição do Artista (opcional)</label>
+            <textarea class="form-control" id="artista_descricao_form" name="artista_descricao" placeholder="Deixe em branco para usar sua descrição de perfil" rows="3"></textarea>
         </div>
         <div class="form-col-full">
             <label for="artista_image_form" class="form-label">Foto do Artista</label>

@@ -57,8 +57,8 @@ if (!move_uploaded_file($_FILES['artistImage']['tmp_name'], $caminhoDestino)) {
 $imagemPath = 'Componentes/Armazenamento/imagens/' . $nomeArquivo;
 
 // Inserir artista
-$stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
-mysqli_stmt_bind_param($stmt, "sss", $nome, $cidade, $imagemPath);
+$stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, ?, ?, ?)");
+mysqli_stmt_bind_param($stmt, "ssss", $nome, $cidade, $imagemPath, $descricao);
 
 if (mysqli_stmt_execute($stmt)) {
     $artista_id = mysqli_insert_id($conexao);

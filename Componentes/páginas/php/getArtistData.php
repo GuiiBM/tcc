@@ -8,7 +8,7 @@ try {
         $artistName = trim($_POST['artist']);
         
         // Buscar dados do artista
-        $artistStmt = mysqli_prepare($conexao, "SELECT artista_nome, artista_cidade, artista_image FROM artista WHERE artista_nome = ?");
+        $artistStmt = mysqli_prepare($conexao, "SELECT artista_nome, artista_cidade, artista_image, artista_descricao FROM artista WHERE artista_nome = ?");
         mysqli_stmt_bind_param($artistStmt, "s", $artistName);
         mysqli_stmt_execute($artistStmt);
         $artistResult = mysqli_stmt_get_result($artistStmt);
@@ -60,6 +60,7 @@ try {
                     'nome' => $artist['artista_nome'],
                     'cidade' => $artist['artista_cidade'],
                     'imagem' => $imagePath,
+                    'descricao' => $artist['artista_descricao'] ?: 'Descrição não disponível',
                     'link' => '#'
                 ],
                 'songs' => $songs,

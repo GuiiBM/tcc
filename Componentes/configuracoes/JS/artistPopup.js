@@ -20,6 +20,9 @@ class ArtistPopup {
                                 <a id="artistLink" href="#" target="_blank" class="artist-link">Página do Artista</a>
                             </div>
                         </div>
+                        <div class="artist-description">
+                            <p id="artistDescription"></p>
+                        </div>
                         <div class="songs-section">
                             <h3>Músicas do Artista</h3>
                             <div id="songsList" class="songs-list"></div>
@@ -110,6 +113,7 @@ class ArtistPopup {
         }
         
         document.getElementById('artistCity').textContent = artist.cidade || 'Cidade não informada';
+        document.getElementById('artistDescription').textContent = artist.descricao || 'Descrição não disponível';
         document.getElementById('artistLink').href = artist.link || '#';
         
         const songsList = document.getElementById('songsList');

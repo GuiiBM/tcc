@@ -52,8 +52,10 @@ function completarPerfilAutomatico($usuario_id, $conexao) {
         $foto_artista = $usuario['usuario_foto'] ?: 'Componentes/icones/icone.png';
         $cidade_artista = $usuario['usuario_cidade'] ?: '';
         
-        $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
-        mysqli_stmt_bind_param($stmt_artista, "sss", $usuario['usuario_nome'], $cidade_artista, $foto_artista);
+        $descricao_artista = $usuario['usuario_descricao'] ?: "Artista talentoso de $cidade_artista. Explore suas músicas e descubra seu estilo único.";
+        
+        $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt_artista, "ssss", $usuario['usuario_nome'], $cidade_artista, $foto_artista, $descricao_artista);
         
         if (mysqli_stmt_execute($stmt_artista)) {
             $artista_id = mysqli_insert_id($conexao);
