@@ -18,7 +18,7 @@ $sucesso = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idade = intval($_POST['idade']);
     $cidade = mysqli_real_escape_string($conexao, $_POST['cidade']);
-    $biografia = mysqli_real_escape_string($conexao, $_POST['biografia']);
+    $descricao = mysqli_real_escape_string($conexao, $_POST['descricao']);
     
     // Upload da foto (opcional, já tem do Google)
     $foto_atual = $_SESSION['usuario_foto'] ?? '';
@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    $stmt = mysqli_prepare($conexao, "UPDATE usuarios SET usuario_idade = ?, usuario_cidade = ?, usuario_biografia = ?, usuario_foto = ? WHERE usuario_id = ?");
-    mysqli_stmt_bind_param($stmt, "isssi", $idade, $cidade, $biografia, $foto_atual, $_SESSION['usuario_id']);
+    $stmt = mysqli_prepare($conexao, "UPDATE usuarios SET usuario_idade = ?, usuario_cidade = ?, usuario_descricao = ?, usuario_foto = ? WHERE usuario_id = ?");
+    mysqli_stmt_bind_param($stmt, "isssi", $idade, $cidade, $descricao, $foto_atual, $_SESSION['usuario_id']);
     
     if (mysqli_stmt_execute($stmt)) {
         unset($_SESSION['google_incomplete']);
@@ -75,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <div class="form-group">
-                <label for="biografia">Biografia (conte sobre suas músicas e vida como artista):</label>
-                <textarea id="biografia" name="biografia" rows="4" placeholder="Conte um pouco sobre sua trajetória musical, estilo e inspirações..."></textarea>
+                <label for="descricao">Descrição (conte sobre suas músicas e vida como artista):</label>
+                <textarea id="descricao" name="descricao" rows="4" placeholder="Conte um pouco sobre sua trajetória musical, estilo e inspirações..."></textarea>
             </div>
             
             <button type="submit" class="btn btn-primary">Finalizar Cadastro</button>

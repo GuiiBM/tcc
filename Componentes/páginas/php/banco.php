@@ -1,4 +1,6 @@
 <?php
+include "DBConection.php";
+
 echo "<div style='max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(22, 27, 34, 0.9); border-radius: 16px; color: #f0f6fc;'>";
 echo "<h2 style='color: #ffd700; text-align: center; margin-bottom: 30px;'>Inicializando Banco de Dados</h2>";
 
@@ -88,7 +90,7 @@ usuario_senha VARCHAR(255) NOT NULL,
 usuario_nome VARCHAR(100) NOT NULL,
 usuario_idade INT,
 usuario_cidade VARCHAR(100),
-usuario_biografia TEXT,
+usuario_descricao TEXT,
 usuario_foto VARCHAR(255),
 usuario_tipo ENUM("admin", "usuario") DEFAULT "usuario",
 usuario_data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -122,7 +124,7 @@ if (mysqli_num_rows($result) > 0) {
 echo "<div style='text-align: center; margin-top: 30px;'>";
 echo "<h3 style='color: #ffd700;'>Banco de dados configurado com sucesso!</h3>";
 echo "<p>Sistema agora usa sessões para curtidas individuais.</p>";
-echo "<a href='admin.php' style='background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0d1117; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;'>Ir para Admin</a>";
+echo "<a href='admin.php' style='background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0d1117; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;'>Ir para Menu</a>";
 echo "</div>";
 echo "</div>";
 ?>
