@@ -69,5 +69,6 @@
         </div>
 </footer>
 
+<script src="Componentes/configuracoes/JS/botton.js"></script>
 </body>
 </html>

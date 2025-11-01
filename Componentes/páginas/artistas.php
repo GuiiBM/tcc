@@ -4,9 +4,14 @@
         <h1 style="text-align:center;">Todos os Artistas</h1>
         <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
         <div class="admin-controls" style="text-align: center; margin: 20px 0; padding: 20px; background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9)); border: 2px solid rgba(255, 215, 0, 0.3); border-radius: 16px;">
-            <input type="text" id="artistName" placeholder="Nome do Artista" style="margin-right: 10px; padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
-            <input type="text" id="artistCity" placeholder="Cidade" style="margin-right: 10px; padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
-            <button onclick="addArtist()" style="padding: 12px 20px; background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700); border: none; border-radius: 12px; cursor: pointer; color: #0d1117; font-weight: 700; font-size: 14px;">Adicionar Artista</button>
+            <form id="artistForm" enctype="multipart/form-data" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; align-items: end;">
+                <input type="text" id="artistName" name="artistName" placeholder="Nome do Artista*" required style="padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
+                <input type="text" id="artistCity" name="artistCity" placeholder="Cidade*" required style="padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
+                <textarea id="artistDescription" name="artistDescription" placeholder="Descrição* (mínimo 8 palavras)" required maxlength="512" style="padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px; resize: none; min-height: 48px; overflow: hidden;" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'; validateDescription(this);"></textarea>
+                <input type="url" id="artistLink" name="artistLink" placeholder="Link (opcional)" style="padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
+                <input type="file" id="artistImage" name="artistImage" accept="image/*" required style="padding: 12px 16px; border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 12px; background: rgba(13, 17, 23, 0.9); color: #f0f6fc; font-size: 14px;">
+                <button type="submit" style="padding: 12px 20px; background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700); border: none; border-radius: 12px; cursor: pointer; color: #0d1117; font-weight: 700; font-size: 14px;">Adicionar Artista</button>
+            </form>
         </div>
         <?php endif; ?>
     </div>
@@ -38,18 +43,46 @@
 
 <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
 <script>
-function addArtist() {
-    const name = document.getElementById('artistName').value;
-    const city = document.getElementById('artistCity').value;
+function validateDescription(textarea) {
+    const words = textarea.value.trim().split(/\s+/).filter(word => word.length > 0);
+    if (words.length < 8) {
+        textarea.setCustomValidity('A descrição deve ter pelo menos 8 palavras');
+    } else {
+        textarea.setCustomValidity('');
+    }
+}
+
+document.getElementById('artistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     
-    if (!name || !city) {
-        alert('Por favor, preencha nome e cidade do artista.');
+    const description = document.getElementById('artistDescription');
+    const words = description.value.trim().split(/\s+/).filter(word => word.length > 0);
+    
+    if (words.length < 8) {
+        alert('A descrição deve ter pelo menos 8 palavras');
         return;
     }
     
-    // Aqui você pode adicionar a lógica para enviar os dados via AJAX
-    console.log('Adicionar artista:', name, city);
-    alert('Funcionalidade de adicionar artista em desenvolvimento.');
-}
+    const formData = new FormData(this);
+    
+    fetch('Componentes/páginas/php/adicionarArtista.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Artista adicionado com sucesso!');
+            location.reload();
+        } else {
+            alert('Erro: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Erro ao adicionar artista.');
+    });
+});
 </script>
 <?php endif; ?>
+
+<script src="Componentes/configuracoes/JS/artistasGrid.js"></script>

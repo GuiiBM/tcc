@@ -7,6 +7,8 @@
             <div style="text-align: center; margin-bottom: 30px;">
                 <button class="btn-neon" onclick="showForm('musica')" id="btnMusica">Cadastrar Música</button>
                 <button class="btn-neon" onclick="showForm('artista')" id="btnArtista" style="margin-left: 20px;">Cadastrar Artista</button>
+                <a href="migrarUsuariosArtistas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Migrar Usuários</a>
+                <a href="iniciarBanco.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar BD</a>
             </div>
             
             <script>

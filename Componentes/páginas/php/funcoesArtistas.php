@@ -1,6 +1,6 @@
 <?php
 function buscarArtistas($conexao) {
-    $stmt = mysqli_prepare($conexao, "SELECT artista_id, artista_nome, artista_cidade, artista_image FROM artista ORDER BY artista_nome");
+    $stmt = mysqli_prepare($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_cidade, a.artista_image, u.usuario_descricao FROM artista a LEFT JOIN usuarios u ON a.artista_id = u.artista_id ORDER BY a.artista_nome");
     
     if (!$stmt || !mysqli_stmt_execute($stmt)) {
         error_log("Erro ao buscar artistas: " . mysqli_error($conexao));

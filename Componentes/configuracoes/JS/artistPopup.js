@@ -14,7 +14,7 @@ class ArtistPopup {
                     </div>
                     <div class="popup-body">
                         <div class="artist-info">
-                            <img id="artistImage" src="" alt="" class="artist-popup-image">
+                            <img id="artistPopupImage" src="" alt="" class="artist-popup-image">
                             <div class="artist-details">
                                 <p id="artistCity"></p>
                                 <a id="artistLink" href="#" target="_blank" class="artist-link">Página do Artista</a>
@@ -78,7 +78,37 @@ class ArtistPopup {
     
     populatePopup(artist, songs) {
         document.getElementById('artistName').textContent = artist.nome;
-        document.getElementById('artistImage').src = artist.imagem || 'https://via.placeholder.com/150x150?text=Sem+Foto';
+        
+        // Debug da imagem
+        console.log('Imagem do artista:', artist.imagem);
+        const imageSrc = artist.imagem || 'Componentes/icones/icone.png';
+        console.log('Usando imagem:', imageSrc);
+        
+        const artistImage = document.getElementById('artistPopupImage');
+        console.log('Elemento da imagem encontrado:', artistImage);
+        
+        if (artistImage) {
+            // Limpar src anterior
+            artistImage.src = '';
+            
+            // Log quando a imagem carregar com sucesso
+            artistImage.onload = function() {
+                console.log('Imagem carregada com sucesso:', this.src);
+            };
+            
+            // Fallback se a imagem não carregar
+            artistImage.onerror = function() {
+                console.log('Erro ao carregar imagem:', this.src);
+                console.log('Usando fallback');
+                this.src = 'Componentes/icones/icone.png';
+            };
+            
+            // Forçar carregamento
+            artistImage.src = imageSrc;
+        } else {
+            console.error('Elemento artistImage não encontrado!');
+        }
+        
         document.getElementById('artistCity').textContent = artist.cidade || 'Cidade não informada';
         document.getElementById('artistLink').href = artist.link || '#';
         

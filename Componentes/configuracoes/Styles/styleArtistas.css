@@ -9,15 +9,23 @@ section.principal {
   padding: 15px !important;
 }
 
+.page-artistas {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+}
+
 .page-artistas section.principal {
-  padding: 10px !important;
+  padding: 20px !important;
   margin: 0 !important;
   width: 100%;
   max-width: none !important;
 }
 
 .page-artistas .principal-content {
-  padding: 5px !important;
+  padding: 20px !important;
   width: 100%;
   max-width: none !important;
 }
@@ -70,14 +78,48 @@ section.principal {
 }
 
 .page-artistas .grid-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 10px 0;
+  padding: 20px;
   width: 100%;
-  height: auto;
-  max-height: none;
+  max-width: 100%;
+  justify-items: center;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1400px) {
+  .page-artistas .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-artistas .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .page-artistas .grid-card {
+    width: 250px;
+    max-width: 250px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-artistas .grid-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .page-artistas .grid-card {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+  }
 }
 
 
@@ -195,11 +237,11 @@ section.principal {
   width: 300px;
   max-width: 300px;
   height: 320px;
-  flex-shrink: 1;
   padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  justify-self: center;
 }
 
 .page-artistas .title-card {

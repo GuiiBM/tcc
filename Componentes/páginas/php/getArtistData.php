@@ -15,6 +15,25 @@ try {
         $artist = mysqli_fetch_assoc($artistResult);
         
         if ($artist) {
+            // Corrigir caminho da imagem se necessário
+            $imagePath = $artist['artista_image'];
+            if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                // Se não é URL completa, garantir que o caminho está correto
+                if (!str_starts_with($imagePath, 'Componentes/')) {
+                    $imagePath = 'Componentes/Armazenamento/imagens/' . basename($imagePath);
+                }
+            }
+            
+            // Debug: verificar dados do artista
+            $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/tcc/' . $imagePath;
+            $debug = [
+                'artist_data' => $artist,
+                'original_path' => $artist['artista_image'],
+                'corrected_path' => $imagePath,
+                'full_server_path' => $fullPath,
+                'image_exists' => $imagePath ? file_exists($fullPath) : false
+            ];
+            
             // Buscar músicas do artista
             $songsStmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_link, m.musica_capa FROM musica m JOIN artista a ON m.musica_artista = a.artista_id WHERE a.artista_nome = ?");
             mysqli_stmt_bind_param($songsStmt, "s", $artistName);
@@ -40,9 +59,11 @@ try {
                 'artist' => [
                     'nome' => $artist['artista_nome'],
                     'cidade' => $artist['artista_cidade'],
-                    'imagem' => $artist['artista_image']
+                    'imagem' => $imagePath,
+                    'link' => '#'
                 ],
-                'songs' => $songs
+                'songs' => $songs,
+                'debug' => $debug
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Artista não encontrado']);

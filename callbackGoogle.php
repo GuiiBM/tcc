@@ -69,20 +69,34 @@ if ($user = mysqli_fetch_assoc($result)) {
     $nome = mysqli_real_escape_string($conexao, $userData['name']);
     $foto = isset($userData['picture']) ? mysqli_real_escape_string($conexao, $userData['picture']) : '';
     
-    $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_foto, usuario_tipo) VALUES (?, '', ?, ?, 'usuario')");
-    mysqli_stmt_bind_param($stmt, "sss", $email, $nome, $foto);
+    // Primeiro criar o perfil de artista
+    $foto_artista = $foto ?: 'Componentes/icones/icone.png';
+    $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, '', ?)");
+    mysqli_stmt_bind_param($stmt_artista, "ss", $nome, $foto_artista);
     
-    if (mysqli_stmt_execute($stmt)) {
-        $usuario_id = mysqli_insert_id($conexao);
-        $_SESSION['usuario_id'] = $usuario_id;
-        $_SESSION['usuario_nome'] = $nome;
-        $_SESSION['usuario_tipo'] = 'usuario';
-        $_SESSION['usuario_foto'] = $foto;
-        $_SESSION['google_incomplete'] = true;
-        header('Location: completarPerfilGoogle.php');
-        exit;
+    if (mysqli_stmt_execute($stmt_artista)) {
+        $artista_id = mysqli_insert_id($conexao);
+        
+        // Agora criar o usuário vinculado ao artista
+        $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_foto, usuario_tipo, artista_id) VALUES (?, '', ?, ?, 'usuario', ?)");
+        mysqli_stmt_bind_param($stmt, "sssi", $email, $nome, $foto, $artista_id);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            $usuario_id = mysqli_insert_id($conexao);
+            $_SESSION['usuario_id'] = $usuario_id;
+            $_SESSION['usuario_nome'] = $nome;
+            $_SESSION['usuario_tipo'] = 'usuario';
+            $_SESSION['usuario_foto'] = $foto;
+            $_SESSION['artista_id'] = $artista_id;
+            $_SESSION['google_incomplete'] = true;
+            header('Location: completarPerfilGoogle.php');
+            exit;
+        } else {
+            header('Location: login.php?erro=registro_failed');
+            exit;
+        }
     } else {
-        header('Location: login.php?erro=registro_failed');
+        header('Location: login.php?erro=artista_creation_failed');
         exit;
     }
 }

@@ -2,10 +2,16 @@
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+    include "Componentes/páginas/php/verificarPerfilCompleto.php";
     include "Componentes/páginas/head.php";
     include "Componentes/páginas/header.php";
     include "Componentes/páginas/main.php";
     include "Componentes/páginas/footer.php";
+    
+    // Mostrar alerta se houver senha temporária
+    if (isset($_SESSION['usuario_id'])) {
+        mostrarAlertaPerfilIncompleto();
+    }
 ?>
 
 <?php

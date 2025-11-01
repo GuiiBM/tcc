@@ -60,13 +60,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_idade, usuario_cidade, usuario_descricao, usuario_foto) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "sssisss", $email, $senha, $nome, $idade, $cidade, $descricao, $foto);
+            // Primeiro criar o perfil de artista
+            $foto_artista = $foto ?: 'Componentes/icones/icone.png';
+            $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($stmt_artista, "sss", $nome, $cidade, $foto_artista);
             
-            if (mysqli_stmt_execute($stmt)) {
-                $sucesso = 'Conta criada com sucesso! Faça login.';
+            if (mysqli_stmt_execute($stmt_artista)) {
+                $artista_id = mysqli_insert_id($conexao);
+                
+                // Agora criar o usuário vinculado ao artista
+                $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_idade, usuario_cidade, usuario_descricao, usuario_foto, artista_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($stmt, "sssisssi", $email, $senha, $nome, $idade, $cidade, $descricao, $foto, $artista_id);
+                
+                if (mysqli_stmt_execute($stmt)) {
+                    $sucesso = 'Conta de artista criada com sucesso! Faça login.';
+                } else {
+                    $erro = 'Erro ao criar conta. Email já pode estar em uso.';
+                }
             } else {
-                $erro = 'Erro ao criar conta. Email já pode estar em uso.';
+                $erro = 'Erro ao criar perfil de artista.';
             }
         }
     }

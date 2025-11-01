@@ -112,5 +112,4 @@
             ?>
         </div>
     </div>
-    <script src="Componentes/configuracoes/JS/botton.js"></script>
 </section>
