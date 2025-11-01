@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Função para fazer scroll no container
     function scrollContainer(direction, containerId) {
         const container = document.getElementById(containerId);
-        if (!container) {
-            console.log('Container não encontrado:', containerId);
-            return;
-        }
+        if (!container) return;
         
-        const scrollAmount = 320;
+        const scrollAmount = 305; // 275px (card) + 30px (gap)
         const scrollValue = direction === 'left' ? -scrollAmount : scrollAmount;
         
         container.scrollBy({
@@ -15,15 +13,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Event listener principal
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('scroll-btn')) {
+        if (e.target.matches('.scroll-btn')) {
             e.preventDefault();
-            const direction = e.target.dataset.direction;
-            const containerId = e.target.dataset.container;
+            const direction = e.target.getAttribute('data-direction');
+            const containerId = e.target.getAttribute('data-container');
             
             if (direction && containerId) {
                 scrollContainer(direction, containerId);
             }
         }
     });
+    
+    // Backup: listeners diretos nos botões
+    setTimeout(() => {
+        document.querySelectorAll('.scroll-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const direction = this.getAttribute('data-direction');
+                const containerId = this.getAttribute('data-container');
+                
+                if (direction && containerId) {
+                    scrollContainer(direction, containerId);
+                }
+            });
+        });
+    }, 500);
 });

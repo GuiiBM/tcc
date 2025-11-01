@@ -70,5 +70,6 @@
 </footer>
 
 <script src="Componentes/configuracoes/JS/botton.js"></script>
+<script src="Componentes/configuracoes/JS/scrollTest.js"></script>
 </body>
 </html>

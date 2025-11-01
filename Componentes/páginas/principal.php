@@ -16,7 +16,7 @@
             <?php
             if (isset($conexao)) {
                 try {
-                    $musicasMenosCurtidas = buscarMusicasMenosCurtidas($conexao, 5);
+                    $musicasMenosCurtidas = buscarMusicasMenosCurtidas($conexao);
                     if (!empty($musicasMenosCurtidas)) {
                         exibirMusicasRecomendadas($musicasMenosCurtidas);
                     } else {
@@ -43,7 +43,7 @@
             <?php
             if (isset($conexao)) {
                 try {
-                    $artistas = buscarUltimosArtistas($conexao, 5);
+                    $artistas = buscarUltimosArtistas($conexao);
                     if (!empty($artistas)) {
                         exibirArtistasRecomendados($artistas);
                     } else {
@@ -70,7 +70,7 @@
             <?php
             if (isset($conexao)) {
                 try {
-                    $ultimasMusicas = buscarUltimasMusicas($conexao, 5);
+                    $ultimasMusicas = buscarUltimasMusicas($conexao);
                     if (!empty($ultimasMusicas)) {
                         exibirMusicasRecomendadas($ultimasMusicas);
                     } else {

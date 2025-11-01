@@ -18,14 +18,17 @@ function buscarMusicas($conexao) {
     return $musicas;
 }
 
-function buscarUltimosArtistas($conexao, $limite = 5) {
-    $stmt = mysqli_prepare($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_cidade, a.artista_image FROM artista a ORDER BY a.artista_id DESC LIMIT ?");
+function buscarUltimosArtistas($conexao, $limite = null) {
+    $limiteSql = $limite ? "LIMIT ?" : "";
+    $stmt = mysqli_prepare($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_cidade, a.artista_image FROM artista a ORDER BY a.artista_id DESC $limiteSql");
     
     if (!$stmt) {
         return [];
     }
     
-    mysqli_stmt_bind_param($stmt, "i", $limite);
+    if ($limite) {
+        mysqli_stmt_bind_param($stmt, "i", $limite);
+    }
     
     if (!mysqli_stmt_execute($stmt)) {
         return [];
@@ -42,14 +45,17 @@ function buscarUltimosArtistas($conexao, $limite = 5) {
     return $artistas;
 }
 
-function buscarUltimasMusicas($conexao, $limite = 5) {
-    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, m.musica_data_adicao, a.artista_nome, a.artista_cidade FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id ORDER BY m.musica_data_adicao DESC LIMIT ?");
+function buscarUltimasMusicas($conexao, $limite = null) {
+    $limiteSql = $limite ? "LIMIT ?" : "";
+    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, m.musica_data_adicao, a.artista_nome, a.artista_cidade FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id ORDER BY m.musica_data_adicao DESC $limiteSql");
     
     if (!$stmt) {
         return [];
     }
     
-    mysqli_stmt_bind_param($stmt, "i", $limite);
+    if ($limite) {
+        mysqli_stmt_bind_param($stmt, "i", $limite);
+    }
     
     if (!mysqli_stmt_execute($stmt)) {
         return [];
@@ -66,7 +72,8 @@ function buscarUltimasMusicas($conexao, $limite = 5) {
     return $musicas;
 }
 
-function buscarMusicasMenosCurtidas($conexao, $limite = 5) {
+function buscarMusicasMenosCurtidas($conexao, $limite = null) {
+    $limiteSql = $limite ? "LIMIT ?" : "";
     $stmt = mysqli_prepare($conexao, "
         SELECT 
             m.musica_id, 
@@ -95,14 +102,16 @@ function buscarMusicasMenosCurtidas($conexao, $limite = 5) {
         ORDER BY 
             (COALESCE(likes.total_likes, 0) + COALESCE(dislikes.total_dislikes, 0)) ASC,
             (COALESCE(likes.total_likes, 0) - COALESCE(dislikes.total_dislikes, 0)) DESC
-        LIMIT ?
+        $limiteSql
     ");
     
     if (!$stmt) {
         return [];
     }
     
-    mysqli_stmt_bind_param($stmt, "i", $limite);
+    if ($limite) {
+        mysqli_stmt_bind_param($stmt, "i", $limite);
+    }
     
     if (!mysqli_stmt_execute($stmt)) {
         return [];
