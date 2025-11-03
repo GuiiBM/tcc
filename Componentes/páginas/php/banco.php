@@ -56,31 +56,6 @@ if (mysqli_num_rows($result) == 0) {
     echo "<p style='color: #00d9ff;'>✓ Coluna 'musica_data_adicao' já existe!</p>";
 }
 
-// Criar tabela curtidas
-echo "<p>Criando tabela 'curtidas'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS curtidas(
-curtida_id INT PRIMARY KEY AUTO_INCREMENT,
-musica_id INT NOT NULL,
-usuario_id INT NOT NULL,
-tipo_curtida ENUM("curtida", "descurtida") NOT NULL,
-data_curtida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_curtida_musica
-FOREIGN KEY (musica_id) 
-REFERENCES musica(musica_id)
-ON DELETE CASCADE,
-CONSTRAINT fk_curtida_usuario
-FOREIGN KEY (usuario_id)
-REFERENCES usuarios(usuario_id)
-ON DELETE CASCADE,
-UNIQUE KEY unique_user_music (musica_id, usuario_id)
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: #00d9ff;'>✓ Tabela 'curtidas' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: #ff4444;'>✗ Erro ao criar tabela 'curtidas': " . mysqli_error($conexao) . "</p>";
-}
-
 // Criar tabela usuarios
 echo "<p>Criando tabela 'usuarios'...</p>";
 $sql = 'CREATE TABLE IF NOT EXISTS usuarios(
@@ -105,6 +80,31 @@ if (mysqli_query($conexao, $sql)) {
     echo "<p style='color: #00d9ff;'>✓ Tabela 'usuarios' criada com sucesso!</p>";
 } else {
     echo "<p style='color: #ff4444;'>✗ Erro ao criar tabela 'usuarios': " . mysqli_error($conexao) . "</p>";
+}
+
+// Criar tabela curtidas
+echo "<p>Criando tabela 'curtidas'...</p>";
+$sql = 'CREATE TABLE IF NOT EXISTS curtidas(
+curtida_id INT PRIMARY KEY AUTO_INCREMENT,
+musica_id INT NOT NULL,
+usuario_id INT NOT NULL,
+tipo_curtida ENUM("curtida", "descurtida") NOT NULL,
+data_curtida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT fk_curtida_musica
+FOREIGN KEY (musica_id) 
+REFERENCES musica(musica_id)
+ON DELETE CASCADE,
+CONSTRAINT fk_curtida_usuario
+FOREIGN KEY (usuario_id)
+REFERENCES usuarios(usuario_id)
+ON DELETE CASCADE,
+UNIQUE KEY unique_user_music (musica_id, usuario_id)
+);';
+
+if (mysqli_query($conexao, $sql)) {
+    echo "<p style='color: #00d9ff;'>✓ Tabela 'curtidas' criada com sucesso!</p>";
+} else {
+    echo "<p style='color: #ff4444;'>✗ Erro ao criar tabela 'curtidas': " . mysqli_error($conexao) . "</p>";
 }
 
 // Migrar para usuario_id se necessário
