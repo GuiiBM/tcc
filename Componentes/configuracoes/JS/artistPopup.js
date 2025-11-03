@@ -113,7 +113,17 @@ class ArtistPopup {
         }
         
         document.getElementById('artistCity').textContent = artist.cidade || 'Cidade não informada';
-        document.getElementById('artistDescription').textContent = artist.descricao || 'Descrição não disponível';
+        
+        // Usar descrição do cache se disponível, senão usar a do banco
+        let description = artist.descricao || 'Descrição não disponível';
+        if (window.autoDescriptionUpdater) {
+            const cachedDescription = window.autoDescriptionUpdater.getDescription(artist.nome);
+            if (cachedDescription) {
+                description = cachedDescription;
+            }
+        }
+        document.getElementById('artistDescription').textContent = description;
+        
         document.getElementById('artistLink').href = artist.link || '#';
         
         const songsList = document.getElementById('songsList');

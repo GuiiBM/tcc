@@ -87,5 +87,5 @@ class AutoDescriptionUpdater {
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-    new AutoDescriptionUpdater();
+    window.autoDescriptionUpdater = new AutoDescriptionUpdater();
 });
