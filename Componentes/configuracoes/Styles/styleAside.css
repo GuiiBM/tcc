@@ -5,10 +5,10 @@
 }
 
 aside {
-  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   backdrop-filter: blur(15px);
-  border-right: 1px solid rgba(255, 215, 0, 0.2);
-  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
+  border-right: 1px solid var(--border-secondary);
+  box-shadow: 4px 0 25px var(--shadow-dark);
   padding: 20px 15px;
   padding-bottom: 170px;
   width: 20vw;
@@ -20,7 +20,7 @@ aside {
 }
 
 .aside-title {
-  color: #ffffff;
+  color: var(--text-white);
   font-size: 1.3rem;
   font-weight: 600;
   text-align: center;
@@ -43,7 +43,7 @@ aside {
 
 .aside-ul a,
 .aside-ul button {
-  color: #f0f6fc;
+  color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -69,19 +69,19 @@ aside {
   top: 0;
   height: 100%;
   width: 3px;
-  background-color: var(--neon-purple);
+  background-color: var(--primary-gold);
   opacity: 0;
   transition: opacity 0.3s ease;
-  box-shadow: 0 0 10px var(--neon-purple);
+  box-shadow: 0 0 10px var(--primary-gold);
 }
 
 .aside-ul a:hover,
 .aside-ul button:hover {
-  background-color: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  background-color: var(--accent-gold-light);
+  color: var(--primary-gold);
+  text-shadow: 0 0 8px var(--shadow-gold);
   transform: translateX(3px);
-  border-left: 3px solid #ffd700;
+  border-left: 3px solid var(--primary-gold);
 }
 
 .aside-ul a:hover::before,
@@ -94,38 +94,38 @@ aside::-webkit-scrollbar {
 }
 
 aside::-webkit-scrollbar-track {
-  background: #0d1117;
+  background: var(--bg-primary);
   border-radius: 6px;
-  border: 1px solid rgba(255, 215, 0, 0.1);
+  border: 1px solid var(--accent-gold-light);
 }
 
 aside::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ffd700 0%, #ffed4e 100%);
+  background: linear-gradient(180deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
   border-radius: 6px;
-  border: 1px solid #0d1117;
+  border: 1px solid var(--bg-primary);
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 10px var(--shadow-gold);
 }
 
 aside::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(180deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+  box-shadow: 0 0 15px var(--shadow-gold-medium);
 }
 
 @keyframes scrollbarPulse {
   0% {
-    box-shadow: inset 0 0 10px var(--shadow-purple-strong), 0 0 15px var(--shadow-purple-medium);
+    box-shadow: inset 0 0 10px var(--shadow-gold-strong), 0 0 15px var(--shadow-gold-medium);
   }
   100% {
-    box-shadow: inset 0 0 20px rgba(189, 0, 255, 1), 0 0 30px rgba(189, 0, 255, 0.9);
+    box-shadow: inset 0 0 20px var(--primary-gold), 0 0 30px var(--shadow-gold-strong);
   }
 }
 
 @keyframes glowPulse {
   0% {
-    text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple);
+    text-shadow: 0 0 10px var(--primary-gold), 0 0 20px var(--primary-gold);
   }
   100% {
-    text-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple), 0 0 40px var(--neon-purple);
+    text-shadow: 0 0 20px var(--primary-gold), 0 0 30px var(--primary-gold), 0 0 40px var(--primary-gold);
   }
 }

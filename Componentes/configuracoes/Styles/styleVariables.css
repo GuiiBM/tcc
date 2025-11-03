@@ -3,6 +3,8 @@
   --primary-gold: #ffd700;
   --primary-gold-light: #ffed4e;
   --primary-gold-shadow: rgba(255, 215, 0, 0.5);
+  --primary-gold-dark: #b8860b;
+  --primary-gold-darker: #9a7209;
   
   /* Backgrounds */
   --bg-primary: #0d1117;
@@ -13,33 +15,55 @@
   --bg-gradient-3: #21262d;
   --bg-gradient-4: #30363d;
   --bg-gradient-5: #21262d;
+  --bg-dark: #0d1117;
   
   /* Textos */
   --text-primary: #f0f6fc;
   --text-secondary: #8b949e;
   --text-white: #ffffff;
   --text-gold: #ffd700;
+  --text-transparent: rgba(240, 246, 252, 0.3);
   
   /* Bordas */
   --border-primary: rgba(255, 215, 0, 0.3);
   --border-secondary: rgba(255, 215, 0, 0.2);
-  --border-purple-light: rgba(255, 215, 0, 0.3);
+  --border-gold-light: rgba(255, 215, 0, 0.3);
+  --border-light: rgba(255, 215, 0, 0.2);
   
   /* Sombras */
   --shadow-primary: rgba(255, 215, 0, 0.3);
   --shadow-dark: rgba(0, 0, 0, 0.3);
   --shadow-dark-strong: rgba(0, 0, 0, 0.5);
-  --shadow-purple: rgba(255, 215, 0, 0.3);
-  --shadow-purple-medium: rgba(255, 215, 0, 0.5);
-  --shadow-theme-purple: rgba(255, 215, 0, 0.2);
+  --shadow-gold: rgba(255, 215, 0, 0.3);
+  --shadow-gold-medium: rgba(255, 215, 0, 0.5);
+  --shadow-gold-strong: rgba(255, 215, 0, 0.8);
+  --shadow-theme-gold: rgba(255, 215, 0, 0.2);
   
   /* Acentos */
   --accent-hover: rgba(255, 215, 0, 0.1);
-  --bg-purple-light: rgba(255, 215, 0, 0.1);
+  --accent-gold-light: rgba(255, 215, 0, 0.1);
   
-  /* Compatibilidade */
-  --neon-purple: #bd00ff;
+  /* Cores Neon - Convertidas para Dourado */
+  --neon-gold: #ffd700;
+  --neon-gold-light: #ffed4e;
   --neon-blue: #00d9ff;
   --neon-white: #f0f6fc;
-  --bg-dark: #0d1117;
+  
+  /* Cores de Estado */
+  --success-color: #4ade80;
+  --error-color: #ff6b6b;
+  --warning-color: #fbbf24;
+  --info-color: #00d9ff;
+  
+  /* Cores de Tema */
+  --theme-red-hover: #ff4757;
+  
+  /* Compatibilidade - Mantendo nomes antigos apontando para dourado */
+  --neon-purple: #ffd700;
+  --neon-pink: #ffed4e;
+  --border-purple-light: rgba(255, 215, 0, 0.3);
+  --shadow-purple: rgba(255, 215, 0, 0.3);
+  --shadow-purple-medium: rgba(255, 215, 0, 0.5);
+  --shadow-theme-purple: rgba(255, 215, 0, 0.2);
+  --bg-purple-light: rgba(255, 215, 0, 0.1);
 }

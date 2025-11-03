@@ -1,13 +1,13 @@
 footer {
   background: rgba(13, 17, 23, 0.95);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  border-top: 1px solid var(--border-secondary);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  color: var(--neon-white);
+  color: var(--text-white);
   padding: 16px 20px;
   margin: 0 !important;
   width: 100vw;
@@ -19,7 +19,7 @@ footer {
 footer p,
 footer a,
 footer .nav-link {
-  color: var(--neon-white);
+  color: var(--text-white);
   font-size: 0.95rem;
   transition: color 0.3s ease, text-shadow 0.3s ease;
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
@@ -27,8 +27,8 @@ footer .nav-link {
 
 footer a:hover,
 footer .nav-link:hover {
-  color: #bd00ff;
-  text-shadow: 0 0 15px rgba(189, 0, 255, 0.8), 0 0 25px rgba(189, 0, 255, 0.5);
+  color: var(--primary-gold);
+  text-shadow: 0 0 15px var(--shadow-gold-strong), 0 0 25px var(--shadow-gold-medium);
   text-decoration: none;
 }
 
@@ -36,10 +36,10 @@ footer .nav-link::after {
   content: '';
   display: block;
   height: 2px;
-  background-color: var(--neon-purple);
+  background-color: var(--primary-gold);
   width: 0;
   transition: width 0.3s ease;
-  box-shadow: 0 0 10px var(--neon-purple);
+  box-shadow: 0 0 10px var(--primary-gold);
   margin-top: 4px;
 }
 
@@ -48,7 +48,7 @@ footer .nav-link:hover::after {
 }
 
 footer svg {
-  filter: drop-shadow(0 0 6px var(--neon-purple));
+  filter: drop-shadow(0 0 6px var(--primary-gold));
 }
 
 footer .border-top {
@@ -66,8 +66,8 @@ footer {
 .circulo {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 15px var(--shadow-dark);
+    border: 2px solid var(--border-gold-light);
     padding: 0px 2px 5px 2px;
     display: inline-block;
     background-color: var(--bg-dark);
@@ -76,9 +76,9 @@ footer {
 
 .circulo:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 215, 0, 0.6);
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+    box-shadow: 0 8px 25px var(--shadow-gold), 0 4px 15px var(--shadow-dark-strong);
+    border-color: var(--primary-gold);
+    filter: drop-shadow(0 0 10px var(--shadow-gold));
 }
 
 .circulo2 {
@@ -86,15 +86,15 @@ footer {
 }
 
 .music-bar {
-  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid var(--border-gold-light);
   border-radius: 15px 15px 0 0;
   padding: 15px 20px;
   display: flex;
   align-items: center;
   gap: 20px;
-  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 -4px 25px var(--shadow-dark-strong);
 }
 
 .music-info {
@@ -119,7 +119,7 @@ footer {
 }
 
 .like-controls:hover {
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 4px 20px var(--accent-gold-light);
 }
 
 #songTitle, #songArtist {
@@ -128,7 +128,7 @@ footer {
 }
 
 #songTitle {
-  color: var(--neon-white);
+  color: var(--text-white);
   font-size: 0.9rem;
   margin-bottom: 2px;
 }
@@ -140,26 +140,26 @@ footer {
 }
 
 #playStatus {
-  background: rgba(255, 215, 0, 0.1);
+  background: var(--accent-gold-light);
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid var(--border-gold-light);
 }
 
 .control-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  border: 2px solid rgba(255, 215, 0, 0.5);
-  color: #0d1117;
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
+  border: 2px solid var(--border-gold-light);
+  color: var(--bg-primary);
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px var(--shadow-gold);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,16 +171,16 @@ footer {
 
 .control-btn:hover {
   transform: scale(1.05);
-  background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
-  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+  box-shadow: 0 8px 30px var(--shadow-gold-medium);
 }
 
 .progress-container {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
-  border: 2px solid rgba(255, 215, 0, 0.3);
+  background: linear-gradient(145deg, var(--bg-secondary), var(--bg-primary));
+  border: 2px solid var(--border-gold-light);
   border-radius: 16px;
   padding: 12px 20px;
   backdrop-filter: blur(10px);
@@ -197,7 +197,7 @@ footer {
   left: -100%;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
   transition: left 0.8s ease;
 }
 
@@ -206,21 +206,21 @@ footer {
 }
 
 .progress-container:hover {
-  border-color: rgba(255, 215, 0, 0.6);
+  border-color: var(--primary-gold);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 8px 25px var(--shadow-gold);
 }
 
 .progress-bar {
   background: rgba(139, 148, 158, 0.3);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px var(--shadow-dark);
 }
 
 .like-btn, .dislike-btn {
-  background: rgba(22, 27, 34, 0.8);
-  border: 2px solid rgba(255, 215, 0, 0.4);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-gold-light);
   border-radius: 12px;
   padding: 10px 16px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -236,7 +236,7 @@ footer {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-gold-light), transparent);
   transition: left 0.6s ease;
 }
 
@@ -245,10 +245,10 @@ footer {
 }
 
 .like-btn:hover {
-  background: rgba(255, 215, 0, 0.15);
-  border-color: rgba(255, 215, 0, 0.8);
+  background: var(--accent-gold-light);
+  border-color: var(--primary-gold);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 25px var(--shadow-gold);
 }
 
 .dislike-btn:hover {
@@ -261,8 +261,8 @@ footer {
 .progress-bar {
   flex: 1;
   height: 6px;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  background: var(--accent-gold-light);
+  border: 1px solid var(--border-secondary);
   border-radius: 3px;
   cursor: pointer;
   position: relative;
@@ -276,10 +276,10 @@ footer {
   left: 0;
   height: 100%;
   width: var(--progress, 0%);
-  background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+  background: linear-gradient(90deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
   border-radius: 3px;
   transition: width 0.1s ease;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 10px var(--shadow-gold-medium);
 }
 
 #currentTime, #totalTime {
@@ -315,7 +315,7 @@ img.circulo.mx-2#playBtn.paused:hover {
 }
 
 .volume-icon {
-  color: #ffd700;
+  color: var(--primary-gold);
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
@@ -324,17 +324,17 @@ img.circulo.mx-2#playBtn.paused:hover {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 215, 0, 0.1);
+  background: var(--accent-gold-light);
 }
 
 .volume-icon:hover {
-  color: #ffed4e;
-  background: rgba(255, 215, 0, 0.2);
+  color: var(--primary-gold-light);
+  background: var(--shadow-gold);
   transform: scale(1.05);
 }
 
 .volume-icon.muted {
-  color: #8b949e;
+  color: var(--text-secondary);
   background: rgba(139, 148, 158, 0.1);
 }
 
@@ -347,7 +347,7 @@ img.circulo.mx-2#playBtn.paused:hover {
 .volume-slider {
   width: 80px;
   height: 4px;
-  background: rgba(255, 215, 0, 0.2);
+  background: var(--shadow-gold);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -361,30 +361,30 @@ img.circulo.mx-2#playBtn.paused:hover {
   appearance: none;
   width: 12px;
   height: 12px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 1px 4px var(--shadow-gold);
   transition: all 0.3s ease;
 }
 
 .volume-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
-  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 2px 6px var(--shadow-gold-medium);
 }
 
 .volume-slider::-moz-range-thumb {
   width: 12px;
   height: 12px;
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
   border-radius: 50%;
   cursor: pointer;
   border: none;
-  box-shadow: 0 1px 4px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 1px 4px var(--shadow-gold);
 }
 
 .volume-percentage {
-  color: #f0f6fc;
+  color: var(--text-primary);
   font-size: 0.75rem;
   font-weight: 500;
   min-width: 30px;
@@ -403,21 +403,21 @@ img.circulo.mx-2#playBtn.paused:hover {
 }
 
 .play-status.playing {
-  color: #4ade80;
+  color: var(--success-color);
   background: rgba(74, 222, 128, 0.1);
   border: 1px solid rgba(74, 222, 128, 0.3);
   text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
 }
 
 .play-status.paused {
-  color: #fbbf24;
+  color: var(--warning-color);
   background: rgba(251, 191, 36, 0.1);
   border: 1px solid rgba(251, 191, 36, 0.3);
   text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
 }
 
 .play-status.no-music {
-  color: #9ca3af;
+  color: var(--text-secondary);
   background: rgba(156, 163, 175, 0.1);
   border: 1px solid rgba(156, 163, 175, 0.3);
   text-shadow: 0 0 8px rgba(156, 163, 175, 0.3);
@@ -430,17 +430,17 @@ img.circulo.mx-2#playBtn.paused:hover {
   bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, rgba(189, 0, 255, 0.95), rgba(30, 0, 105, 0.95));
-  color: var(--neon-white);
+  background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+  color: var(--bg-dark);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
   z-index: 1001;
-  border: 1px solid rgba(189, 0, 255, 0.6);
-  box-shadow: 0 4px 15px rgba(189, 0, 255, 0.4);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--primary-gold);
+  box-shadow: 0 4px 15px var(--shadow-gold);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   animation: tooltipFade 0.2s ease-in;
 }
 
@@ -451,7 +451,7 @@ img.circulo.mx-2#playBtn.paused:hover {
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: rgba(189, 0, 255, 0.95);
+  border-top-color: var(--primary-gold);
   z-index: 1001;
 }
 
@@ -468,14 +468,14 @@ img.circulo.mx-2#playBtn.paused:hover {
     display: flex;
     align-items: center;
     padding: 14px 24px;
-    background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
-    border: 2px solid rgba(255, 215, 0, 0.3);
+    background: linear-gradient(145deg, var(--bg-secondary), var(--bg-primary));
+    border: 2px solid var(--border-gold-light);
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px var(--shadow-dark);
 }
 
 .login-prompt::before {
@@ -485,7 +485,7 @@ img.circulo.mx-2#playBtn.paused:hover {
     left: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
     transition: left 0.8s ease;
 }
 
@@ -496,7 +496,7 @@ img.circulo.mx-2#playBtn.paused:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 237, 78, 0.02));
+    background: linear-gradient(135deg, var(--accent-gold-light), rgba(255, 237, 78, 0.02));
     opacity: 0;
     transition: opacity 0.3s ease;
     border-radius: 14px;
@@ -511,13 +511,13 @@ img.circulo.mx-2#playBtn.paused:hover {
 }
 
 .login-prompt:hover {
-    border-color: rgba(255, 215, 0, 0.6);
+    border-color: var(--primary-gold);
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 40px var(--shadow-gold), 0 8px 32px var(--shadow-dark-strong);
 }
 
 .login-link {
-    color: #ffd700;
+    color: var(--primary-gold);
     text-decoration: none;
     font-size: 15px;
     font-weight: 700;
@@ -529,9 +529,9 @@ img.circulo.mx-2#playBtn.paused:hover {
 }
 
 .login-link:hover {
-    color: #ffed4e;
+    color: var(--primary-gold-light);
     text-decoration: none;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    text-shadow: 0 0 10px var(--shadow-gold-medium);
 }
 
 .login-prompt svg {
@@ -542,5 +542,5 @@ img.circulo.mx-2#playBtn.paused:hover {
 
 .login-prompt:hover svg {
     transform: scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+    filter: drop-shadow(0 0 8px var(--shadow-gold-medium));
 }

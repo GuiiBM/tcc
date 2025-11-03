@@ -6,19 +6,14 @@ html, body {
 *{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;zoom:1;max-zoom:1;min-zoom:1;}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-gradient-2);color:var(--text-primary);transform-origin:0 0;max-width:100vw;overflow-x:hidden}
-:root{
-  --neon-purple:#bd00ff;
-  --neon-blue:#00d9ff;
-  --neon-pink:#ff00c8;
-  --neon-white:#fff
-}
+
 .navbar{
-  background: linear-gradient(135deg, rgba(189, 0, 255, 0.15), rgba(30, 0, 105, 0.2));
+  background: linear-gradient(135deg, var(--accent-gold-light), rgba(255, 215, 0, 0.1));
   backdrop-filter: blur(15px);
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid rgba(189, 0, 255, 0.6);
-  box-shadow: 0 4px 20px rgba(189, 0, 255, 0.4), 0 0 15px rgba(189, 0, 255, 0.3);
+  border-bottom: 1px solid var(--primary-gold);
+  box-shadow: 0 4px 20px var(--shadow-gold), 0 0 15px var(--shadow-gold);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -53,57 +48,57 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg
   content:'';
   display:block;
   height:2px;
-  background-color:var(--neon-purple);
+  background-color:var(--primary-gold);
   width:0;
   transition:.4s ease;
   margin-top:4px;
-  box-shadow:0 0 10px var(--neon-purple)
+  box-shadow:0 0 10px var(--primary-gold)
 }
 .navbar-nav .nav-link:hover::after{
   width:100%
 }
 .navbar-nav .nav-link:hover{
-  color: #bd00ff;
-  text-shadow: 0 0 15px rgba(189, 0, 255, 0.8), 0 0 25px rgba(189, 0, 255, 0.5);
+  color: var(--primary-gold);
+  text-shadow: 0 0 15px var(--shadow-gold-strong), 0 0 25px var(--shadow-gold-medium);
 }
 .btn-outline-light{
-  background: linear-gradient(145deg, var(--neon-purple), var(--neon-blue));
+  background: linear-gradient(145deg, var(--primary-gold), var(--primary-gold-light));
   border: none;
   border-radius: 8px;
-  color: var(--text-white);
+  color: var(--bg-dark);
   font-weight: 600;
   padding: 12px 30px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(189, 0, 255, 0.3);
+  box-shadow: 0 4px 16px var(--shadow-gold);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .btn-outline-light:hover{
-  background: linear-gradient(145deg, var(--neon-blue), var(--neon-purple));
-  box-shadow: 0 6px 20px rgba(189, 0, 255, 0.5);
+  background: linear-gradient(145deg, var(--primary-gold-light), var(--primary-gold));
+  box-shadow: 0 6px 20px var(--shadow-gold-medium);
   transform: translateY(-2px);
-  color: var(--text-white);
+  color: var(--bg-dark);
 }
 .btn-warning{
-  background-color:var(--neon-pink);
+  background-color:var(--primary-gold);
   border:none;
   font-weight:700;
-  color:var(--bg-gradient-2);
+  color:var(--bg-dark);
   transition:all .3s ease;
-  box-shadow:0 0 10px var(--neon-pink)
+  box-shadow:0 0 10px var(--primary-gold)
 }
 .btn-warning:hover{
-  background-color:#ff33cc;
-  color:var(--bg-gradient-2);
-  box-shadow:0 0 20px var(--neon-pink),0 0 30px var(--neon-pink)
+  background-color:var(--primary-gold-light);
+  color:var(--bg-dark);
+  box-shadow:0 0 20px var(--primary-gold),0 0 30px var(--primary-gold)
 }
 .navbar-toggler{
   border:none
 }
 .navbar-toggler-icon{
-  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(189,0,255,0.8)' stroke-width='2' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,215,0,0.8)' stroke-width='2' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")
 }
 @media(max-width:991.98px){
   .navbar-collapse{
@@ -122,10 +117,10 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg
 }
 @keyframes glowPulse{
   0%{
-    text-shadow:0 0 6px var(--neon-purple),0 0 10px var(--neon-purple)
+    text-shadow:0 0 6px var(--primary-gold),0 0 10px var(--primary-gold)
   }
   100%{
-    text-shadow:0 0 16px var(--neon-purple),0 0 28px var(--neon-purple)
+    text-shadow:0 0 16px var(--primary-gold),0 0 28px var(--primary-gold)
   }
 }
 @keyframes glowWhitePulse{
@@ -133,7 +128,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3)
   }
   100%{
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 20px rgba(189, 0, 255, 0.3)
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 20px var(--shadow-gold)
   }
 }
 

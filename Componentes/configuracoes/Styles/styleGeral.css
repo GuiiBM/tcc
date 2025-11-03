@@ -59,11 +59,11 @@ input[type="file"],
     input[type="file"]::file-selector-button,
     input[type="file"].form-control::file-selector-button,
     .form-control[type="file"]::file-selector-button {
-        background: linear-gradient(135deg, #ffd700 0%, #8b45ff 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%) !important;
         border: none !important;
         border-radius: 8px !important;
         padding: 10px 20px !important;
-        color: #0d1117 !important;
+        color: var(--bg-dark) !important;
         font-weight: 700 !important;
         cursor: pointer !important;
         margin-right: 15px !important;
@@ -71,119 +71,119 @@ input[type="file"],
         transition: all 0.3s ease !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
-        box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3) !important;
+        box-shadow: 0 3px 10px var(--shadow-gold) !important;
     }
     input[type="file"]::file-selector-button:hover,
     input[type="file"].form-control::file-selector-button:hover,
     .form-control[type="file"]::file-selector-button:hover {
-        background: linear-gradient(135deg, #8b45ff 0%, #ffd700 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 15px rgba(139, 69, 255, 0.4) !important;
-        color: #ffffff !important;
+        box-shadow: 0 6px 15px var(--shadow-gold) !important;
+        color: var(--bg-dark) !important;
     }
     
     /* Inputs de imagem com toque roxo - FORÇADO */
     input[accept="image/*"],
     input[accept="image/*"].form-control,
     .form-control[accept="image/*"] {
-        border-color: rgba(139, 69, 255, 0.4) !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 8px rgba(139, 69, 255, 0.15) !important;
+        border-color: var(--border-gold-light) !important;
+        box-shadow: 0 4px 15px var(--shadow-dark), 0 0 8px var(--accent-gold-light) !important;
     }
     
     input[accept="image/*"]:hover,
     input[accept="image/*"].form-control:hover,
     .form-control[accept="image/*"]:hover {
-        border-color: rgba(139, 69, 255, 0.7) !important;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 15px rgba(139, 69, 255, 0.3) !important;
+        border-color: var(--primary-gold) !important;
+        box-shadow: 0 6px 20px var(--shadow-dark-strong), 0 0 15px var(--shadow-gold) !important;
     }
     
     input[accept="image/*"]::file-selector-button,
     input[accept="image/*"].form-control::file-selector-button,
     .form-control[accept="image/*"]::file-selector-button {
-        background: linear-gradient(135deg, #8b45ff 0%, #ffd700 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%) !important;
     }
     
     input[accept="image/*"]::file-selector-button:hover,
     input[accept="image/*"].form-control::file-selector-button:hover,
     .form-control[accept="image/*"]::file-selector-button:hover {
-        background: linear-gradient(135deg, #ffd700 0%, #8b45ff 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%) !important;
     }
     
     /* Inputs de áudio com toque dourado - FORÇADO */
     input[accept="audio/*"],
     input[accept="audio/*"].form-control,
     .form-control[accept="audio/*"] {
-        border-color: rgba(255, 215, 0, 0.4) !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 8px rgba(255, 215, 0, 0.15) !important;
+        border-color: var(--border-gold-light) !important;
+        box-shadow: 0 4px 15px var(--shadow-dark), 0 0 8px var(--accent-gold-light) !important;
     }
     
     input[accept="audio/*"]:hover,
     input[accept="audio/*"].form-control:hover,
     .form-control[accept="audio/*"]:hover {
-        border-color: rgba(255, 215, 0, 0.7) !important;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 15px rgba(255, 215, 0, 0.3) !important;
+        border-color: var(--primary-gold) !important;
+        box-shadow: 0 6px 20px var(--shadow-dark-strong), 0 0 15px var(--shadow-gold) !important;
     }
     
     input[accept="audio/*"]::file-selector-button,
     input[accept="audio/*"].form-control::file-selector-button,
     .form-control[accept="audio/*"]::file-selector-button {
-        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%) !important;
     }
     
     input[accept="audio/*"]::file-selector-button:hover,
     input[accept="audio/*"].form-control::file-selector-button:hover,
     .form-control[accept="audio/*"]::file-selector-button:hover {
-        background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%) !important;
+        background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%) !important;
     }
     
     /* Visual premium para site de música */
     .navbar {
-        background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%) !important;
         backdrop-filter: blur(20px) !important;
-        border-bottom: 1px solid rgba(255, 215, 0, 0.2) !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+        border-bottom: 1px solid var(--border-secondary) !important;
+        box-shadow: 0 4px 30px var(--shadow-dark-strong) !important;
         padding: 1.2rem 0 !important;
     }
     
     .navbar-brand {
-        color: #ffffff !important;
+        color: var(--text-white) !important;
         font-weight: 700 !important;
         text-shadow: none !important;
     }
     
     .navbar-nav .nav-link {
-        color: #f0f6fc !important;
+        color: var(--text-primary) !important;
         font-weight: 500 !important;
         transition: all 0.3s ease !important;
         letter-spacing: 0.5px !important;
     }
     
     .navbar-nav .nav-link:hover {
-        color: #ffd700 !important;
-        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+        color: var(--primary-gold) !important;
+        text-shadow: 0 0 10px var(--shadow-gold) !important;
     }
     
     footer {
-        background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%) !important;
         backdrop-filter: blur(20px) !important;
-        border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
-        box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5) !important;
+        border-top: 1px solid var(--border-secondary) !important;
+        box-shadow: 0 -4px 30px var(--shadow-dark-strong) !important;
     }
     
     footer p, footer a, footer .nav-link {
-        color: #f0f6fc !important;
+        color: var(--text-primary) !important;
     }
     
     footer a:hover, footer .nav-link:hover {
-        color: #ffd700 !important;
-        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+        color: var(--primary-gold) !important;
+        text-shadow: 0 0 10px var(--shadow-gold) !important;
     }
     
     /* Botão premium */
     .btn-outline-light {
         background: transparent !important;
-        border: 2px solid #ffd700 !important;
-        color: #ffd700 !important;
+        border: 2px solid var(--primary-gold) !important;
+        color: var(--primary-gold) !important;
         font-weight: 600 !important;
         padding: 12px 28px !important;
         border-radius: 25px !important;
@@ -191,14 +191,14 @@ input[type="file"],
         text-transform: uppercase !important;
         letter-spacing: 1px !important;
         font-size: 0.9rem !important;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.1) !important;
+        box-shadow: 0 0 20px var(--accent-gold-light) !important;
     }
     
     .btn-outline-light:hover {
-        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%) !important;
-        color: #0d1117 !important;
-        border-color: #ffd700 !important;
-        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4) !important;
+        background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%) !important;
+        color: var(--bg-primary) !important;
+        border-color: var(--primary-gold) !important;
+        box-shadow: 0 8px 25px var(--shadow-gold) !important;
         transform: translateY(-2px) !important;
     }
     
