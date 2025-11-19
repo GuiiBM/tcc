@@ -4,7 +4,12 @@
         <div class="music-info col-md-4">
             <div id="songTitle">Selecione uma música</div>
             <div id="songArtist">Artista</div>
-            <div id="playStatus" class="play-status no-music">🎵 Nenhuma música</div>
+            <div id="playStatus" class="play-status no-music">
+                🎵 Nenhuma música
+                <div class="sound-wave" style="display: none;">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </div>
         </div>
         
         <ul class="nav col-md-4 justify-content-center">

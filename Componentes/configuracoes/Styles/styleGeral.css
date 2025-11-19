@@ -1,10 +1,10 @@
 body {
   background: linear-gradient(238deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-2), var(--bg-gradient-4), var(--bg-gradient-5));
     background-size: 1200% 1200%;
-    -webkit-animation: AnimationName 24s ease infinite;
-    -moz-animation: AnimationName 24s ease infinite;
-    -o-animation: AnimationName 24s ease infinite;
-    animation: AnimationName 24s ease infinite;
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    -o-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
 
   color: var(--text-primary);
   margin: 0 !important;
@@ -13,6 +13,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
  @-webkit-keyframes AnimationName {

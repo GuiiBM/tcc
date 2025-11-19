@@ -16,6 +16,7 @@
     <script src="Componentes/configuracoes/JS/tooltip.js" defer></script>
     <script src="Componentes/configuracoes/JS/artistPopup.js" defer></script>
     <script src="Componentes/configuracoes/JS/autoUpdateDescriptions.js" defer></script>
+    <script src="Componentes/configuracoes/JS/enhancedInteractions.js" defer></script>
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleVariables.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleHeader.css?v=<?php echo time(); ?>">
@@ -28,6 +29,7 @@
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleTooltip.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistPopup.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleLogin.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleEnhancements.css?v=<?php echo time(); ?>">
 </head>
 <body>
 

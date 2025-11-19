@@ -179,15 +179,17 @@ class MusicPlayer {
     updatePlayStatus(isPlaying) {
         if (!this.playStatus) return;
         
+        const soundWave = this.playStatus.querySelector('.sound-wave');
+        
         if (!this.audio.src) {
             this.playStatus.className = 'play-status no-music';
-            this.playStatus.textContent = '🎵 Nenhuma música';
+            this.playStatus.innerHTML = '🎵 Nenhuma música<div class="sound-wave" style="display: none;"><span></span><span></span><span></span><span></span></div>';
         } else if (isPlaying) {
             this.playStatus.className = 'play-status playing';
-            this.playStatus.textContent = '▶️ Tocando';
+            this.playStatus.innerHTML = '▶️ Tocando<div class="sound-wave" style="display: inline-flex;"><span></span><span></span><span></span><span></span></div>';
         } else {
             this.playStatus.className = 'play-status paused';
-            this.playStatus.textContent = '⏸️ Pausado';
+            this.playStatus.innerHTML = '⏸️ Pausado<div class="sound-wave" style="display: none;"><span></span><span></span><span></span><span></span></div>';
         }
     }
     
