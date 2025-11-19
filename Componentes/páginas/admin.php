@@ -10,6 +10,7 @@
                 <a href="migrarUsuariosArtistas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Migrar Usuários</a>
                 <a href="iniciarBanco.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar BD</a>
                 <a href="configurarDescricoes.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar Descrições</a>
+                <a href="gerenciarPropagandas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Gerenciar Propagandas</a>
             </div>
             
             <script>
