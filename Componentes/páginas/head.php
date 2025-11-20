@@ -17,6 +17,7 @@
     <script src="Componentes/configuracoes/JS/artistPopup.js" defer></script>
     <script src="Componentes/configuracoes/JS/autoUpdateDescriptions.js" defer></script>
     <script src="Componentes/configuracoes/JS/enhancedInteractions.js" defer></script>
+    <script src="Componentes/configuracoes/JS/atualizarVisualizacoes.js" defer></script>
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleGeral.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleVariables.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleHeader.css?v=<?php echo time(); ?>">

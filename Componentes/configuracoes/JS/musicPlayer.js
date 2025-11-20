@@ -214,5 +214,33 @@ function playMusic(src, title, artist, musicaId) {
         if (typeof setMusicaAtual === 'function' && musicaId) {
             setMusicaAtual(musicaId);
         }
+        
+        // Registrar visualização
+        if (musicaId) {
+            registrarVisualizacao(musicaId);
+        }
     }
+}
+
+function registrarVisualizacao(musicaId) {
+    fetch('Componentes/páginas/php/processar_visualizacao.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            musica_id: musicaId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Visualização registrada:', data.message);
+        } else {
+            console.log('Erro ao registrar visualização:', data.message);
+        }
+    })
+    .catch(error => {
+        console.log('Erro na requisição:', error);
+    });
 }
