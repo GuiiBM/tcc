@@ -12,6 +12,13 @@
                 <a href="iniciarBanco.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar BD</a>
                 <a href="configurarDescricoes.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar Descrições</a>
                 <a href="gerenciarPropagandas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Gerenciar Propagandas</a>
+                <button class="btn-neon" onclick="toggleNgrok()" id="btnNgrok" style="margin-left: 20px;">🌐 Ngrok</button>
+            </div>
+            
+            <!-- Status do Ngrok -->
+            <div id="ngrokStatus" style="text-align: center; margin-bottom: 20px; display: none;">
+                <div id="statusMessage" style="padding: 10px; border-radius: 5px; margin: 10px auto; max-width: 600px;"></div>
+                <div id="ngrokUrl" style="margin-top: 10px;"></div>
             </div>
             
             <script>
@@ -47,7 +54,92 @@
             // Inicializar
             document.addEventListener('DOMContentLoaded', function() {
                 showForm('musica');
+                checkNgrokStatus();
             });
+            
+            // Funções do Ngrok
+            let ngrokRunning = false;
+            
+            function checkNgrokStatus() {
+                fetch('ngrok-manager.php?action=status')
+                    .then(response => response.json())
+                    .then(data => {
+                        ngrokRunning = data.running;
+                        updateNgrokButton();
+                    })
+                    .catch(error => console.error('Erro ao verificar status:', error));
+            }
+            
+            function updateNgrokButton() {
+                const btn = document.getElementById('btnNgrok');
+                if (ngrokRunning) {
+                    btn.innerHTML = '🔴 Parar Ngrok';
+                    btn.style.backgroundColor = '#dc3232';
+                } else {
+                    btn.innerHTML = '🌐 Iniciar Ngrok';
+                    btn.style.backgroundColor = '';
+                }
+            }
+            
+            function toggleNgrok() {
+                const btn = document.getElementById('btnNgrok');
+                const statusDiv = document.getElementById('ngrokStatus');
+                const messageDiv = document.getElementById('statusMessage');
+                const urlDiv = document.getElementById('ngrokUrl');
+                
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Processando...';
+                statusDiv.style.display = 'block';
+                
+                const action = ngrokRunning ? 'stop' : 'start';
+                
+                fetch('ngrok-manager.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=' + action
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageDiv.innerHTML = '<span style="color: #4CAF50;">✓ ' + data.message + '</span>';
+                        if (data.url) {
+                            var urlTcc = data.url + '/tcc/';
+                            urlDiv.innerHTML = '<strong>URL Pública:</strong> <a href="' + urlTcc + '" target="_blank" style="color: #00bcd4;">' + urlTcc + '</a> <button onclick="copyUrl(\'' + urlTcc + '\')" style="margin-left: 10px; padding: 5px 10px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer;">📋 Copiar</button>';
+                        } else {
+                            urlDiv.innerHTML = '';
+                        }
+                        ngrokRunning = !ngrokRunning;
+                    } else {
+                        messageDiv.innerHTML = '<span style="color: #f44336;">✗ ' + data.message + '</span>';
+                    }
+                    
+                    btn.disabled = false;
+                    updateNgrokButton();
+                })
+                .catch(error => {
+                    messageDiv.innerHTML = '<span style="color: #f44336;">✗ Erro de conexão</span>';
+                    btn.disabled = false;
+                    updateNgrokButton();
+                    console.error('Erro:', error);
+                });
+            }
+            
+            function copyUrl(url) {
+                navigator.clipboard.writeText(url).then(function() {
+                    alert('URL copiada para a área de transferência!');
+                }).catch(function() {
+                    // Fallback para navegadores mais antigos
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('URL copiada!');
+                });
+            }
             </script>
             
             <div id="formMusica">
