@@ -18,40 +18,39 @@ function isNgrokRunning() {
 }
 
 function getNgrokUrl() {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'http://localhost:4040/api/tunnels');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    $response = @file_get_contents('http://localhost:4040/api/tunnels');
     
     if ($response) {
         $data = json_decode($response, true);
-        if (isset($data['tunnels'][0]['public_url'])) {
-            return $data['tunnels'][0]['public_url'];
+        if (isset($data['tunnels']) && count($data['tunnels']) > 0) {
+            foreach ($data['tunnels'] as $tunnel) {
+                if ($tunnel['proto'] === 'https') {
+                    return $tunnel['public_url'];
+                }
+            }
         }
     }
     return null;
 }
 
-function configurarMySQLParaNgrok() {
-    $commands = [
-        'sudo sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /opt/lampp/etc/my.cnf',
-        'sudo /opt/lampp/lampp restartmysql',
-        'sudo /opt/lampp/bin/mysql -u root -e "CREATE USER IF NOT EXISTS \'usuario_ngrok\'@\'%\' IDENTIFIED BY \'senha_ngrok_123\';" 2>/dev/null',
-        'sudo /opt/lampp/bin/mysql -u root -e "GRANT ALL PRIVILEGES ON musicas.* TO \'usuario_ngrok\'@\'%\'; FLUSH PRIVILEGES;" 2>/dev/null'
-    ];
-    
-    foreach ($commands as $cmd) {
-        executarComando($cmd);
-        usleep(500000);
-    }
-}
+
 
 function iniciarNgrok() {
-    configurarMySQLParaNgrok();
+    // Garantir configuração
+    $configDir = '/var/www/.config/ngrok';
+    $configFile = $configDir . '/ngrok.yml';
     
-    $command = 'nohup ngrok http 80 --host-header=rewrite > /tmp/ngrok.log 2>&1 &';
+    if (!is_dir($configDir)) {
+        mkdir($configDir, 0755, true);
+    }
+    
+    if (!file_exists($configFile)) {
+        $config = "version: \"3\"\nagent:\n    authtoken: 33Q3YmwuKMYt6YOPOKYlYXmUfJn_pxbGrjHBCRrz9zyzqLsj\n";
+        file_put_contents($configFile, $config);
+        chmod($configFile, 0600);
+    }
+    
+    $command = 'HOME=/var/www nohup ngrok http 80 > /tmp/ngrok.log 2>&1 &';
     executarComando($command);
     
     for ($i = 0; $i < 10; $i++) {
@@ -64,8 +63,6 @@ function iniciarNgrok() {
 
 function pararNgrok() {
     executarComando('pkill -f ngrok');
-    executarComando('sudo sed -i "s/bind-address.*/bind-address = 127.0.0.1/" /opt/lampp/etc/my.cnf');
-    executarComando('sudo /opt/lampp/lampp restartmysql');
 }
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';

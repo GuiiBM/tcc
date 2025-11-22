@@ -1,4 +1,7 @@
 <?php 
+    // Auto-inicia ngrok
+    include "auto_ngrok.php";
+    
     // Detectar se está no ngrok e adicionar cabeçalho apenas se necessário
     if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'ngrok') !== false) {
         header('ngrok-skip-browser-warning: true');

@@ -61,7 +61,7 @@
             let ngrokRunning = false;
             
             function checkNgrokStatus() {
-                fetch('ngrok-manager.php?action=status')
+                fetch('ngrok_final.php?action=status')
                     .then(response => response.json())
                     .then(data => {
                         ngrokRunning = data.running;
@@ -93,7 +93,7 @@
                 
                 const action = ngrokRunning ? 'stop' : 'start';
                 
-                fetch('ngrok-manager.php', {
+                fetch('ngrok_final.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -105,8 +105,7 @@
                     if (data.success) {
                         messageDiv.innerHTML = '<span style="color: #4CAF50;">✓ ' + data.message + '</span>';
                         if (data.url) {
-                            var urlTcc = data.url + '/tcc/';
-                            urlDiv.innerHTML = '<strong>URL Pública:</strong> <a href="' + urlTcc + '" target="_blank" style="color: #00bcd4;">' + urlTcc + '</a> <button onclick="copyUrl(\'' + urlTcc + '\')" style="margin-left: 10px; padding: 5px 10px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer;">📋 Copiar</button>';
+                            urlDiv.innerHTML = '<strong>URL Pública:</strong> <a href="' + data.url + '" target="_blank" style="color: #00bcd4;">' + data.url + '</a> <button onclick="copyUrl(\'' + data.url + '\')" style="margin-left: 10px; padding: 5px 10px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer;">📋 Copiar</button>';
                         } else {
                             urlDiv.innerHTML = '';
                         }
