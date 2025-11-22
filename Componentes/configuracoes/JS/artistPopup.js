@@ -8,11 +8,9 @@ class ArtistPopup {
         const popupHTML = `
             <div id="artistPopup" class="artist-popup">
                 <div class="popup-content">
-                    <div class="popup-header">
-                        <h2 id="artistName"></h2>
-                        <button class="close-btn" id="closePopup">&times;</button>
-                    </div>
+                    <button class="close-btn" id="closePopup">&times;</button>
                     <div class="popup-body">
+                        <h2 id="artistName"></h2>
                         <div class="artist-info">
                             <img id="artistPopupImage" src="" alt="" class="artist-popup-image">
                             <div class="artist-details">
@@ -80,7 +78,7 @@ class ArtistPopup {
     }
     
     populatePopup(artist, songs) {
-        document.getElementById('artistName').textContent = artist.nome;
+        // Nome já foi definido no openPopup, não redefinir aqui
         
         // Debug da imagem
         console.log('Imagem do artista:', artist.imagem);

@@ -69,10 +69,11 @@
 
 .popup-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid var(--border-gold-light);
+  position: relative;
 }
 
 .popup-header h2 {
@@ -97,6 +98,9 @@
 }
 
 .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
   background: rgba(139, 148, 158, 0.1);
   border: 1px solid rgba(139, 148, 158, 0.3);
   border-radius: 50%;
@@ -109,6 +113,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.popup-body h2 {
+  color: var(--primary-gold);
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 .close-btn:hover {

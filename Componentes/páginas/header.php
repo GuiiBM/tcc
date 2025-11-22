@@ -12,7 +12,7 @@
             <ul class="navbar-nav navbar-nav-centralizada mb-2 mb-lg-0"> 
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="artistas.php">Artistas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Recomendados</a></li>
+                <li class="nav-item"><a class="nav-link" href="recomendados.php">Recomendados</a></li>
             </ul>
                         <div class="flex-grow-1 d-none d-lg-block"></div> 
 

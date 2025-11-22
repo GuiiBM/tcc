@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleArtistPopup.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleLogin.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="Componentes/configuracoes/Styles/styleEnhancements.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="Componentes/configuracoes/Styles/stylePropaganda.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
