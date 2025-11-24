@@ -5,14 +5,14 @@
             </div>
             
             <div style="text-align: center; margin-bottom: 30px;">
-                <button class="btn-neon" onclick="showForm('musica')" id="btnMusica">Cadastrar Música</button>
-                <button class="btn-neon" onclick="showForm('artista')" id="btnArtista" style="margin-left: 20px;">Cadastrar Artista</button>
-                <a href="migrarUsuariosArtistas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Migrar Usuários</a>
-                <a href="gerenciarUsuarios.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Gerenciar Usuários</a>
-                <a href="iniciarBanco.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar BD</a>
-                <a href="configurarDescricoes.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Configurar Descrições</a>
-                <a href="gerenciarPropagandas.php" class="btn-neon" style="margin-left: 20px; text-decoration: none; display: inline-block;">Gerenciar Propagandas</a>
-                <button class="btn-neon" onclick="toggleNgrok()" id="btnNgrok" style="margin-left: 20px;">🌐 Ngrok</button>
+                <button class="btn-neon" onclick="showForm('musica')" id="btnMusica" style="margin-bottom: 15px;">Cadastrar Música</button>
+                <button class="btn-neon" onclick="showForm('artista')" id="btnArtista" style="margin-left: 30px; margin-bottom: 15px;">Cadastrar Artista</button>
+                <a href="migrarUsuariosArtistas.php" class="btn-neon" style="margin-left: 30px; margin-bottom: 15px; text-decoration: none; display: inline-block;">Migrar Usuários</a>
+                <a href="gerenciarUsuarios.php" class="btn-neon" style="margin-left: 30px; margin-bottom: 15px; text-decoration: none; display: inline-block;">Gerenciar Usuários</a>
+                <a href="iniciarBanco.php" class="btn-neon" style="margin-left: 30px; margin-bottom: 15px; text-decoration: none; display: inline-block;">Configurar BD</a>
+                <a href="configurarDescricoes.php" class="btn-neon" style="margin-left: 30px; margin-bottom: 15px; text-decoration: none; display: inline-block;">Configurar Descrições</a>
+                <a href="gerenciarPropagandas.php" class="btn-neon" style="margin-left: 30px; margin-bottom: 15px; text-decoration: none; display: inline-block;">Gerenciar Propagandas</a>
+                <button class="btn-neon" onclick="toggleNgrok()" id="btnNgrok" style="margin-left: 30px; margin-bottom: 15px;">🌐 Ngrok</button>
             </div>
             
             <!-- Status do Ngrok -->
@@ -148,43 +148,7 @@
             <div id="formArtista" style="display: none;">
                 <?php include "Componentes/páginas/formArtista.php"; ?>
                 
-                <div class="scroll-container" style="margin-top: 30px;">
-                    <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Artistas Cadastrados</h2>
-                    <div class="scroll-controls">
-                        <button class="scroll-btn" data-direction="left" data-container="artistaContainer">‹</button>
-                        <button class="scroll-btn" data-direction="right" data-container="artistaContainer">›</button>
-                    </div>
-                    <div class="grid-container" id="artistaContainer">
-                        <?php
-                        include "Componentes/páginas/php/funcoesArtistas.php";
-                        $artistas = buscarArtistas($conexao);
-                        if (count($artistas) > 0) {
-                            exibirArtistas($artistas);
-                        } else {
-                            echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhum artista cadastrado ainda.</p>";
-                        }
-                        ?>
-                    </div>
-                </div>
             </div>            
-            <div class="scroll-container" id="musicasSection" style="margin-top: 50px; margin-bottom: 150px;">
-                <h2 style="color: var(--neon-white); text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">Músicas Cadastradas</h2>
-                <div class="scroll-controls">
-                    <button class="scroll-btn" data-direction="left" data-container="cardContainer">‹</button>
-                    <button class="scroll-btn" data-direction="right" data-container="cardContainer">›</button>
-                </div>
-                <div class="grid-container" id="cardContainer">
-                    <?php
-                    include "Componentes/páginas/php/funcoesMusicas.php";
-                    $musicas = buscarMusicas($conexao);
-                    if (count($musicas) > 0) {
-                        exibirMusicas($musicas);
-                    } else {
-                        echo "<p style='color: var(--text-secondary); text-align: center; font-style: italic;'>Nenhuma música cadastrada ainda.</p>";
-                    }
-                    ?>
-                </div>
-            </div>
         </section>
     </div>
 </main>

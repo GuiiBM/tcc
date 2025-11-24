@@ -347,7 +347,7 @@ function exibirMusicasRecomendadas($musicas) {
         
         // Mostrar número de visualizações se disponível
         $visualizacoes = isset($musica['total_visualizacoes']) ? $musica['total_visualizacoes'] : 0;
-        $infoExtra = $visualizacoes > 0 ? "<small style='color: #ffd700;'>👁 $visualizacoes visualizações</small><br>" : "";
+        $infoExtra = $visualizacoes > 0 ? "<br><small style='color: #ffd700;'>👁 $visualizacoes visualizações</small>" : "";
         
         echo "<div class='grid-card' onclick=\"playMusic('$link', '$titulo', '$artista', {$musica['musica_id']})\">
             <div class='title-card'>
@@ -355,7 +355,7 @@ function exibirMusicasRecomendadas($musicas) {
             </div>
             <img src='$capa' alt='$titulo' class='image-music-card'>
             <div class='autor-card'>
-                $infoExtra<h4>$artista <br> $cidade</h4>
+                <h4>$artista <br> $cidade$infoExtra</h4>
             </div>
         </div>";
     }
