@@ -11,6 +11,14 @@ if (!isset($_GET['code'])) {
     exit;
 }
 
+// Valida o state para impedir login CSRF (ver geração em configGoogle.php::getGoogleAuthUrl)
+$stateEsperado = $_SESSION['google_oauth_state'] ?? null;
+unset($_SESSION['google_oauth_state']);
+if (!$stateEsperado || !isset($_GET['state']) || !hash_equals($stateEsperado, $_GET['state'])) {
+    header('Location: login.php?erro=google_state_invalido');
+    exit;
+}
+
 // Trocar código por token
 $postData = [
     'client_id' => GOOGLE_CLIENT_ID,

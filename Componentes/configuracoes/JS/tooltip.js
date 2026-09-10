@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip.style.left = window.innerWidth - tooltipRect.width - 10 + 'px';
             }
             
-            setTimeout(() => tooltip.classList.add('show'), 10);
+            setTimeout(() => { if (tooltip) tooltip.classList.add('show'); }, 10);
         });
         
         element.addEventListener('mouseleave', function() {

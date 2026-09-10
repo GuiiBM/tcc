@@ -1,4 +1,7 @@
-<?php 
+<?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     include "Componentes/páginas/head.php";
     include "Componentes/páginas/header.php";
     include "Componentes/páginas/php/DBConection.php";
@@ -31,7 +34,7 @@
                             echo "<img src='$capa' alt='$titulo' class='image-music-card'>";
                             echo "<div class='autor-card'>";
                             if ($visualizacoes > 0) {
-                                echo "<small style='color: #ffd700;'>👁 $visualizacoes visualizações</small><br>";
+                                echo "<small class='card-views'>👁 $visualizacoes visualizações</small>";
                             }
                             echo "<h4>$artista - $cidade</h4>";
                             echo "</div>";
@@ -77,3 +80,5 @@ function redirectToPlay(audio, titulo, artista, musicaId) {
     form.submit();
 }
 </script>
+
+<?php include "Componentes/páginas/footer.php"; ?>

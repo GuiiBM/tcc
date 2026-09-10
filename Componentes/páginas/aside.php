@@ -3,17 +3,23 @@
         Propagandas:
     </div>
     <div class="aside-container">
-        <div class="propaganda-images">
+        <?php
+        include_once 'php/funcoesPropaganda.php';
+        include_once 'php/url-helper.php';
+
+        $webPath = getBasePath() . 'Componentes/Armazenamento/propaganda/';
+        $propagandas = listarPropagandasOrdenadas();
+        ?>
+        <div class="propaganda-slider" id="propagandaSlider">
             <?php
-            include_once 'php/funcoesPropaganda.php';
-            
-            $webPath = '/tcc/Componentes/Armazenamento/propaganda/';
-            $propagandas = listarPropagandasOrdenadas();
-            
             if (!empty($propagandas)) {
-                foreach ($propagandas as $propaganda) {
-                    echo '<div class="propaganda-item" onclick="openImagePopup(\'' . $webPath . $propaganda['propaganda_nome'] . '\')">';
-                    echo '<img src="' . $webPath . $propaganda['propaganda_nome'] . '" alt="Propaganda" class="propaganda-img" onload="adjustImageOrientation(this)">';
+                foreach ($propagandas as $i => $propaganda) {
+                    $activeClass = $i === 0 ? ' active' : '';
+                    echo '<div class="propaganda-item' . $activeClass . '" onclick="openImagePopup(\'' . $webPath . $propaganda['propaganda_nome'] . '\')">';
+                    echo '<span class="propaganda-badge">Publicidade</span>';
+                    echo '<div class="propaganda-frame">';
+                    echo '<img src="' . $webPath . $propaganda['propaganda_nome'] . '" alt="Propaganda" class="propaganda-img">';
+                    echo '</div>';
                     echo '</div>';
                 }
             } else {
@@ -21,6 +27,13 @@
             }
             ?>
         </div>
+        <?php if (count($propagandas) > 1): ?>
+        <div class="propaganda-nav">
+            <button type="button" class="propaganda-nav-btn" id="propagandaPrev" aria-label="Anúncio anterior">‹</button>
+            <div class="propaganda-dots" id="propagandaDots"></div>
+            <button type="button" class="propaganda-nav-btn" id="propagandaNext" aria-label="Próximo anúncio">›</button>
+        </div>
+        <?php endif; ?>
     </div>
 </aside>
 
@@ -61,6 +74,62 @@ document.addEventListener('DOMContentLoaded', function() {
     images.forEach(function(img) {
         adjustImageOrientation(img);
     });
+});
+
+// Carrossel de propagandas: mostra uma por vez e avança sozinho,
+// para todas ficarem visíveis com o tempo em vez de empilhadas.
+document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('#propagandaSlider .propaganda-item');
+    if (!items.length) return;
+
+    const dotsContainer = document.getElementById('propagandaDots');
+    const prevBtn = document.getElementById('propagandaPrev');
+    const nextBtn = document.getElementById('propagandaNext');
+    const INTERVAL = 4500;
+    let current = 0;
+    let timer = null;
+
+    if (dotsContainer) {
+        items.forEach(function(item, i) {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'propaganda-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Ir para anúncio ' + (i + 1));
+            dot.addEventListener('click', function() { goTo(i); });
+            dotsContainer.appendChild(dot);
+        });
+    }
+    const dots = dotsContainer ? dotsContainer.querySelectorAll('.propaganda-dot') : [];
+
+    function render() {
+        items.forEach(function(item, i) { item.classList.toggle('active', i === current); });
+        dots.forEach(function(dot, i) { dot.classList.toggle('active', i === current); });
+    }
+
+    function goTo(index) {
+        current = (index + items.length) % items.length;
+        render();
+        restartTimer();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function restartTimer() {
+        if (timer) clearInterval(timer);
+        if (items.length > 1) {
+            timer = setInterval(next, INTERVAL);
+        }
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    const slider = document.getElementById('propagandaSlider');
+    slider.addEventListener('mouseenter', function() { if (timer) clearInterval(timer); });
+    slider.addEventListener('mouseleave', restartTimer);
+
+    restartTimer();
 });
 
 // Funções do pop-up

@@ -44,9 +44,21 @@ if (!isset($_FILES['artistImage']) || $_FILES['artistImage']['error'] !== 0) {
     exit;
 }
 
-// Upload da imagem
-$extensao = pathinfo($_FILES['artistImage']['name'], PATHINFO_EXTENSION);
-$nomeArquivo = md5(uniqid()) . '.' . $extensao;
+// Upload da imagem: extensão sempre derivada do tipo real do arquivo,
+// nunca do nome enviado pelo cliente (Content-Type/extensão são falsificáveis)
+$extensoesPermitidas = [
+    'image/jpeg' => 'jpg',
+    'image/png' => 'png',
+    'image/gif' => 'gif',
+    'image/webp' => 'webp',
+];
+$tipoReal = mime_content_type($_FILES['artistImage']['tmp_name']);
+if (!isset($extensoesPermitidas[$tipoReal])) {
+    echo json_encode(['success' => false, 'message' => 'Tipo de imagem não permitido']);
+    exit;
+}
+
+$nomeArquivo = md5(uniqid()) . '.' . $extensoesPermitidas[$tipoReal];
 $caminhoDestino = '../../../Componentes/Armazenamento/imagens/' . $nomeArquivo;
 
 if (!move_uploaded_file($_FILES['artistImage']['tmp_name'], $caminhoDestino)) {
@@ -57,8 +69,8 @@ if (!move_uploaded_file($_FILES['artistImage']['tmp_name'], $caminhoDestino)) {
 $imagemPath = 'Componentes/Armazenamento/imagens/' . $nomeArquivo;
 
 // Inserir artista
-$stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, ?, ?, ?)");
-mysqli_stmt_bind_param($stmt, "ssss", $nome, $cidade, $imagemPath, $descricao);
+$stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao, artista_link) VALUES (?, ?, ?, ?, ?)");
+mysqli_stmt_bind_param($stmt, "sssss", $nome, $cidade, $imagemPath, $descricao, $link);
 
 if (mysqli_stmt_execute($stmt)) {
     $artista_id = mysqli_insert_id($conexao);
@@ -70,8 +82,15 @@ if (mysqli_stmt_execute($stmt)) {
     
     $stmt_user = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_cidade, usuario_descricao, usuario_foto, artista_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt_user, "ssssssi", $email, $senha_hash, $nome, $cidade, $descricao, $imagemPath, $artista_id);
-    mysqli_stmt_execute($stmt_user);
-    
+
+    if (!mysqli_stmt_execute($stmt_user)) {
+        // E-mail gerado colidiu com um já existente (ex.: nomes que normalizam igual);
+        // usa o id do artista para garantir unicidade antes de desistir.
+        $email = strtolower(str_replace(' ', '', $nome)) . $artista_id . '@artista.local';
+        mysqli_stmt_bind_param($stmt_user, "ssssssi", $email, $senha_hash, $nome, $cidade, $descricao, $imagemPath, $artista_id);
+        mysqli_stmt_execute($stmt_user);
+    }
+
     echo json_encode(['success' => true, 'message' => 'Artista adicionado com sucesso']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Erro ao adicionar artista']);

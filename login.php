@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<script src="Componentes/configuracoes/JS/login.js" defer></script>
+<script src="Componentes/configuracoes/JS/login.js?v=<?php echo time(); ?>" defer></script>
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 async function loadRandomMusics() {
     const container = document.getElementById('cardContainer');
-    if (!container || window.location.pathname.includes('artistas.php')) return;
+    // artistas.php e recomendados.php também usam #cardContainer, mas com listas
+    // já renderizadas pelo PHP (artistas / mais visualizadas) — não sobrescrever.
+    if (!container || document.querySelector('main.page-artistas')) return;
     
     try {
         const response = await fetch('Componentes/páginas/php/buscarMusicasAleatorias.php');
@@ -33,13 +35,12 @@ async function loadRandomMusics() {
     }
 }
 
-// Apenas executar na página principal
-if (window.location.pathname.includes('index.php') || window.location.pathname.endsWith('/')) {
-    document.addEventListener('DOMContentLoaded', loadRandomMusics);
-    
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-            loadRandomMusics();
-        }
-    });
-}
+// loadRandomMusics() já verifica se #cardContainer existe e não é o da página
+// de artistas/recomendados, então basta tentar em qualquer página.
+document.addEventListener('DOMContentLoaded', loadRandomMusics);
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        loadRandomMusics();
+    }
+});

@@ -5,6 +5,7 @@ class MusicPlayer {
         this.currentTime = document.getElementById('currentTime');
         this.totalTime = document.getElementById('totalTime');
         this.playBtn = document.getElementById('playBtn');
+        this.stopBtn = document.getElementById('stopBtn');
         this.rewindBtn = document.getElementById('rewindBtn');
         this.forwardBtn = document.getElementById('forwardBtn');
         this.volumeSlider = document.getElementById('volumeSlider');
@@ -14,25 +15,56 @@ class MusicPlayer {
         this.playStatus = document.getElementById('playStatus');
         this.previousVolume = 50;
         this.isMuted = false;
-        
+        this.musicaId = null;
+        this.STORAGE_KEY = 'ressonancePlayerState';
+
         this.init();
     }
-    
+
     init() {
         if (!this.audio) return;
-        
+
         this.audio.addEventListener('loadedmetadata', () => this.updateTotalTime());
         this.audio.addEventListener('timeupdate', () => this.updateProgress());
         this.audio.addEventListener('ended', () => this.onSongEnd());
-        
+        // O ícone e o status só mudam quando o áudio realmente começa/para
+        // de tocar (eventos nativos), nunca por suposição otimista no
+        // momento do clique — assim nunca ficam fora de sincronia com o
+        // estado real, mesmo se play() falhar ou demorar para responder.
+        this.audio.addEventListener('play', () => { this.onPlay(); this.saveState(); });
+        this.audio.addEventListener('pause', () => { this.onPause(); this.saveState(); });
+
+        // Sem música carregada ainda: play/retroceder/avançar ficam
+        // bloqueados até uma música ser selecionada.
+        this.setControlsEnabled(false);
+
+        // Guarda a posição/estado periodicamente para conseguir retomar
+        // a mesma música ao navegar para outra página (o <audio> é
+        // recriado a cada carregamento, já que o site não é uma SPA).
+        this._lastSaveAt = 0;
+        this.audio.addEventListener('timeupdate', () => {
+            const now = Date.now();
+            if (now - this._lastSaveAt > 2000) {
+                this._lastSaveAt = now;
+                this.saveState();
+            }
+        });
+        window.addEventListener('beforeunload', () => this.saveState());
+
+        this.restoreState();
+
         if (this.progressBar) {
             this.progressBar.addEventListener('click', (e) => this.seekTo(e));
         }
-        
+
         if (this.playBtn) {
             this.playBtn.addEventListener('click', () => this.togglePlay());
         }
-        
+
+        if (this.stopBtn) {
+            this.stopBtn.addEventListener('click', () => this.stopMusic());
+        }
+
         if (this.volumeSlider) {
             this.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
             this.setVolume(this.volumeSlider.value);
@@ -51,30 +83,103 @@ class MusicPlayer {
         }
     }
     
-    loadSong(src, title, artist) {
+    loadSong(src, title, artist, musicaId) {
         if (!this.audio) return;
-        
+
         this.audio.src = src;
+        this.musicaId = musicaId || null;
         const songTitle = document.getElementById('songTitle');
         const songArtist = document.getElementById('songArtist');
-        
+
         if (songTitle) songTitle.textContent = title || 'Música';
         if (songArtist) songArtist.textContent = artist || 'Artista';
-        
+
+        this.setControlsEnabled(true);
         this.updateTotalTime();
         this.updatePlayStatus(false);
     }
-    
+
+    saveState() {
+        if (!this.audio.src) {
+            try { localStorage.removeItem(this.STORAGE_KEY); } catch (e) {}
+            return;
+        }
+        const songTitle = document.getElementById('songTitle');
+        const songArtist = document.getElementById('songArtist');
+        const state = {
+            src: this.audio.src,
+            title: songTitle ? songTitle.textContent : '',
+            artist: songArtist ? songArtist.textContent : '',
+            musicaId: this.musicaId,
+            currentTime: this.audio.currentTime,
+            paused: this.audio.paused,
+        };
+        try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    restoreState() {
+        let state;
+        try { state = JSON.parse(localStorage.getItem(this.STORAGE_KEY)); } catch (e) { return; }
+        if (!state || !state.src) return;
+
+        this.loadSong(state.src, state.title, state.artist, state.musicaId);
+        this.audio.addEventListener('loadedmetadata', () => {
+            this.audio.currentTime = state.currentTime || 0;
+            if (!state.paused) this.audio.play().catch(() => {});
+        }, { once: true });
+
+        if (state.musicaId && typeof setMusicaAtual === 'function') {
+            setMusicaAtual(state.musicaId);
+        }
+    }
+
+    setControlsEnabled(enabled) {
+        [this.playBtn, this.stopBtn, this.rewindBtn, this.forwardBtn].forEach((btn) => {
+            if (btn) btn.disabled = !enabled;
+        });
+    }
+
+    stopMusic() {
+        if (!this.audio.src) return;
+
+        this.audio.pause();
+        this.audio.removeAttribute('src');
+        this.audio.load();
+        this.musicaId = null;
+
+        const songTitle = document.getElementById('songTitle');
+        const songArtist = document.getElementById('songArtist');
+        if (songTitle) songTitle.textContent = 'Selecione uma música';
+        if (songArtist) songArtist.textContent = 'Artista';
+
+        this.playBtn.classList.add('paused');
+        this.progressBar.style.setProperty('--progress', '0%');
+        if (this.currentTime) this.currentTime.textContent = '0:00';
+        if (this.totalTime) this.totalTime.textContent = '0:00';
+
+        this.setControlsEnabled(false);
+        this.updatePlayStatus(false);
+        this.saveState();
+    }
+
     togglePlay() {
+        if (!this.audio.src) return;
+
         if (this.audio.paused) {
-            this.audio.play();
-            this.playBtn.classList.remove('paused');
-            this.updatePlayStatus(true);
+            this.audio.play().catch(() => {});
         } else {
             this.audio.pause();
-            this.playBtn.classList.add('paused');
-            this.updatePlayStatus(false);
         }
+    }
+
+    onPlay() {
+        this.playBtn.classList.remove('paused');
+        this.updatePlayStatus(true);
+    }
+
+    onPause() {
+        this.playBtn.classList.add('paused');
+        this.updatePlayStatus(false);
     }
     
     updateProgress() {
@@ -104,9 +209,8 @@ class MusicPlayer {
     }
     
     onSongEnd() {
-        this.playBtn.classList.add('paused');
+        this.onPause();
         this.progressBar.style.setProperty('--progress', '0%');
-        this.updatePlayStatus(false);
     }
     
     setVolume(value) {
@@ -117,10 +221,9 @@ class MusicPlayer {
             this.volumePercentage.textContent = `${value}%`;
         }
         
-        // Atualizar cor do slider baseado no volume
+        // Atualizar preenchimento do slider baseado no volume
         if (this.volumeSlider) {
-            const percentage = (value / 100) * 100;
-            this.volumeSlider.style.background = `linear-gradient(to right, #ffd700 0%, #ffd700 ${percentage}%, rgba(255, 215, 0, 0.2) ${percentage}%, rgba(255, 215, 0, 0.2) 100%)`;
+            this.volumeSlider.style.setProperty('--volume', `${value}%`);
         }
         
         this.updateVolumeIcon(value);
@@ -207,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function playMusic(src, title, artist, musicaId) {
     if (window.musicPlayer) {
-        window.musicPlayer.loadSong(src, title, artist);
+        window.musicPlayer.loadSong(src, title, artist, musicaId);
         window.musicPlayer.togglePlay();
         
         // Definir música atual para curtidas

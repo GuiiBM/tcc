@@ -1,0 +1,9 @@
+<?php
+// Copie este arquivo para dbConfig.php e preencha com as credenciais do
+// banco de dados MySQL da sua hospedagem (fornecidas pelo painel dela).
+// Sem esse arquivo, o site usa os valores padrão do XAMPP local.
+define('DB_HOST', 'localhost');
+define('DB_USER', 'usuario_do_banco');
+define('DB_PASS', 'senha_do_banco');
+define('DB_NAME', 'nome_do_banco');
+?>

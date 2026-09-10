@@ -8,6 +8,7 @@ redirecionarSeNaoAdmin();
 include "Componentes/páginas/php/DBConection.php";
 include "Componentes/páginas/php/funcoesDuplicados.php";
 include "Componentes/páginas/head.php";
+include "Componentes/páginas/header.php";
 
 // Processar combinação de usuários
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['combinar_usuarios'])) {
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vincular_artista'])) 
     }
 }
 
-$threshold = isset($_GET['threshold']) ? intval($_GET['threshold']) : 0;
+$threshold = isset($_GET['threshold']) ? intval($_GET['threshold']) : 70;
 
 // Buscar todos os usuários
 function buscarTodosUsuarios($conexao) {
@@ -92,19 +93,18 @@ function buscarParesSimilares($conexao, $threshold = 0) {
 }
 ?>
 
-<body>
-<div style='max-width: 1200px; margin: 50px auto; padding: 30px; background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9)); border-radius: 20px; color: #f0f6fc; border: 2px solid rgba(255, 215, 0, 0.3);'>
+<div style='max-width: 1200px; margin: 50px auto; padding: 30px; background: var(--bg-surface); border-radius: 20px; color: var(--text-primary); border: 2px solid var(--border-accent);'>
 
-<h2 style='color: #ffd700; text-align: center; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);'>👥 Gerenciar Usuários Duplicados</h2>
+<h2 style='color: var(--accent); text-align: center; margin-bottom: 30px;'>👥 Gerenciar Usuários Duplicados</h2>
 
 <?php if (isset($mensagem)): ?>
-<div style='background: rgba(76, 175, 80, 0.1); padding: 15px; margin: 20px 0; border-radius: 10px; border-left: 4px solid #4CAF50; color: #4CAF50;'>
+<div style='background: var(--success-soft); padding: 15px; margin: 20px 0; border-radius: 10px; border-left: 4px solid var(--success); color: var(--success);'>
     <?php echo $mensagem; ?>
 </div>
 <?php endif; ?>
 
 <?php if (isset($erro)): ?>
-<div style='background: rgba(244, 67, 54, 0.1); padding: 15px; margin: 20px 0; border-radius: 10px; border-left: 4px solid #f44336; color: #f44336;'>
+<div style='background: var(--danger-soft); padding: 15px; margin: 20px 0; border-radius: 10px; border-left: 4px solid var(--danger); color: var(--danger);'>
     <?php echo $erro; ?>
 </div>
 <?php endif; ?>
@@ -120,7 +120,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
 
 <!-- Seção de Usuários Duplicados -->
 <div id="secaoDuplicados">
-    <h3 style='color: #00d9ff; margin-bottom: 20px;'>🔍 Usuários Potencialmente Duplicados</h3>
+    <h3 style='color: var(--accent-info); margin-bottom: 20px;'>🔍 Usuários Potencialmente Duplicados</h3>
     
     <?php
     $duplicados = buscarUsuariosSimilares($conexao, $threshold);
@@ -128,8 +128,8 @@ function buscarParesSimilares($conexao, $threshold = 0) {
     ?>
     <div style='background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 15px;'>
         <div style='text-align: center; margin-bottom: 20px;'>
-            <p style='color: #00d9ff;'>Encontrados <strong><?php echo count($duplicados); ?></strong> pares de usuários similares (threshold: <?php echo $threshold; ?>%)</p>
-            <p style='color: #8b949e; font-size: 0.9rem;'>Detectando: nomes idênticos, emails idênticos, nomes similares e cidades similares</p>
+            <p style='color: var(--accent-info);'>Encontrados <strong><?php echo count($duplicados); ?></strong> pares de usuários similares (threshold: <?php echo $threshold; ?>%)</p>
+            <p style='color: var(--text-secondary); font-size: 0.9rem;'>Detectando: nomes idênticos, emails idênticos, nomes similares e cidades similares</p>
         </div>
         <?php foreach ($duplicados as $dup): ?>
         <div style='background: rgba(255, 255, 255, 0.05); padding: 15px; margin: 10px 0; border-radius: 10px; border-left: 4px solid #ff6b6b;'>
@@ -140,7 +140,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             </div>
             <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 20px;'>
                 <div>
-                    <h4 style='color: #ffd700; margin: 0 0 10px 0;'>Usuário 1</h4>
+                    <h4 style='color: var(--accent); margin: 0 0 10px 0;'>Usuário 1</h4>
                     <p><strong>Nome:</strong> <?php echo htmlspecialchars($dup['usuario1']['usuario_nome']); ?></p>
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($dup['usuario1']['usuario_email']); ?></p>
                     <p><strong>Cidade:</strong> <?php echo htmlspecialchars($dup['usuario1']['usuario_cidade']); ?></p>
@@ -148,7 +148,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
                     <p><strong>Curtidas:</strong> <?php echo contarCurtidas($conexao, $dup['usuario1']['usuario_id']); ?></p>
                 </div>
                 <div>
-                    <h4 style='color: #ffd700; margin: 0 0 10px 0;'>Usuário 2</h4>
+                    <h4 style='color: var(--accent); margin: 0 0 10px 0;'>Usuário 2</h4>
                     <p><strong>Nome:</strong> <?php echo htmlspecialchars($dup['usuario2']['usuario_nome']); ?></p>
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($dup['usuario2']['usuario_email']); ?></p>
                     <p><strong>Cidade:</strong> <?php echo htmlspecialchars($dup['usuario2']['usuario_cidade']); ?></p>
@@ -158,7 +158,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             </div>
             <div style='text-align: center; margin-top: 15px;'>
                 <a href="previewCombinacao.php?principal=<?php echo $dup['usuario1']['usuario_id']; ?>&secundario=<?php echo $dup['usuario2']['usuario_id']; ?>" 
-                   class="btn-neon" style='background: linear-gradient(135deg, #4CAF50, #45a049); text-decoration: none; display: inline-block; margin-right: 10px;'>
+                   class="btn-neon" style='background: linear-gradient(135deg, var(--success), #45a049); text-decoration: none; display: inline-block; margin-right: 10px;'>
                     🔍 Manter Usuário 1
                 </a>
                 <a href="previewCombinacao.php?principal=<?php echo $dup['usuario2']['usuario_id']; ?>&secundario=<?php echo $dup['usuario1']['usuario_id']; ?>" 
@@ -170,7 +170,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
         <?php endforeach; ?>
     </div>
     <?php else: ?>
-    <div style='background: rgba(76, 175, 80, 0.1); padding: 20px; border-radius: 10px; text-align: center; color: #4CAF50;'>
+    <div style='background: var(--success-soft); padding: 20px; border-radius: 10px; text-align: center; color: var(--success);'>
         ✅ Nenhum usuário duplicado encontrado automaticamente!
     </div>
     <?php endif; ?>
@@ -178,7 +178,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
 
 <!-- Seção de Todos os Usuários -->
 <div id="secaoTodos" style="display: none;">
-    <h3 style='color: #00d9ff; margin-bottom: 20px;'>👥 Todos os Usuários Cadastrados</h3>
+    <h3 style='color: var(--accent-info); margin-bottom: 20px;'>👥 Todos os Usuários Cadastrados</h3>
     
     <div style='background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 15px;'>
         <?php
@@ -189,7 +189,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             <?php while ($usuario = mysqli_fetch_assoc($todosUsuarios)): ?>
             <div style='background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; display: grid; grid-template-columns: 1fr auto; align-items: center;'>
                 <div>
-                    <h4 style='color: #ffd700; margin: 0 0 8px 0;'><?php echo htmlspecialchars($usuario['usuario_nome']); ?></h4>
+                    <h4 style='color: var(--accent); margin: 0 0 8px 0;'><?php echo htmlspecialchars($usuario['usuario_nome']); ?></h4>
                     <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.9rem;'>
                         <p style='margin: 0;'><strong>Email:</strong> <?php echo htmlspecialchars($usuario['usuario_email']); ?></p>
                         <p style='margin: 0;'><strong>Cidade:</strong> <?php echo htmlspecialchars($usuario['usuario_cidade'] ?: 'Não informado'); ?></p>
@@ -201,7 +201,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
                 </div>
                 <div style='text-align: center;'>
                     <button onclick="selecionarUsuario('<?php echo $usuario['usuario_id']; ?>', '<?php echo addslashes($usuario['usuario_nome']); ?>')" 
-                            class="btn-neon" style='background: linear-gradient(135deg, #00d9ff, #0099cc); padding: 8px 15px; font-size: 0.8rem;'>
+                            class="btn-neon" style='background: linear-gradient(135deg, var(--accent-info), #0099cc); padding: 8px 15px; font-size: 0.8rem;'>
                         🎯 Selecionar
                     </button>
                 </div>
@@ -209,18 +209,18 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             <?php endwhile; ?>
         </div>
         <?php else: ?>
-        <p style='text-align: center; color: #8b949e;'>Nenhum usuário encontrado.</p>
+        <p style='text-align: center; color: var(--text-secondary);'>Nenhum usuário encontrado.</p>
         <?php endif; ?>
     </div>
 </div>
 
 <!-- Seção de Vinculação Artista-Usuário -->
 <div id="secaoVincular" style="display: none;">
-    <h3 style='color: #00d9ff; margin-bottom: 20px;'>🔗 Vincular Artistas e Usuários</h3>
+    <h3 style='color: var(--accent-info); margin-bottom: 20px;'>🔗 Vincular Artistas e Usuários</h3>
     
     <!-- Pares Similares -->
     <div style='background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 15px; margin-bottom: 30px;'>
-        <h4 style='color: #ffd700; margin-bottom: 15px;'>🎯 Pares Similares Detectados</h4>
+        <h4 style='color: var(--accent); margin-bottom: 15px;'>🎯 Pares Similares Detectados</h4>
         <?php
         $paresSimilares = buscarParesSimilares($conexao, $threshold);
         if (count($paresSimilares) > 0):
@@ -229,24 +229,24 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             <?php foreach ($paresSimilares as $par): ?>
             <div style='background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center; gap: 15px;'>
                 <div>
-                    <h5 style='color: #4CAF50; margin: 0 0 5px 0;'>Usuário</h5>
+                    <h5 style='color: var(--success); margin: 0 0 5px 0;'>Usuário</h5>
                     <p style='margin: 0; font-weight: bold;'><?php echo htmlspecialchars($par['usuario_nome']); ?></p>
-                    <p style='margin: 0; font-size: 0.9rem; color: #8b949e;'><?php echo htmlspecialchars($par['usuario_email']); ?></p>
+                    <p style='margin: 0; font-size: 0.9rem; color: var(--text-secondary);'><?php echo htmlspecialchars($par['usuario_email']); ?></p>
                 </div>
-                <div style='text-align: center; color: #ffd700;'>
+                <div style='text-align: center; color: var(--accent);'>
                     <div style='font-size: 1.2rem;'>↔️</div>
                     <div style='font-size: 0.8rem;'><?php echo round($par['similaridade']); ?>%</div>
                 </div>
                 <div>
                     <h5 style='color: #2196F3; margin: 0 0 5px 0;'>Artista</h5>
                     <p style='margin: 0; font-weight: bold;'><?php echo htmlspecialchars($par['artista_nome']); ?></p>
-                    <p style='margin: 0; font-size: 0.9rem; color: #8b949e;'><?php echo htmlspecialchars($par['artista_cidade'] ?: 'Sem cidade'); ?></p>
+                    <p style='margin: 0; font-size: 0.9rem; color: var(--text-secondary);'><?php echo htmlspecialchars($par['artista_cidade'] ?: 'Sem cidade'); ?></p>
                 </div>
                 <div>
                     <form method="POST" style='display: inline;'>
                         <input type="hidden" name="usuario_id" value="<?php echo $par['usuario_id']; ?>">
                         <input type="hidden" name="artista_id" value="<?php echo $par['artista_id']; ?>">
-                        <button type="submit" name="vincular_artista" class="btn-neon" style='background: linear-gradient(135deg, #4CAF50, #45a049); padding: 8px 15px; font-size: 0.8rem;'>
+                        <button type="submit" name="vincular_artista" class="btn-neon" style='background: linear-gradient(135deg, var(--success), #45a049); padding: 8px 15px; font-size: 0.8rem;'>
                             🔗 Vincular
                         </button>
                     </form>
@@ -255,17 +255,17 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             <?php endforeach; ?>
         </div>
         <?php else: ?>
-        <p style='text-align: center; color: #8b949e;'>Nenhum par similar encontrado com o threshold atual.</p>
+        <p style='text-align: center; color: var(--text-secondary);'>Nenhum par similar encontrado com o threshold atual.</p>
         <?php endif; ?>
     </div>
     
     <!-- Vinculação Manual -->
     <div style='background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 15px;'>
-        <h4 style='color: #ffd700; margin-bottom: 15px;'>🔧 Vinculação Manual</h4>
+        <h4 style='color: var(--accent); margin-bottom: 15px;'>🔧 Vinculação Manual</h4>
         <form method="POST" style='display: grid; grid-template-columns: 1fr 1fr auto; gap: 20px; align-items: end;'>
             <div>
-                <label style='color: #ffd700; font-weight: bold; display: block; margin-bottom: 10px;'>Usuário sem Artista:</label>
-                <select name="usuario_id" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid rgba(255, 215, 0, 0.3); background: rgba(0, 0, 0, 0.5); color: #f0f6fc;'>
+                <label style='color: var(--accent); font-weight: bold; display: block; margin-bottom: 10px;'>Usuário sem Artista:</label>
+                <select name="usuario_id" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border-accent); background: rgba(0, 0, 0, 0.5); color: var(--text-primary);'>
                     <option value="">Selecione um usuário</option>
                     <?php
                     $usuariosSemArtista = buscarUsuariosSemArtista($conexao);
@@ -279,8 +279,8 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             </div>
             
             <div>
-                <label style='color: #ffd700; font-weight: bold; display: block; margin-bottom: 10px;'>Artista sem Usuário:</label>
-                <select name="artista_id" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid rgba(255, 215, 0, 0.3); background: rgba(0, 0, 0, 0.5); color: #f0f6fc;'>
+                <label style='color: var(--accent); font-weight: bold; display: block; margin-bottom: 10px;'>Artista sem Usuário:</label>
+                <select name="artista_id" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border-accent); background: rgba(0, 0, 0, 0.5); color: var(--text-primary);'>
                     <option value="">Selecione um artista</option>
                     <?php
                     $artistasSemUsuario = buscarArtistasSemUsuario($conexao);
@@ -304,13 +304,13 @@ function buscarParesSimilares($conexao, $threshold = 0) {
 
 <!-- Seção de Combinação Manual -->
 <div id="secaoManual" style="display: none;">
-    <h3 style='color: #00d9ff; margin-bottom: 20px;'>🔧 Combinação Manual de Usuários</h3>
+    <h3 style='color: var(--accent-info); margin-bottom: 20px;'>🔧 Combinação Manual de Usuários</h3>
     
     <form method="POST" style='background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 15px;'>
         <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px;'>
             <div>
-                <label style='color: #ffd700; font-weight: bold; display: block; margin-bottom: 10px;'>Principal (será mantido/vinculado):</label>
-                <select name="usuario_principal" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid rgba(255, 215, 0, 0.3); background: rgba(0, 0, 0, 0.5); color: #f0f6fc;'>
+                <label style='color: var(--accent); font-weight: bold; display: block; margin-bottom: 10px;'>Principal (será mantido/vinculado):</label>
+                <select name="usuario_principal" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border-accent); background: rgba(0, 0, 0, 0.5); color: var(--text-primary);'>
                     <option value="">Selecione o principal</option>
                     <?php
                     $todosItens = buscarTodosUsuariosDetalhado($conexao);
@@ -324,8 +324,8 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             </div>
             
             <div>
-                <label style='color: #ffd700; font-weight: bold; display: block; margin-bottom: 10px;'>Secundário (será combinado):</label>
-                <select name="usuario_secundario" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid rgba(255, 215, 0, 0.3); background: rgba(0, 0, 0, 0.5); color: #f0f6fc;'>
+                <label style='color: var(--accent); font-weight: bold; display: block; margin-bottom: 10px;'>Secundário (será combinado):</label>
+                <select name="usuario_secundario" required style='width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border-accent); background: rgba(0, 0, 0, 0.5); color: var(--text-primary);'>
                     <option value="">Selecione o secundário</option>
                     <?php
                     $todosItens = buscarTodosUsuariosDetalhado($conexao);
@@ -340,7 +340,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
         </div>
         
         <div style='text-align: center;'>
-            <button type="button" onclick="previewCombinacao()" class="btn-neon" style='background: linear-gradient(135deg, #00d9ff, #0099cc); padding: 15px 30px; margin-right: 15px;'>
+            <button type="button" onclick="previewCombinacao()" class="btn-neon" style='background: linear-gradient(135deg, var(--accent-info), #0099cc); padding: 15px 30px; margin-right: 15px;'>
                 🔍 Preview da Combinação
             </button>
             <button type="submit" name="combinar_usuarios" class="btn-neon" style='background: linear-gradient(135deg, #ff6b6b, #ee5a52); padding: 15px 30px;'>
@@ -349,9 +349,9 @@ function buscarParesSimilares($conexao, $threshold = 0) {
         </div>
     </form>
     
-    <div style='background: rgba(255, 193, 7, 0.1); padding: 20px; margin-top: 20px; border-radius: 10px; border-left: 4px solid #FFC107;'>
-        <h4 style='color: #FFC107; margin-top: 0;'>⚠️ Atenção:</h4>
-        <ul style='color: #f0f6fc; margin: 0;'>
+    <div style='background: var(--warning-soft); padding: 20px; margin-top: 20px; border-radius: 10px; border-left: 4px solid var(--warning);'>
+        <h4 style='color: var(--warning); margin-top: 0;'>⚠️ Atenção:</h4>
+        <ul style='color: var(--text-primary); margin: 0;'>
             <li><strong>Usuário + Usuário:</strong> Transfere curtidas, preserva perfil principal</li>
             <li><strong>Artista + Artista:</strong> Atualiza referências, remove duplicado</li>
             <li><strong>Usuário + Artista:</strong> Vincula perfis, cria conexão</li>
@@ -362,18 +362,18 @@ function buscarParesSimilares($conexao, $threshold = 0) {
 
 <!-- Seção de Configurações -->
 <div id="secaoConfiguracao" style="display: none;">
-    <h3 style='color: #00d9ff; margin-bottom: 20px;'>⚙️ Configurações de Detecção</h3>
+    <h3 style='color: var(--accent-info); margin-bottom: 20px;'>⚙️ Configurações de Detecção</h3>
     
     <div style='background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 15px;'>
         <form method="GET" style='text-align: center;'>
             <div style='margin-bottom: 20px;'>
-                <label style='color: #ffd700; font-weight: bold; display: block; margin-bottom: 10px;'>Threshold de Similaridade (%):</label>
+                <label style='color: var(--accent); font-weight: bold; display: block; margin-bottom: 10px;'>Threshold de Similaridade (%):</label>
                 <input type="range" name="threshold" min="0" max="100" value="<?php echo $threshold; ?>" 
                        style='width: 300px; margin: 10px;' oninput="updateThresholdValue(this.value)">
-                <div style='color: #00d9ff; font-size: 1.2rem; margin-top: 10px;'>
+                <div style='color: var(--accent-info); font-size: 1.2rem; margin-top: 10px;'>
                     <span id="thresholdValue"><?php echo $threshold; ?></span>%
                 </div>
-                <p style='color: #8b949e; font-size: 0.9rem; margin-top: 10px;'>
+                <p style='color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px;'>
                     0% = mostra todos os pares | 100% = apenas duplicatas exatas<br>
                     Valores baixos mostram mais candidatos para análise manual
                 </p>
@@ -384,8 +384,8 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             </button>
         </form>
         
-        <div style='margin-top: 30px; padding: 20px; background: rgba(255, 193, 7, 0.1); border-radius: 10px; border-left: 4px solid #FFC107;'>
-            <h4 style='color: #FFC107; margin-top: 0;'>📊 Estatísticas do Sistema:</h4>
+        <div style='margin-top: 30px; padding: 20px; background: var(--warning-soft); border-radius: 10px; border-left: 4px solid var(--warning);'>
+            <h4 style='color: var(--warning); margin-top: 0;'>📊 Estatísticas do Sistema:</h4>
             <?php
             $total_usuarios = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT COUNT(*) as total FROM usuarios"))['total'];
             $total_duplicados = count(buscarUsuariosSimilares($conexao, $threshold));
@@ -393,16 +393,16 @@ function buscarParesSimilares($conexao, $threshold = 0) {
             ?>
             <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;'>
                 <div style='text-align: center; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px;'>
-                    <div style='color: #00d9ff; font-size: 2rem; font-weight: bold;'><?php echo $total_usuarios; ?></div>
-                    <div style='color: #f0f6fc;'>Total de Usuários</div>
+                    <div style='color: var(--accent-info); font-size: 2rem; font-weight: bold;'><?php echo $total_usuarios; ?></div>
+                    <div style='color: var(--text-primary);'>Total de Usuários</div>
                 </div>
                 <div style='text-align: center; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px;'>
                     <div style='color: #ff6b6b; font-size: 2rem; font-weight: bold;'><?php echo $total_duplicados; ?></div>
-                    <div style='color: #f0f6fc;'>Duplicados Encontrados</div>
+                    <div style='color: var(--text-primary);'>Duplicados Encontrados</div>
                 </div>
                 <div style='text-align: center; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px;'>
-                    <div style='color: #4CAF50; font-size: 2rem; font-weight: bold;'><?php echo $total_curtidas; ?></div>
-                    <div style='color: #f0f6fc;'>Total de Curtidas</div>
+                    <div style='color: var(--success); font-size: 2rem; font-weight: bold;'><?php echo $total_curtidas; ?></div>
+                    <div style='color: var(--text-primary);'>Total de Curtidas</div>
                 </div>
             </div>
         </div>

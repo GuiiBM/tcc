@@ -23,24 +23,16 @@
                 }
                 
                 if (isset($_SESSION['usuario_id'])): ?>
-                    <span class="navbar-text me-3" style="color: #ffd700; font-size: 14px; white-space: nowrap; text-align: right; display: inline-block;">Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>!</span>
+                    <span class="navbar-text navbar-user me-3">Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>!</span>
                     <?php if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin'): ?>
-                        <a href="admin.php" class="btn btn-outline-warning me-2" style="white-space: nowrap;">Admin</a>
+                        <a href="admin.php" class="btn btn-outline-warning me-2">Admin</a>
                     <?php else: ?>
-                        <a href="músicas.php" 
-                            class="btn btn-lg btn-outline-warning me-2" 
-                            style="white-space: nowrap; 
-                                    display: flex !important; 
-                                    justify-content: center !important; 
-                                    align-items: center !important; 
-                                    padding: 15px 20px;">
-                                    Músicas
-                        </a>
+                        <a href="músicas.php" class="btn btn-outline-warning me-2">Músicas</a>
                     <?php endif; ?>
-                    <a href="logout.php" class="btn btn-outline-danger" style="white-space: nowrap;">Sair</a>
+                    <a href="logout.php" class="btn btn-outline-danger">Sair</a>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-light me-2" style="white-space: nowrap;">Login</a>
-                    <a href="login.php" class="btn btn-warning" style="white-space: nowrap;">Sign-UP</a>
+                    <a href="login.php" class="btn btn-outline-light me-2">Login</a>
+                    <a href="login.php" class="btn btn-warning">Sign-UP</a>
                 <?php endif; ?>
             </div>
         </div>

@@ -7,8 +7,8 @@ class ArtistPopup {
     createPopupHTML() {
         const popupHTML = `
             <div id="artistPopup" class="artist-popup">
-                <div class="popup-content">
-                    <button class="close-btn" id="closePopup">&times;</button>
+                <div class="artist-popup-content">
+                    <button class="artist-popup-close" id="closePopup">&times;</button>
                     <div class="popup-body">
                         <h2 id="artistName"></h2>
                         <div class="artist-info">
@@ -46,19 +46,19 @@ class ArtistPopup {
         });
     }
     
-    async openPopup(artistName) {
-        console.log('Abrindo popup para:', artistName);
-        
+    async openPopup(artistId, artistName) {
+        console.log('Abrindo popup para:', artistName, '(id:', artistId, ')');
+
         // Mostrar popup imediatamente com dados básicos
         document.getElementById('artistName').textContent = artistName;
         document.getElementById('artistPopup').classList.add('show');
         document.body.style.overflow = 'hidden';
-        
+
         try {
             const response = await fetch('Componentes/páginas/php/getArtistData.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `artist=${encodeURIComponent(artistName)}`
+                body: `artist_id=${encodeURIComponent(artistId)}`
             });
             
             const data = await response.json();
@@ -122,7 +122,13 @@ class ArtistPopup {
         }
         document.getElementById('artistDescription').textContent = description;
         
-        document.getElementById('artistLink').href = artist.link || '#';
+        const artistLink = document.getElementById('artistLink');
+        if (artist.link) {
+            artistLink.href = artist.link;
+            artistLink.hidden = false;
+        } else {
+            artistLink.hidden = true;
+        }
         
         const songsList = document.getElementById('songsList');
         songsList.innerHTML = '';
@@ -196,17 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll(selector);
         cards.forEach(card => {
             card.addEventListener('click', function() {
+                const artistId = this.dataset.artistId;
                 const h3Element = this.querySelector('h3');
                 const h2Element = this.querySelector('h2');
-                
-                if (h3Element) {
-                    const artistName = h3Element.textContent;
-                    console.log('Clicou no artista:', artistName);
-                    window.artistPopup.openPopup(artistName);
-                } else if (h2Element) {
-                    const artistName = h2Element.textContent;
-                    console.log('Clicou no artista:', artistName);
-                    window.artistPopup.openPopup(artistName);
+                const artistName = h3Element ? h3Element.textContent : (h2Element ? h2Element.textContent : '');
+
+                if (artistId && artistName) {
+                    console.log('Clicou no artista:', artistName, 'id:', artistId);
+                    window.artistPopup.openPopup(artistId, artistName);
                 }
             });
         });

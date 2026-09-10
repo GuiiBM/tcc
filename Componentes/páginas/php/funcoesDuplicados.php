@@ -2,10 +2,13 @@
 function calcularSimilaridade($str1, $str2) {
     $str1 = strtolower(trim($str1));
     $str2 = strtolower(trim($str2));
-    
+
+    // Campos vazios não são "similares" entre si
+    if ($str1 === '' || $str2 === '') return 0;
+
     // Similaridade exata
     if ($str1 === $str2) return 100;
-    
+
     // Similaridade usando similar_text
     similar_text($str1, $str2, $percent);
     return $percent;
@@ -102,25 +105,30 @@ function contarCurtidas($conexao, $usuario_id) {
 function combinarUsuarios($conexao, $usuario_principal, $usuario_secundario) {
     $principal_eh_artista = strpos($usuario_principal, 'A') === 0;
     $secundario_eh_artista = strpos($usuario_secundario, 'A') === 0;
-    
+
     if ($principal_eh_artista && $secundario_eh_artista) {
-        // Artista + Artista
+        // Artista + Artista: migrar músicas do artista secundário antes de removê-lo
+        // (artista_secundario tem ON DELETE CASCADE em musica.musica_artista)
         $artista_principal = intval(substr($usuario_principal, 1));
         $artista_secundario = intval(substr($usuario_secundario, 1));
-        
+
+        mysqli_query($conexao, "UPDATE musica SET musica_artista = $artista_principal WHERE musica_artista = $artista_secundario");
         mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_principal WHERE artista_id = $artista_secundario");
         mysqli_query($conexao, "DELETE FROM artista WHERE artista_id = $artista_secundario");
-        
+
     } else if (!$principal_eh_artista && !$secundario_eh_artista) {
         // Usuário + Usuário
         $usuario_principal = intval($usuario_principal);
         $usuario_secundario = intval($usuario_secundario);
-        
+
+        // Remove curtidas do secundário que colidiriam com a chave única (musica_id, usuario_id)
+        // do principal antes de reatribuir o restante, para não perder o UPDATE por erro silencioso
+        mysqli_query($conexao, "DELETE c2 FROM curtidas c2 INNER JOIN curtidas c1 ON c1.musica_id = c2.musica_id AND c1.usuario_id = $usuario_principal WHERE c2.usuario_id = $usuario_secundario");
         mysqli_query($conexao, "UPDATE curtidas SET usuario_id = $usuario_principal WHERE usuario_id = $usuario_secundario");
-        
+
         $result = mysqli_query($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = $usuario_principal");
         $principal_data = mysqli_fetch_assoc($result);
-        
+
         if (!$principal_data['artista_id']) {
             $result2 = mysqli_query($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = $usuario_secundario");
             $secundario_data = mysqli_fetch_assoc($result2);
@@ -128,25 +136,26 @@ function combinarUsuarios($conexao, $usuario_principal, $usuario_secundario) {
                 mysqli_query($conexao, "UPDATE usuarios SET artista_id = {$secundario_data['artista_id']} WHERE usuario_id = $usuario_principal");
             }
         }
-        
+
         mysqli_query($conexao, "DELETE FROM usuarios WHERE usuario_id = $usuario_secundario");
-        
+
     } else if ($principal_eh_artista && !$secundario_eh_artista) {
-        // Artista + Usuário
+        // Artista + Usuário: vincula o usuário ao artista, garantindo relação 1-para-1
         $artista_id = intval(substr($usuario_principal, 1));
         $usuario_id = intval($usuario_secundario);
-        
+
+        mysqli_query($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = $artista_id AND usuario_id != $usuario_id");
         mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_id WHERE usuario_id = $usuario_id");
-        
+
     } else {
-        // Usuário + Artista
+        // Usuário + Artista: mesmo vínculo do caso acima, só muda a ordem dos parâmetros
         $usuario_id = intval($usuario_principal);
         $artista_id = intval(substr($usuario_secundario, 1));
-        
+
+        mysqli_query($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = $artista_id AND usuario_id != $usuario_id");
         mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_id WHERE usuario_id = $usuario_id");
-        mysqli_query($conexao, "DELETE FROM artista WHERE artista_id = $artista_id");
     }
-    
+
     return true;
 }
 ?>

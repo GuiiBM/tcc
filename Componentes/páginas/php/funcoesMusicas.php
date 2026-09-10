@@ -18,6 +18,26 @@ function buscarMusicas($conexao) {
     return $musicas;
 }
 
+function buscarMusicasPorArtista($conexao, $artista_id) {
+    $stmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_capa, m.musica_link, m.musica_data_adicao, a.artista_nome, a.artista_cidade FROM musica m INNER JOIN artista a ON m.musica_artista = a.artista_id WHERE m.musica_artista = ? ORDER BY m.musica_data_adicao DESC");
+    mysqli_stmt_bind_param($stmt, "i", $artista_id);
+
+    if (!$stmt || !mysqli_stmt_execute($stmt)) {
+        error_log("Erro ao buscar músicas do artista: " . mysqli_error($conexao));
+        return [];
+    }
+
+    $result = mysqli_stmt_get_result($stmt);
+    $musicas = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $musicas[] = $row;
+    }
+
+    mysqli_stmt_close($stmt);
+    return $musicas;
+}
+
 function buscarUltimosArtistas($conexao, $limite = null) {
     $limiteSql = $limite ? "LIMIT ?" : "";
     $stmt = mysqli_prepare($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_cidade, a.artista_image FROM artista a ORDER BY a.artista_id DESC $limiteSql");
@@ -264,15 +284,16 @@ function exibirArtistasRecomendados($artistas) {
     }
     
     foreach ($artistas as $artista) {
+        $id = (int) $artista['artista_id'];
         $nome = htmlspecialchars($artista['artista_nome'], ENT_QUOTES, 'UTF-8');
         $cidade = htmlspecialchars($artista['artista_cidade'], ENT_QUOTES, 'UTF-8');
         $imagem = htmlspecialchars($artista['artista_image'], ENT_QUOTES, 'UTF-8');
-        
-        echo "<div class='grid-card'>
+
+        echo "<div class='grid-card artist-card' data-artist-id='$id'>
+            <img src='$imagem' alt='$nome' class='image-music-card' onerror='this.src=\"Componentes/icones/icone.png\"'>
             <div class='title-card'>
                 <h3>$nome</h3>
             </div>
-            <img src='$imagem' alt='$nome' class='image-music-card' onerror='this.src=\"Componentes/icones/icone.png\"'>
             <div class='autor-card'>
                 <h4>$cidade</h4>
             </div>
@@ -347,7 +368,7 @@ function exibirMusicasRecomendadas($musicas) {
         
         // Mostrar número de visualizações se disponível
         $visualizacoes = isset($musica['total_visualizacoes']) ? $musica['total_visualizacoes'] : 0;
-        $infoExtra = $visualizacoes > 0 ? "<br><small style='color: #ffd700;'>👁 $visualizacoes visualizações</small>" : "";
+        $infoExtra = $visualizacoes > 0 ? "<br><small class='card-views'>👁 $visualizacoes visualizações</small>" : "";
         
         echo "<div class='grid-card' onclick=\"playMusic('$link', '$titulo', '$artista', {$musica['musica_id']})\">
             <div class='title-card'>

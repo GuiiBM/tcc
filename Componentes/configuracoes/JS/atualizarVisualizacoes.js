@@ -10,5 +10,7 @@ function atualizarMusicasVisualizadas() {
         .catch(error => console.log('Erro ao atualizar:', error));
 }
 
-// Atualizar a cada 5 segundos
-setInterval(atualizarMusicasVisualizadas, 5000);
+// Atualizar a cada 5 segundos, só nas páginas que têm o container
+if (document.getElementById('maisVisualizadasContainer')) {
+    setInterval(atualizarMusicasVisualizadas, 5000);
+}

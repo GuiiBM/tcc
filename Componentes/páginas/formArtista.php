@@ -1,4 +1,10 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include_once 'php/verificar_login.php';
+redirecionarSeNaoAdmin();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
     try {
         if (file_exists('Componentes/páginas/php/processarUpload.php')) {
@@ -8,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
         $artista_nome = trim($_POST['artista_nome']);
         $artista_cidade = trim($_POST['artista_cidade']);
         $artista_descricao = trim($_POST['artista_descricao'] ?? '');
+        $artista_link = trim($_POST['artista_link'] ?? '');
         
         if (isset($_FILES['artista_image']) && $_FILES['artista_image']['error'] === UPLOAD_ERR_OK && function_exists('processarUpload')) {
             $resultadoUpload = processarUpload($_FILES['artista_image'], 'imagem');
@@ -27,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
             }
         }
         
-        $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "ssss", $artista_nome, $artista_cidade, $artista_image, $artista_descricao);
+        $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao, artista_link) VALUES (?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sssss", $artista_nome, $artista_cidade, $artista_image, $artista_descricao, $artista_link);
         
         if (mysqli_stmt_execute($stmt)) {
             echo "<div class='alert alert-success'>Artista cadastrado com sucesso!</div>";
@@ -59,6 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista']))
         <div class="form-col-full">
             <label for="artista_descricao_form" class="form-label">Descrição do Artista (opcional)</label>
             <textarea class="form-control" id="artista_descricao_form" name="artista_descricao" placeholder="Deixe em branco para usar sua descrição de perfil" rows="3"></textarea>
+        </div>
+        <div class="form-col-full">
+            <label for="artista_link_form" class="form-label">Página do Artista (opcional)</label>
+            <input type="url" class="form-control" id="artista_link_form" name="artista_link" placeholder="https://...">
         </div>
         <div class="form-col-full">
             <label for="artista_image_form" class="form-label">Foto do Artista</label>

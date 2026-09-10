@@ -79,19 +79,18 @@ ob_end_clean();
     max-width: 800px;
     margin: 50px auto;
     padding: 30px;
-    background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
-    border-radius: 20px;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(15px);
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-lg);
 }
 
 .config-container h2 {
-    color: var(--neon-gold);
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 30px;
-    font-size: 2rem;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    font-size: 1.8rem;
+    font-weight: 600;
 }
 
 .config-steps {
@@ -103,43 +102,42 @@ ob_end_clean();
     align-items: center;
     margin: 15px 0;
     padding: 15px 20px;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid rgba(0, 217, 255, 0.3);
-    border-radius: 10px;
-    transition: all 0.3s ease;
+    background: var(--bg-surface-alt);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-base);
 }
 
 .config-step.success {
-    background: rgba(0, 255, 127, 0.1);
-    border-color: rgba(0, 255, 127, 0.3);
+    background: var(--success-soft);
+    border-color: rgba(63, 185, 80, 0.3);
 }
 
 .step-icon {
-    color: var(--neon-green);
-    font-size: 1.5rem;
+    color: var(--success);
+    font-size: 1.4rem;
     font-weight: bold;
     margin-right: 15px;
-    text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
 }
 
 .step-text {
-    color: var(--neon-white);
-    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-size: 1.05rem;
 }
 
 .config-success {
     text-align: center;
     margin-top: 30px;
     padding: 25px;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 15px;
+    background: var(--accent-soft);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-lg);
 }
 
 .config-success h3 {
-    color: var(--neon-gold);
+    color: var(--text-primary);
     margin-bottom: 15px;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    font-weight: 600;
 }
 
 .config-success p {

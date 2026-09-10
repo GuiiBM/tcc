@@ -1,4 +1,10 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include_once 'php/verificar_login.php';
+redirecionarSeNaoLogado();
+
 ob_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['musica_titulo'])) {
     include 'php/DBConection.php';
@@ -20,27 +26,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['musica_titulo'])) {
     } else {
         $musica_capa = $resultadoCapa['caminho'];
         $musica_link = $resultadoAudio['caminho'];
-        
-        $stmt = mysqli_prepare($conexao, "SELECT artista_id FROM artista WHERE artista_nome = ?");
-        mysqli_stmt_bind_param($stmt, "s", $artista_nome);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        
-        if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $artista_id = $row['artista_id'];
-        } else {
-            if (isset($_FILES['artista_image']) && $_FILES['artista_image']['error'] === UPLOAD_ERR_OK) {
-                $resultadoImagemArtista = processarUpload($_FILES['artista_image'], 'imagem');
-                $artista_image = $resultadoImagemArtista['caminho'];
-            } else {
-                $artista_image = '';
+
+        // Usuário comum já tem um artista vinculado ao próprio perfil (criado
+        // no cadastro) — usa esse vínculo direto em vez de buscar por nome,
+        // que poderia acertar um artista diferente em caso de nomes duplicados.
+        $artista_id = null;
+        if (isset($_SESSION['usuario_id']) && $_SESSION['usuario_tipo'] !== 'admin') {
+            $stmtVinculo = mysqli_prepare($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = ?");
+            mysqli_stmt_bind_param($stmtVinculo, "i", $_SESSION['usuario_id']);
+            mysqli_stmt_execute($stmtVinculo);
+            $resultVinculo = mysqli_stmt_get_result($stmtVinculo);
+            if ($rowVinculo = mysqli_fetch_assoc($resultVinculo)) {
+                $artista_id = $rowVinculo['artista_id'];
             }
-            
-            $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "sss", $artista_nome, $artista_cidade, $artista_image);
+        }
+
+        if (!$artista_id) {
+            $stmt = mysqli_prepare($conexao, "SELECT artista_id FROM artista WHERE artista_nome = ?");
+            mysqli_stmt_bind_param($stmt, "s", $artista_nome);
             mysqli_stmt_execute($stmt);
-            $artista_id = mysqli_insert_id($conexao);
+            $result = mysqli_stmt_get_result($stmt);
+
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $artista_id = $row['artista_id'];
+            } else {
+                if (isset($_FILES['artista_image']) && $_FILES['artista_image']['error'] === UPLOAD_ERR_OK) {
+                    $resultadoImagemArtista = processarUpload($_FILES['artista_image'], 'imagem');
+                    $artista_image = $resultadoImagemArtista['caminho'];
+                } else {
+                    $artista_image = '';
+                }
+
+                $stmt = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image) VALUES (?, ?, ?)");
+                mysqli_stmt_bind_param($stmt, "sss", $artista_nome, $artista_cidade, $artista_image);
+                mysqli_stmt_execute($stmt);
+                $artista_id = mysqli_insert_id($conexao);
+            }
         }
         
         $stmt = mysqli_prepare($conexao, "INSERT INTO musica (musica_titulo, musica_capa, musica_link, musica_artista) VALUES (?, ?, ?, ?)");
@@ -57,8 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['musica_titulo'])) {
 }
 $alerts = ob_get_clean();
 ?>
-<main class="main">
-    <div class="content-wrapper container-fluid">
 <div class="form-container">
     <?= $alerts ?>
     <h2 class="form-title">Cadastrar Nova Música</h2>
@@ -112,37 +132,6 @@ $alerts = ob_get_clean();
             </div>
         </div>
         
-        <style>
-        .user-info-display {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        
-        .user-info-display p {
-            margin: 8px 0;
-            color: #f0f6fc;
-            font-size: 16px;
-        }
-        
-        .user-info-display strong {
-            color: #ffd700;
-        }
-        .form-container {
-  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.1);
-  padding: 30px;
-  margin: 40px 0 40px 0;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  width: 100%;
-        }
-        </style>
         <div class="form-col-full">
             <label for="musica_titulo" class="form-label">Título da Música</label>
             <input type="text" class="form-control" id="musica_titulo" name="musica_titulo" placeholder="Digite o título da música" required>
@@ -160,5 +149,3 @@ $alerts = ob_get_clean();
         </div>
     </form>
 </div>
-</div>
-</main>

@@ -1,15 +1,16 @@
 <?php
 include "DBConection.php";
+include_once __DIR__ . "/url-helper.php";
 
 header('Content-Type: application/json');
 
 try {
-    if (isset($_POST['artist'])) {
-        $artistName = trim($_POST['artist']);
-        
+    if (isset($_POST['artist_id'])) {
+        $artistId = intval($_POST['artist_id']);
+
         // Buscar dados do artista
-        $artistStmt = mysqli_prepare($conexao, "SELECT artista_nome, artista_cidade, artista_image, artista_descricao FROM artista WHERE artista_nome = ?");
-        mysqli_stmt_bind_param($artistStmt, "s", $artistName);
+        $artistStmt = mysqli_prepare($conexao, "SELECT artista_nome, artista_cidade, artista_image, artista_descricao, artista_link FROM artista WHERE artista_id = ?");
+        mysqli_stmt_bind_param($artistStmt, "i", $artistId);
         mysqli_stmt_execute($artistStmt);
         $artistResult = mysqli_stmt_get_result($artistStmt);
         $artist = mysqli_fetch_assoc($artistResult);
@@ -25,7 +26,7 @@ try {
             }
             
             // Debug: verificar dados do artista
-            $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/tcc/' . $imagePath;
+            $fullPath = getProjectRoot() . '/' . $imagePath;
             $debug = [
                 'artist_data' => $artist,
                 'original_path' => $artist['artista_image'],
@@ -35,8 +36,8 @@ try {
             ];
             
             // Buscar músicas do artista
-            $songsStmt = mysqli_prepare($conexao, "SELECT m.musica_id, m.musica_titulo, m.musica_link, m.musica_capa FROM musica m JOIN artista a ON m.musica_artista = a.artista_id WHERE a.artista_nome = ?");
-            mysqli_stmt_bind_param($songsStmt, "s", $artistName);
+            $songsStmt = mysqli_prepare($conexao, "SELECT musica_id, musica_titulo, musica_link, musica_capa FROM musica WHERE musica_artista = ?");
+            mysqli_stmt_bind_param($songsStmt, "i", $artistId);
             mysqli_stmt_execute($songsStmt);
             $songsResult = mysqli_stmt_get_result($songsStmt);
             
@@ -61,7 +62,7 @@ try {
                     'cidade' => $artist['artista_cidade'],
                     'imagem' => $imagePath,
                     'descricao' => $artist['artista_descricao'] ?: 'Descrição não disponível',
-                    'link' => '#'
+                    'link' => $artist['artista_link'] ?: null
                 ],
                 'songs' => $songs,
                 'debug' => $debug
@@ -70,7 +71,7 @@ try {
             echo json_encode(['success' => false, 'message' => 'Artista não encontrado']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Nome do artista não fornecido']);
+        echo json_encode(['success' => false, 'message' => 'ID do artista não fornecido']);
     }
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);

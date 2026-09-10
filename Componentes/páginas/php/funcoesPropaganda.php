@@ -1,11 +1,12 @@
 <?php
 include_once 'DBConection.php';
+include_once __DIR__ . '/url-helper.php';
 
 function uploadPropaganda($file, $uploadDir = null) {
     global $conexao;
-    
+
     if ($uploadDir === null) {
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/tcc/Componentes/Armazenamento/propaganda/';
+        $uploadDir = getArmazenamentoPath('propaganda');
     }
     
     if (!is_dir($uploadDir)) {
@@ -16,12 +17,21 @@ function uploadPropaganda($file, $uploadDir = null) {
         return ['success' => false, 'message' => 'Erro no upload: ' . $file['error']];
     }
     
-    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    if (!in_array($file['type'], $allowedTypes)) {
-        return ['success' => false, 'message' => 'Tipo não permitido: ' . $file['type']];
+    $allowedTypes = [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/gif' => 'gif',
+        'image/webp' => 'webp',
+    ];
+
+    // Detecta o tipo real do arquivo lendo seus bytes (Content-Type do cliente é falsificável)
+    $realType = mime_content_type($file['tmp_name']);
+    if (!isset($allowedTypes[$realType])) {
+        return ['success' => false, 'message' => 'Tipo não permitido: ' . $realType];
     }
-    
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Extensão sempre derivada do tipo real detectado, nunca do nome enviado pelo cliente
+    $extension = $allowedTypes[$realType];
     $fileName = uniqid() . '.' . $extension;
     $uploadPath = $uploadDir . $fileName;
     
@@ -50,9 +60,9 @@ function deletePropaganda($fileName, $uploadDir = null) {
     global $conexao;
     
     if ($uploadDir === null) {
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/tcc/Componentes/Armazenamento/propaganda/';
+        $uploadDir = getArmazenamentoPath('propaganda');
     }
-    
+
     $filePath = $uploadDir . basename($fileName);
     
     if (file_exists($filePath)) {
@@ -84,30 +94,35 @@ function listarPropagandasOrdenadas() {
 
 function moverPropaganda($propagandaId, $direcao) {
     global $conexao;
-    
+    $propagandaId = intval($propagandaId);
+
     // Obter propaganda atual
     $stmt = mysqli_prepare($conexao, "SELECT * FROM propagandas WHERE propaganda_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $propagandaId);
     mysqli_stmt_execute($stmt);
     $propaganda = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-    
+
     if (!$propaganda) {
         return ['success' => false, 'message' => 'Propaganda não encontrada'];
     }
-    
+
     $ordemAtual = $propaganda['propaganda_ordem'];
-    
+
     if ($direcao === 'subir') {
         // Encontrar propaganda anterior
         $stmt = mysqli_prepare($conexao, "SELECT * FROM propagandas WHERE propaganda_ordem < ? ORDER BY propaganda_ordem DESC LIMIT 1");
         mysqli_stmt_bind_param($stmt, "i", $ordemAtual);
         mysqli_stmt_execute($stmt);
         $propagandaAnterior = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-        
+
         if ($propagandaAnterior) {
             // Trocar ordens
-            mysqli_query($conexao, "UPDATE propagandas SET propaganda_ordem = {$propagandaAnterior['propaganda_ordem']} WHERE propaganda_id = $propagandaId");
-            mysqli_query($conexao, "UPDATE propagandas SET propaganda_ordem = $ordemAtual WHERE propaganda_id = {$propagandaAnterior['propaganda_id']}");
+            $stmtUp = mysqli_prepare($conexao, "UPDATE propagandas SET propaganda_ordem = ? WHERE propaganda_id = ?");
+            mysqli_stmt_bind_param($stmtUp, "ii", $propagandaAnterior['propaganda_ordem'], $propagandaId);
+            mysqli_stmt_execute($stmtUp);
+            $stmtUp2 = mysqli_prepare($conexao, "UPDATE propagandas SET propaganda_ordem = ? WHERE propaganda_id = ?");
+            mysqli_stmt_bind_param($stmtUp2, "ii", $ordemAtual, $propagandaAnterior['propaganda_id']);
+            mysqli_stmt_execute($stmtUp2);
             return ['success' => true, 'message' => 'Propaganda movida para cima'];
         }
     } else {
@@ -116,15 +131,19 @@ function moverPropaganda($propagandaId, $direcao) {
         mysqli_stmt_bind_param($stmt, "i", $ordemAtual);
         mysqli_stmt_execute($stmt);
         $propagandaPosterior = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-        
+
         if ($propagandaPosterior) {
             // Trocar ordens
-            mysqli_query($conexao, "UPDATE propagandas SET propaganda_ordem = {$propagandaPosterior['propaganda_ordem']} WHERE propaganda_id = $propagandaId");
-            mysqli_query($conexao, "UPDATE propagandas SET propaganda_ordem = $ordemAtual WHERE propaganda_id = {$propagandaPosterior['propaganda_id']}");
+            $stmtDown = mysqli_prepare($conexao, "UPDATE propagandas SET propaganda_ordem = ? WHERE propaganda_id = ?");
+            mysqli_stmt_bind_param($stmtDown, "ii", $propagandaPosterior['propaganda_ordem'], $propagandaId);
+            mysqli_stmt_execute($stmtDown);
+            $stmtDown2 = mysqli_prepare($conexao, "UPDATE propagandas SET propaganda_ordem = ? WHERE propaganda_id = ?");
+            mysqli_stmt_bind_param($stmtDown2, "ii", $ordemAtual, $propagandaPosterior['propaganda_id']);
+            mysqli_stmt_execute($stmtDown2);
             return ['success' => true, 'message' => 'Propaganda movida para baixo'];
         }
     }
-    
+
     return ['success' => false, 'message' => 'Não é possível mover nesta direção'];
 }
 ?>

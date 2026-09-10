@@ -1,9 +1,14 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include_once 'php/verificar_login.php';
+redirecionarSeNaoAdmin();
 include_once 'php/funcoesPropaganda.php';
+include_once 'php/url-helper.php';
 
-$baseDir = $_SERVER['DOCUMENT_ROOT'] . '/tcc/';
-$uploadDir = $baseDir . 'Componentes/Armazenamento/propaganda/';
-$webPath = '/tcc/Componentes/Armazenamento/propaganda/';
+$uploadDir = getArmazenamentoPath('propaganda');
+$webPath = getBasePath() . 'Componentes/Armazenamento/propaganda/';
 $message = '';
 
 // Processar movimentação
@@ -47,6 +52,34 @@ $propagandas = listarPropagandasOrdenadas();
                     <h2>Nova Propaganda</h2>
                     <div class="section-line"></div>
                 </div>
+
+                <div class="size-guide">
+                    <div class="size-guide-text">
+                        <h3>Tamanho ideal</h3>
+                        <p>
+                            O espaço da propaganda na lateral do site é <strong>dinâmico</strong>: a largura
+                            fica entre 220px e 300px (se ajusta à tela) e a altura preenche todo o espaço
+                            vertical disponível — por isso não existe um tamanho fixo em pixels que sirva
+                            para toda tela.
+                        </p>
+                        <p>
+                            Use imagens <strong>verticais (retrato)</strong>, com proporção entre
+                            <strong>9:16 e 3:4</strong>, e mantenha o conteúdo mais importante
+                            (texto, logo, chamada) <strong>centralizado</strong> — a imagem preenche todo o
+                            espaço sem barras (recorta as bordas para caber), então detalhes muito perto do
+                            topo ou da base podem ser cortados em telas mais baixas.
+                        </p>
+                        <p>A pré-visualização ao lado mostra exatamente como a imagem escolhida vai aparecer na sua tela agora.</p>
+                    </div>
+                    <div class="size-guide-preview">
+                        <span class="size-guide-label">Pré-visualização real</span>
+                        <div class="propaganda-frame size-guide-frame" id="sizeGuideFrame">
+                            <img id="sizeGuideImg" class="propaganda-img" style="display: none;">
+                            <div class="size-guide-placeholder" id="sizeGuidePlaceholder">Escolha uma imagem para ver o recorte aqui</div>
+                        </div>
+                    </div>
+                </div>
+
                 <form method="POST" enctype="multipart/form-data" class="upload-form">
                     <div class="file-input-wrapper">
                         <input type="file" name="propaganda" accept="image/*" required id="file-input" onchange="previewImage(this)">
@@ -54,9 +87,6 @@ $propagandas = listarPropagandasOrdenadas();
                             <span class="file-icon">📁</span>
                             <span class="file-text">Escolher Imagem</span>
                         </label>
-                        <div id="image-preview" style="display: none; margin-top: 15px; text-align: center;">
-                            <img id="preview-img" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                        </div>
                     </div>
                     <button type="submit" class="btn-upload">Adicionar Propaganda</button>
                 </form>
@@ -82,7 +112,7 @@ $propagandas = listarPropagandasOrdenadas();
                                 </div>
                                 
                                 <div class="image-container">
-                                    <img src="<?php echo $webPath . $propaganda['propaganda_nome']; ?>" alt="Propaganda" class="propaganda-preview" onload="adjustImageOrientation(this)">
+                                    <img src="<?php echo $webPath . $propaganda['propaganda_nome']; ?>" alt="Propaganda" class="propaganda-preview">
                                 </div>
                                 
                                 <div class="ordem-buttons">
@@ -127,14 +157,16 @@ $propagandas = listarPropagandasOrdenadas();
 
 <script>
 function previewImage(input) {
-    const preview = document.getElementById('image-preview');
-    const previewImg = document.getElementById('preview-img');
-    
+    const guideImg = document.getElementById('sizeGuideImg');
+    const placeholder = document.getElementById('sizeGuidePlaceholder');
+
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            preview.style.display = 'block';
+            guideImg.src = e.target.result;
+            guideImg.style.display = 'block';
+            placeholder.style.display = 'none';
+            adjustImageOrientation(guideImg);
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -157,4 +189,8 @@ function adjustImageOrientation(img) {
         img.onload();
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.propaganda-preview').forEach(adjustImageOrientation);
+});
 </script>
