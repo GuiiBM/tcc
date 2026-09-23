@@ -20,13 +20,12 @@ $qualidades = [
     'alta' => ['Alta', 'Sempre o arquivo original, com a melhor qualidade.'],
     'baixa' => ['Economia de dados', 'Prefere a versão compacta (64 kbps) quando o artista a disponibiliza.'],
 ];
-$maxMb = round(limiteUploadBytes() / 1048576);
 ?>
 <div class="settings-page">
     <header class="profile-head">
         <div class="profile-avatar">
             <?php if ($usuario['usuario_foto']): ?>
-            <img src="<?= e($usuario['usuario_foto']) ?>" alt="" referrerpolicy="no-referrer" id="profileAvatar">
+            <img src="<?= e($usuario['usuario_foto']) ?>" alt="" referrerpolicy="no-referrer" id="profileAvatar"<?= estiloPosicao($usuario['usuario_foto_pos']) ?>>
             <?php else: ?>
             <span id="profileAvatar"><?= e(mb_strtoupper(mb_substr($usuario['usuario_nome'], 0, 1))) ?></span>
             <?php endif; ?>
@@ -64,16 +63,8 @@ $maxMb = round(limiteUploadBytes() / 1048576);
 
     <section class="panel" id="foto">
         <h2>Foto de perfil</h2>
-        <form class="form-stack" action="api/perfil.php" enctype="multipart/form-data" data-api-form data-full-reload>
-            <input type="hidden" name="acao" value="foto">
-            <label class="field"><span>Nova foto (JPG, PNG, WEBP ou GIF, até <?= $maxMb ?> MB)</span><input type="file" name="foto" accept="image/*" required data-preview="#profileAvatar"></label>
-            <div class="row-actions">
-                <button type="submit" class="btn-pill btn-accent">Enviar foto</button>
-                <?php if ($usuario['usuario_foto']): ?>
-                <button type="submit" class="btn-pill btn-ghost" name="remover" value="1" formnovalidate>Remover foto</button>
-                <?php endif; ?>
-            </div>
-        </form>
+        <p class="muted">Troque a foto, ajuste o enquadramento arrastando a imagem<?= $artista ? ' e escolha uma imagem própria para a seção "Sobre" da sua página de artista' : '' ?>.</p>
+        <div><a class="btn-pill btn-accent" href="editarFoto.php"><?= icone('image') ?> Editar foto e enquadramento</a></div>
     </section>
 
     <section class="panel" id="senha">
@@ -120,7 +111,7 @@ $maxMb = round(limiteUploadBytes() / 1048576);
                 <label class="field"><span>Nome artístico</span><input type="text" name="artista_nome" required maxlength="100" value="<?= e($artista['artista_nome']) ?>"></label>
                 <label class="field"><span>Cidade</span><input type="text" name="artista_cidade" maxlength="100" value="<?= e($artista['artista_cidade']) ?>"></label>
                 <label class="field"><span>Página oficial</span><input type="url" name="artista_link" placeholder="https://..." value="<?= e($artista['artista_link']) ?>"></label>
-                <label class="field"><span>Foto do artista</span><input type="file" name="artista_image" accept="image/*"></label>
+                <label class="field"><span>Foto do artista</span><input type="file" name="artista_image" accept="image/*"><small>Para ajustar o enquadramento, use <a href="editarFoto.php">Editar fotos</a>.</small></label>
                 <label class="field"><span>Imagem de capa (banner, ideal 1600×600)</span><input type="file" name="artista_capa" accept="image/*"></label>
             </div>
             <?php if ($artista['artista_capa']): ?>

@@ -14,7 +14,7 @@ else:
     $playlists = playlistsDoUsuario($conexao, $uid);
     $mosaicos = capasPlaylists($conexao, array_column($playlists, 'playlist_id'));
     $totalCurtidas = consultarUm($conexao, "SELECT COUNT(*) AS total FROM curtidas WHERE usuario_id = ? AND tipo_curtida = 'curtida'", "i", [$uid])['total'];
-    $seguidos = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image FROM seguidores s INNER JOIN artista a ON a.artista_id = s.artista_id WHERE s.usuario_id = ? ORDER BY s.data_seguiu DESC", "i", [$uid]);
+    $seguidos = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image, a.artista_image_pos FROM seguidores s INNER JOIN artista a ON a.artista_id = s.artista_id WHERE s.usuario_id = ? ORDER BY s.data_seguiu DESC", "i", [$uid]);
     $filtro = $_GET['filtro'] ?? 'tudo';
 ?>
 <div class="library-page">

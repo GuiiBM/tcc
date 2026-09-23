@@ -1,15 +1,13 @@
 <?php
-// loginSocial.php - Login com Google, Facebook e Apple.
+// loginSocial.php - Login com Facebook e Apple.
 //
 // Credenciais (arquivos ignorados pelo git, ou variáveis de ambiente):
-//   Google:   clientId.php / clientSecret.php  (ver configGoogle.php)
 //   Facebook: oauthConfig.php -> FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 //   Apple:    oauthConfig.php -> APPLE_CLIENT_ID (Services ID), APPLE_TEAM_ID,
 //             APPLE_KEY_ID, APPLE_PRIVATE_KEY (conteúdo do arquivo .p8)
 // Um provedor sem credenciais simplesmente não aparece na tela de login.
 
 include_once __DIR__ . '/url-helper.php';
-include_once __DIR__ . '/configGoogle.php';
 include_once __DIR__ . '/adminConfig.php';
 if (file_exists(__DIR__ . '/oauthConfig.php')) {
     include_once __DIR__ . '/oauthConfig.php';
@@ -21,10 +19,6 @@ function configOAuth($nome) {
     }
     $valor = getenv($nome);
     return $valor === false ? '' : $valor;
-}
-
-function googleConfigurado() {
-    return GOOGLE_CLIENT_ID !== 'SEU_GOOGLE_CLIENT_ID_AQUI' && GOOGLE_CLIENT_SECRET !== 'SEU_GOOGLE_CLIENT_SECRET_AQUI';
 }
 
 function facebookConfigurado() {

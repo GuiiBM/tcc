@@ -4,7 +4,7 @@ $paginaId = 'album';
 $paginaSpa = true;
 include "Componentes/paginas/php/app.php";
 
-$album = consultarUm($conexao, "SELECT al.*, a.artista_nome, a.artista_image FROM album al INNER JOIN artista a ON a.artista_id = al.album_artista WHERE al.album_id = ?", "i", [(int) ($_GET['id'] ?? 0)]);
+$album = consultarUm($conexao, "SELECT al.*, a.artista_nome, a.artista_image, a.artista_image_pos FROM album al INNER JOIN artista a ON a.artista_id = al.album_artista WHERE al.album_id = ?", "i", [(int) ($_GET['id'] ?? 0)]);
 $tituloPagina = $album ? $album['album_titulo'] . ' - ' . $album['artista_nome'] : 'Álbum não encontrado';
 include "Componentes/paginas/head.php";
 include "Componentes/paginas/header.php";
@@ -16,7 +16,7 @@ else:
     $duracao = array_sum(array_column($musicas, 'musica_duracao'));
     $tipos = ['album' => 'Álbum', 'ep' => 'EP', 'single' => 'Single'];
     $outros = consultar($conexao, "SELECT al.*, a.artista_nome FROM album al INNER JOIN artista a ON a.artista_id = al.album_artista WHERE al.album_artista = ? AND al.album_id <> ? ORDER BY al.album_ano DESC, al.album_data DESC", "ii", [$album['album_artista'], $album['album_id']]);
-    $meta = '<a class="hero-artist" href="artista.php?id=' . (int) $album['album_artista'] . '"><img src="' . e(imagemOuPadrao($album['artista_image'])) . '" alt="">' . e($album['artista_nome']) . '</a>'
+    $meta = '<a class="hero-artist" href="artista.php?id=' . (int) $album['album_artista'] . '"><img src="' . e(imagemOuPadrao($album['artista_image'])) . '" alt=""' . estiloPosicao($album['artista_image_pos']) . '>' . e($album['artista_nome']) . '</a>'
         . ($album['album_ano'] ? '<span>' . (int) $album['album_ano'] . '</span>' : '')
         . '<span>' . pluralizar(count($musicas), 'música', 'músicas') . ($duracao ? ', <span class="muted-strong">' . formatarDuracaoTotal($duracao) . '</span>' : '') . '</span>';
 ?>

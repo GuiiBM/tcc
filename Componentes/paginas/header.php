@@ -25,7 +25,7 @@ function linkAtivo($arquivos) {
     <nav class="sidebar" aria-label="Navegação principal">
         <div class="sidebar-block sidebar-nav">
             <a class="brand" href="index.php">
-                <img src="Componentes/icones/icone2.png" alt="" width="36" height="36">
+                <img src="Componentes/icones/logo.png" alt="" width="36" height="36">
                 <span>Ressonance</span>
             </a>
             <a class="nav-item<?= linkAtivo(['index.php', '']) ?>" data-nav="index.php" href="index.php"><?= icone('home') ?><span>Início</span></a>
@@ -83,7 +83,7 @@ function linkAtivo($arquivos) {
             <div class="topbar-left">
                 <button type="button" class="icon-btn round nav-history" data-action="history-back" aria-label="Voltar"><?= icone('chevron-left') ?></button>
                 <button type="button" class="icon-btn round nav-history" data-action="history-forward" aria-label="Avançar"><?= icone('chevron-right') ?></button>
-                <a class="brand brand-mobile" href="index.php"><img src="Componentes/icones/icone2.png" alt="" width="30" height="30"><span>Ressonance</span></a>
+                <a class="brand brand-mobile" href="index.php"><img src="Componentes/icones/logo.png" alt="" width="30" height="30"><span>Ressonance</span></a>
             </div>
             <div class="topbar-right">
                 <button type="button" class="icon-btn round" data-action="show-shortcuts" aria-label="Atalhos do teclado" title="Atalhos do teclado (?)"><?= icone('keyboard') ?></button>
@@ -94,7 +94,7 @@ function linkAtivo($arquivos) {
                     <div class="user-menu">
                         <button type="button" class="avatar-btn" data-action="user-menu" aria-haspopup="true" aria-expanded="false" aria-label="Menu da conta">
                             <?php if ($usuarioShell['usuario_foto']): ?>
-                            <img src="<?= e($usuarioShell['usuario_foto']) ?>" alt="" referrerpolicy="no-referrer">
+                            <img src="<?= e($usuarioShell['usuario_foto']) ?>" alt="" referrerpolicy="no-referrer"<?= estiloPosicao($usuarioShell['usuario_foto_pos']) ?>>
                             <?php else: ?>
                             <span><?= e(mb_strtoupper(mb_substr($usuarioShell['usuario_nome'], 0, 1))) ?></span>
                             <?php endif; ?>
@@ -102,6 +102,7 @@ function linkAtivo($arquivos) {
                         <div class="dropdown-menu-app" id="userMenu" hidden>
                             <div class="dropdown-header-app"><strong><?= e($usuarioShell['usuario_nome']) ?></strong><small><?= e($usuarioShell['usuario_email']) ?></small></div>
                             <a href="perfil.php"><?= icone('settings') ?> Perfil e configurações</a>
+                            <a href="editarFoto.php"><?= icone('image') ?> Editar foto de perfil</a>
                             <?php if ($usuarioShell['artista_id']): ?>
                             <a href="artista.php?id=<?= (int) $usuarioShell['artista_id'] ?>"><?= icone('user') ?> Minha página de artista</a>
                             <?php endif; ?>

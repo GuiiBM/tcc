@@ -12,7 +12,7 @@ include "Componentes/paginas/header.php";
     <section class="panel">
         <h2>Quais dados coletamos</h2>
         <ul>
-            <li><strong>Conta:</strong> nome, e-mail, foto, idade, cidade e descrição que você informa (ou que vêm do Google/Facebook/Apple ao entrar com eles).</li>
+            <li><strong>Conta:</strong> nome, e-mail, foto, idade, cidade e descrição que você informa (ou que vêm do Facebook/Apple ao entrar com eles).</li>
             <li><strong>Senha:</strong> guardamos apenas um <em>hash</em> (Argon2/Bcrypt); nem a equipe consegue ver sua senha.</li>
             <li><strong>Uso:</strong> músicas curtidas, playlists, artistas seguidos e histórico das faixas ouvidas até o fim.</li>
             <li><strong>Estatísticas:</strong> contagem de reproduções. O endereço IP é guardado apenas como um código irreversível (hash), nunca o IP em si.</li>

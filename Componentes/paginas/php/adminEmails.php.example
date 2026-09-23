@@ -1,6 +1,14 @@
 <?php
-// Copie este arquivo para adminEmails.php e coloque os e-mails (separados
-// por vírgula) que devem ser administradores do site. Em hospedagens com
-// variáveis de ambiente, prefira definir ADMIN_EMAILS no painel.
-define('ADMIN_EMAILS', 'seu_email@gmail.com');
+// Copie este arquivo para adminEmails.php. Ele não vai para o git e o
+// navegador não consegue abri-lo (bloqueado no .htaccess).
+
+// E-mails (separados por vírgula) de contas que viram admin ao entrar.
+// Em hospedagens com variáveis de ambiente, dá para usar ADMIN_EMAILS no painel.
+define('ADMIN_EMAILS', '');
+
+// Conta admin pré-definida: criada sozinha no primeiro login com este e-mail
+// e esta senha. Depois de entrar, troque a senha em "Perfil e configurações".
+define('ADMIN_CONTA_EMAIL', 'admin@seusite.com');
+define('ADMIN_CONTA_SENHA', 'troque-esta-senha');
+define('ADMIN_CONTA_NOME', 'Administrador');
 ?>

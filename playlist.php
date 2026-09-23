@@ -5,7 +5,7 @@ $paginaId = 'playlist';
 $paginaSpa = true;
 include "Componentes/paginas/php/app.php";
 
-$playlist = consultarUm($conexao, "SELECT p.*, u.usuario_nome AS dono_nome, u.usuario_foto AS dono_foto FROM playlist p INNER JOIN usuarios u ON u.usuario_id = p.usuario_id WHERE p.playlist_id = ?", "i", [(int) ($_GET['id'] ?? 0)]);
+$playlist = consultarUm($conexao, "SELECT p.*, u.usuario_nome AS dono_nome, u.usuario_foto AS dono_foto, u.usuario_foto_pos AS dono_foto_pos FROM playlist p INNER JOIN usuarios u ON u.usuario_id = p.usuario_id WHERE p.playlist_id = ?", "i", [(int) ($_GET['id'] ?? 0)]);
 $ehDono = $playlist && (int) $playlist['usuario_id'] === (int) ($_SESSION['usuario_id'] ?? 0);
 if ($playlist && !$playlist['playlist_publica'] && !$ehDono) {
     $playlist = null; // privada de outra pessoa: trata como inexistente
@@ -20,7 +20,7 @@ else:
     $musicas = consultarFaixas($conexao, "INNER JOIN playlist_musica pm ON pm.musica_id = m.musica_id WHERE pm.playlist_id = ? ORDER BY pm.posicao, pm.adicionada", "i", [$playlist['playlist_id']], 'pm.adicionada');
     $duracao = array_sum(array_column($musicas, 'musica_duracao'));
     $mosaico = capasPlaylists($conexao, [$playlist['playlist_id']])[(int) $playlist['playlist_id']] ?? [];
-    $meta = '<span class="hero-owner">' . ($playlist['dono_foto'] ? '<img src="' . e($playlist['dono_foto']) . '" alt="" referrerpolicy="no-referrer">' : '') . e($playlist['dono_nome']) . '</span>'
+    $meta = '<span class="hero-owner">' . ($playlist['dono_foto'] ? '<img src="' . e($playlist['dono_foto']) . '" alt="" referrerpolicy="no-referrer"' . estiloPosicao($playlist['dono_foto_pos']) . '>' : '') . e($playlist['dono_nome']) . '</span>'
         . '<span>' . pluralizar(count($musicas), 'música', 'músicas') . ($duracao ? ', <span class="muted-strong">' . formatarDuracaoTotal($duracao) . '</span>' : '') . '</span>';
     $dadosEdicao = json_encode([
         'id' => (int) $playlist['playlist_id'],

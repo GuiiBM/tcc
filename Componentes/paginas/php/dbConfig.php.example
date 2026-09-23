@@ -7,3 +7,8 @@ define('DB_USER', 'if0_12345678');            // "MySQL User Name"
 define('DB_PASS', 'senha_da_conta');          // a senha da conta de hospedagem (vPanel)
 define('DB_NAME', 'if0_12345678_musicas');    // "MySQL DB Name"
 ?>
+<?php
+// Opcional: endereço fixo do site, usado no retorno do login social, se o
+// PHP não detectar sozinho que o site está em https://.
+// define('SITE_URL', 'https://seu-site.hyperphp.com/');
+?>

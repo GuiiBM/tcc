@@ -789,6 +789,7 @@
                 $('playerCover').src = 'Componentes/icones/icone.png';
                 like.disabled = true;
                 dislike.disabled = true;
+                this.resetReaction();
                 this.setProgress(0);
             } else {
                 title.textContent = t.title;
@@ -805,6 +806,9 @@
                 const isSong = t.kind === 'musica';
                 like.disabled = !isSong;
                 dislike.disabled = !isSong || !(window.APP && APP.logado);
+                // Zera curtir/"não gostei" antes de carregar o estado da nova faixa,
+                // para não herdar a marcação da anterior.
+                this.resetReaction();
                 like.dataset.likeId = isSong ? t.id : '';
                 if (RS.syncLikes) RS.syncLikes();
                 if (isSong && RS.loadReaction) RS.loadReaction(t.id);
@@ -816,6 +820,19 @@
             this.markPlayingRows();
             if (this.panelMode === 'lyrics') this.loadLyrics();
             document.getElementById('btnLyrics').disabled = !t || t.kind !== 'musica';
+        }
+
+        // Limpa a marcação de curtida e de "não gostei" do player.
+        resetReaction() {
+            const like = $('playerLike');
+            const dislike = $('playerDislike');
+            like.dataset.likeId = '';
+            like.classList.remove('is-liked');
+            like.setAttribute('aria-pressed', 'false');
+            dislike.classList.remove('is-active');
+            dislike.setAttribute('aria-pressed', 'false');
+            $('dislikeCount').textContent = '';
+            if (RS.syncLikes) RS.syncLikes();
         }
 
         renderState() {

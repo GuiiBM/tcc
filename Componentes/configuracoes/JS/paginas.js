@@ -367,4 +367,107 @@
             if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
         }
     };
+
+    // ===================== Editor de foto =====================
+    // Arrastar a imagem muda o object-position (em "x% y%"), que é o mesmo
+    // enquadramento usado nos avatares e no background-position do "Sobre".
+    pages['editar-foto'] = function (root) {
+        root.querySelectorAll('[data-photo-editor]').forEach(initPhotoEditor);
+        if (location.hash) {
+            const target = root.querySelector(location.hash);
+            if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        }
+    };
+
+    function initPhotoEditor(form) {
+        const frame = form.querySelector('[data-crop-frame]');
+        const img = form.querySelector('[data-crop-img]');
+        const mirrors = form.querySelectorAll('[data-crop-mirror]');
+        const input = form.querySelector('[data-pos-input]');
+        const file = form.querySelector('[data-crop-file]');
+        const sliders = { x: form.querySelector('[data-pos-axis="x"]'), y: form.querySelector('[data-pos-axis="y"]') };
+        const clamp = (v) => Math.min(100, Math.max(0, v));
+        const pos = { x: Number(sliders.x.value), y: Number(sliders.y.value) };
+
+        const apply = () => {
+            const value = `${pos.x.toFixed(1)}% ${pos.y.toFixed(1)}%`;
+            img.style.objectPosition = value;
+            mirrors.forEach((m) => { m.style.objectPosition = value; });
+            input.value = value;
+            sliders.x.value = pos.x;
+            sliders.y.value = pos.y;
+        };
+
+        // Quanto a imagem "sobra" além da moldura em cada eixo (object-fit: cover).
+        const overflow = () => {
+            const fw = frame.clientWidth;
+            const fh = frame.clientHeight;
+            const iw = img.naturalWidth || fw;
+            const ih = img.naturalHeight || fh;
+            const scale = Math.max(fw / iw, fh / ih);
+            return { x: iw * scale - fw, y: ih * scale - fh };
+        };
+
+        // Um eixo sem sobra não tem o que ajustar: desativa o controle dele.
+        const updateAxes = () => {
+            const o = overflow();
+            sliders.x.disabled = o.x < 1;
+            sliders.y.disabled = o.y < 1;
+        };
+        img.addEventListener('load', updateAxes);
+        if (img.complete) updateAxes();
+        window.addEventListener('resize', updateAxes);
+
+        let drag = null;
+        frame.addEventListener('pointerdown', (e) => {
+            if (e.button > 0) return;
+            drag = { x: e.clientX, y: e.clientY, pos: { ...pos }, o: overflow() };
+            frame.setPointerCapture(e.pointerId);
+            frame.classList.add('is-dragging');
+            e.preventDefault();
+        });
+        frame.addEventListener('pointermove', (e) => {
+            if (!drag) return;
+            // Arrastar para a direita revela o lado esquerdo (x diminui).
+            if (drag.o.x >= 1) pos.x = clamp(drag.pos.x - ((e.clientX - drag.x) / drag.o.x) * 100);
+            if (drag.o.y >= 1) pos.y = clamp(drag.pos.y - ((e.clientY - drag.y) / drag.o.y) * 100);
+            apply();
+        });
+        const stop = () => { drag = null; frame.classList.remove('is-dragging'); };
+        frame.addEventListener('pointerup', stop);
+        frame.addEventListener('pointercancel', stop);
+
+        frame.addEventListener('keydown', (e) => {
+            const step = e.shiftKey ? 10 : 2;
+            const keys = { ArrowLeft: ['x', step], ArrowRight: ['x', -step], ArrowUp: ['y', step], ArrowDown: ['y', -step] };
+            if (!keys[e.key]) return;
+            const [axis, delta] = keys[e.key];
+            pos[axis] = clamp(pos[axis] + delta);
+            apply();
+            e.preventDefault();
+        });
+
+        Object.entries(sliders).forEach(([axis, slider]) => {
+            slider.addEventListener('input', () => { pos[axis] = Number(slider.value); apply(); });
+        });
+
+        form.querySelector('[data-pos-reset]').addEventListener('click', () => {
+            pos.x = 50;
+            pos.y = 50;
+            apply();
+        });
+
+        // Imagem nova: mostra na moldura, centralizada, para ajustar antes de salvar.
+        file.addEventListener('change', () => {
+            const f = file.files[0];
+            if (!f) return;
+            const url = URL.createObjectURL(f);
+            img.src = url;
+            mirrors.forEach((m) => { m.src = url; });
+            frame.classList.remove('is-empty');
+            pos.x = 50;
+            pos.y = 50;
+            apply();
+        });
+    }
 })();

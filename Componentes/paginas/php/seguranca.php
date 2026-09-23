@@ -8,6 +8,16 @@
 
 define('PASTA_PRIVADA', dirname(__DIR__, 2) . '/privado');
 
+// Fora do XAMPP local, avisos do PHP vão só para o log: impressos na página
+// eles saem antes dos cabeçalhos (quebrando sessão/redirecionamentos) e
+// mostram caminhos do servidor para o visitante.
+$hostAtual = strtolower(explode(':', $_SERVER['HTTP_HOST'] ?? 'localhost')[0]);
+if (!in_array($hostAtual, ['localhost', '127.0.0.1', '::1'], true) && PHP_SAPI !== 'cli') {
+    ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
+}
+unset($hostAtual);
+
 // ===================== Sessão =====================
 // Todas as páginas chamam isto em vez de session_start(): cookie HttpOnly,
 // Secure (em HTTPS) e SameSite=Lax; modo estrito (não aceita IDs de sessão
@@ -37,8 +47,11 @@ function iniciarSessaoSegura() {
     ini_set('session.gc_maxlifetime', (string) $duracao);
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
-    ini_set('session.sid_length', '48');
-    ini_set('session.sid_bits_per_character', '6');
+    // Obsoletas a partir do PHP 8.4 (geram aviso "Deprecated" na página)
+    if (PHP_VERSION_ID < 80400) {
+        ini_set('session.sid_length', '48');
+        ini_set('session.sid_bits_per_character', '6');
+    }
 
     session_name('RSSID');
     session_set_cookie_params([
@@ -46,7 +59,7 @@ function iniciarSessaoSegura() {
         'path' => '/',
         'secure' => conexaoHttps(),
         'httponly' => true,
-        // Strict quebraria o retorno do login do Google (vem de outro site);
+        // Strict quebraria o retorno do login social (vem de outro site);
         // Lax já impede que outros sites façam POST com a sessão do usuário.
         'samesite' => 'Lax',
     ]);

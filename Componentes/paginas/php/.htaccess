@@ -1,5 +1,5 @@
 # Arquivos de configuração com senhas: acesso direto bloqueado.
-<FilesMatch "^(dbConfig|clientId|clientSecret|adminEmails|oauthConfig|migracoes|app|loginSocial|configGoogle|adminConfig)\.php$">
+<FilesMatch "^(dbConfig|clientId|clientSecret|adminEmails|oauthConfig|migracoes|app|loginSocial|adminConfig)\.php$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>

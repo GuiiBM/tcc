@@ -60,9 +60,10 @@ if ($loginSocial) {
 // Arquivos enviados pela pessoa (músicas, capas, fotos, episódios).
 $arquivos = [$usuario['usuario_foto'], ...array_column(consultar($conexao, "SELECT playlist_capa FROM playlist WHERE usuario_id = ?", "i", [$uid]), 'playlist_capa')];
 if ($artistaId) {
-    $artista = consultarUm($conexao, "SELECT artista_image, artista_capa FROM artista WHERE artista_id = ?", "i", [$artistaId]);
+    $artista = consultarUm($conexao, "SELECT artista_image, artista_capa, artista_sobre FROM artista WHERE artista_id = ?", "i", [$artistaId]);
     $arquivos[] = $artista['artista_image'] ?? null;
     $arquivos[] = $artista['artista_capa'] ?? null;
+    $arquivos[] = $artista['artista_sobre'] ?? null;
     foreach (consultar($conexao, "SELECT musica_capa, musica_link, musica_link_baixa FROM musica WHERE musica_artista = ?", "i", [$artistaId]) as $m) {
         array_push($arquivos, $m['musica_capa'], $m['musica_link'], $m['musica_link_baixa']);
     }

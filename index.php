@@ -53,7 +53,7 @@ $lancamentos = consultarFaixas($conexao, "ORDER BY m.musica_data_adicao DESC LIM
 $albuns = consultar($conexao, "SELECT al.*, a.artista_nome FROM album al INNER JOIN artista a ON a.artista_id = al.album_artista ORDER BY al.album_data DESC LIMIT 12");
 // Artistas: os mais próximos (quando há localização) e menos ouvidos primeiro.
 $distanciaArtista = sqlDistancia($local);
-$artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image FROM artista a WHERE " . SQL_ARTISTA_VISIVEL . "
+$artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image, a.artista_image_pos FROM artista a WHERE " . SQL_ARTISTA_VISIVEL . "
     ORDER BY ($distanciaArtista IS NULL), $distanciaArtista,
     (SELECT COUNT(*) FROM visualizacoes v INNER JOIN musica mv2 ON mv2.musica_id = v.musica_id WHERE mv2.musica_artista = a.artista_id) ASC LIMIT 12");
 $podcasts = consultar($conexao, "SELECT * FROM podcast ORDER BY podcast_data DESC LIMIT 12");
@@ -90,9 +90,9 @@ $cards = function ($linhas) { return implode('', array_map('renderCardFaixa', $l
         <div class="welcome-card">
             <div>
                 <h2>Ouça artistas independentes de graça</h2>
-                <p>Crie uma conta com o Google para curtir músicas, montar playlists, seguir artistas e retomar de onde parou.</p>
+                <p>Crie uma conta para curtir músicas, montar playlists, seguir artistas e retomar de onde parou.</p>
             </div>
-            <a class="btn-pill btn-accent" href="login.php" data-no-spa>Entrar com Google</a>
+            <a class="btn-pill btn-accent" href="login.php" data-no-spa>Criar conta ou entrar</a>
         </div>
         <?php endif; ?>
     </section>

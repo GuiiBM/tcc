@@ -7,7 +7,7 @@
 // nada), então um banco vazio na hospedagem vira um banco completo no
 // primeiro acesso, e um banco antigo importado do XAMPP é atualizado sozinho.
 
-define('VERSAO_ESQUEMA', 4);
+define('VERSAO_ESQUEMA', 5);
 
 function garantirEsquema($conexao) {
     static $verificado = false;
@@ -152,6 +152,10 @@ function executarMigracoes($conexao) {
     migracaoAdicionarColuna($conexao, 'artista', 'artista_descricao', 'TEXT', $log);
     migracaoAdicionarColuna($conexao, 'artista', 'artista_link', 'VARCHAR(255)', $log);
     migracaoAdicionarColuna($conexao, 'artista', 'artista_capa', 'VARCHAR(255) NULL', $log);
+    // Enquadramento da foto ("x% y%") e imagem própria da seção "Sobre".
+    migracaoAdicionarColuna($conexao, 'artista', 'artista_image_pos', 'VARCHAR(20) NULL', $log);
+    migracaoAdicionarColuna($conexao, 'artista', 'artista_sobre', 'VARCHAR(255) NULL', $log);
+    migracaoAdicionarColuna($conexao, 'artista', 'artista_sobre_pos', 'VARCHAR(20) NULL', $log);
 
     migracaoCriarTabela($conexao, 'musica', "CREATE TABLE musica (
         musica_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -182,6 +186,7 @@ function executarMigracoes($conexao) {
         migracaoSql($conexao, "ALTER TABLE usuarios ADD COLUMN artista_id INT, ADD CONSTRAINT fk_usuario_artista FOREIGN KEY (artista_id) REFERENCES artista(artista_id) ON DELETE SET NULL", "Coluna usuarios.artista_id adicionada", $log);
     }
     migracaoAdicionarColuna($conexao, 'usuarios', 'usuario_qualidade', "ENUM('auto', 'alta', 'baixa') NOT NULL DEFAULT 'auto'", $log);
+    migracaoAdicionarColuna($conexao, 'usuarios', 'usuario_foto_pos', 'VARCHAR(20) NULL', $log);
 
     migracaoCriarTabela($conexao, 'curtidas', "CREATE TABLE curtidas (
         curtida_id INT PRIMARY KEY AUTO_INCREMENT,

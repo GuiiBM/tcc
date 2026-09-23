@@ -56,6 +56,21 @@ function imagemOuPadrao($caminho, $padrao = 'Componentes/icones/icone.png') {
     return $caminho ? $caminho : $padrao;
 }
 
+// Enquadramento escolhido no editor de foto, no formato "x% y%" (0 a 100).
+// Qualquer valor inválido vira o centro.
+function posicaoImagem($posicao) {
+    if (!preg_match('/^(\d{1,3}(?:\.\d+)?)% (\d{1,3}(?:\.\d+)?)%$/', trim((string) $posicao), $m)) {
+        return '50% 50%';
+    }
+    return round(min(100, (float) $m[1]), 1) . '% ' . round(min(100, (float) $m[2]), 1) . '%';
+}
+
+// Atributo style com o enquadramento (vazio quando é o centro).
+function estiloPosicao($posicao, $propriedade = 'object-position') {
+    $p = posicaoImagem($posicao);
+    return $p === '50% 50%' ? '' : ' style="' . $propriedade . ': ' . $p . '"';
+}
+
 function icone($nome, $classe = '') {
     $classe = $classe ? ' ' . $classe : '';
     return '<svg class="icon' . $classe . '" aria-hidden="true"><use href="#i-' . e($nome) . '"></use></svg>';
@@ -81,7 +96,7 @@ function usuarioAtual() {
     if (!usuarioLogado()) {
         return null;
     }
-    $stmt = mysqli_prepare($conexao, "SELECT usuario_id, usuario_nome, usuario_email, usuario_foto, usuario_tipo, usuario_idade, usuario_cidade, usuario_descricao, usuario_qualidade, artista_id FROM usuarios WHERE usuario_id = ?");
+    $stmt = mysqli_prepare($conexao, "SELECT usuario_id, usuario_nome, usuario_email, usuario_foto, usuario_foto_pos, usuario_tipo, usuario_idade, usuario_cidade, usuario_descricao, usuario_qualidade, artista_id FROM usuarios WHERE usuario_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $_SESSION['usuario_id']);
     mysqli_stmt_execute($stmt);
     $usuario = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) ?: null;
@@ -428,10 +443,10 @@ function renderCardFaixa($linha, $nota = '') {
         . '</div>';
 }
 
-function renderCardColecao($href, $imagem, $titulo, $subtitulo, $urlFaixas = '', $redondo = false, $mosaico = []) {
+function renderCardColecao($href, $imagem, $titulo, $subtitulo, $urlFaixas = '', $redondo = false, $mosaico = [], $posicao = '') {
     $capa = $mosaico && count($mosaico) >= 4
         ? '<div class="mosaic">' . implode('', array_map(function ($img) { return '<img src="' . e($img) . '" alt="" loading="lazy">'; }, array_slice($mosaico, 0, 4))) . '</div>'
-        : '<img src="' . e(imagemOuPadrao($imagem ?: ($mosaico[0] ?? ''))) . '" alt="" loading="lazy">';
+        : '<img src="' . e(imagemOuPadrao($imagem ?: ($mosaico[0] ?? ''))) . '" alt="" loading="lazy"' . ($imagem ? estiloPosicao($posicao) : '') . '>';
     return '<a class="media-card' . ($redondo ? ' is-round' : '') . '" href="' . e($href) . '">'
         . '<div class="media-cover">' . $capa
         . ($urlFaixas ? '<button type="button" class="card-play" data-action="play-url" data-url="' . e($urlFaixas) . '" aria-label="Tocar ' . e($titulo) . '">' . icone('play') . '</button>' : '')
@@ -449,7 +464,7 @@ function renderCardAlbum($album) {
 }
 
 function renderCardArtista($artista) {
-    return renderCardColecao('artista.php?id=' . (int) $artista['artista_id'], $artista['artista_image'], $artista['artista_nome'], 'Artista', 'api/faixas.php?tipo=artista&id=' . (int) $artista['artista_id'], true);
+    return renderCardColecao('artista.php?id=' . (int) $artista['artista_id'], $artista['artista_image'], $artista['artista_nome'], 'Artista', 'api/faixas.php?tipo=artista&id=' . (int) $artista['artista_id'], true, [], $artista['artista_image_pos'] ?? '');
 }
 
 function renderCardPlaylist($playlist, $mosaico = []) {

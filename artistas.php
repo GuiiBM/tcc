@@ -6,7 +6,7 @@ $tituloPagina = 'Artistas';
 include "Componentes/paginas/head.php";
 include "Componentes/paginas/header.php";
 
-$artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image, a.artista_cidade FROM artista a WHERE " . SQL_ARTISTA_VISIVEL . " ORDER BY a.artista_nome");
+$artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image, a.artista_image_pos, a.artista_cidade FROM artista a WHERE " . SQL_ARTISTA_VISIVEL . " ORDER BY a.artista_nome");
 ?>
 <div class="artists-page">
     <header class="page-head">
@@ -34,7 +34,7 @@ $artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_
     <?php if ($artistas): ?>
     <div class="card-grid">
         <?php foreach ($artistas as $a): ?>
-            <?= renderCardColecao('artista.php?id=' . (int) $a['artista_id'], $a['artista_image'], $a['artista_nome'], $a['artista_cidade'] ?: 'Artista', 'api/faixas.php?tipo=artista&id=' . (int) $a['artista_id'], true) ?>
+            <?= renderCardColecao('artista.php?id=' . (int) $a['artista_id'], $a['artista_image'], $a['artista_nome'], $a['artista_cidade'] ?: 'Artista', 'api/faixas.php?tipo=artista&id=' . (int) $a['artista_id'], true, [], $a['artista_image_pos']) ?>
         <?php endforeach; ?>
     </div>
     <?php else: ?>

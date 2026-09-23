@@ -32,7 +32,7 @@ if ($tudo || $tipo === 'musicas') {
 
 if ($tudo || $tipo === 'artistas') {
     $limite = $tudo ? 10 : 50;
-    $artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image FROM artista a
+    $artistas = consultar($conexao, "SELECT a.artista_id, a.artista_nome, a.artista_image, a.artista_image_pos FROM artista a
         WHERE (a.artista_nome LIKE ? OR a.artista_cidade LIKE ?) AND " . SQL_ARTISTA_VISIVEL . "
         ORDER BY (a.artista_nome LIKE ?) DESC, a.artista_nome LIMIT ?", "sssi", [$contem, $contem, $comeca, $limite]);
 }
@@ -87,7 +87,7 @@ if ($tudo) {
     }
     if ($artistaTopo) {
         $melhor = '<a class="top-card" href="artista.php?id=' . (int) $artistaTopo['artista_id'] . '">'
-            . '<img class="is-round" src="' . e(imagemOuPadrao($artistaTopo['artista_image'])) . '" alt="">'
+            . '<img class="is-round" src="' . e(imagemOuPadrao($artistaTopo['artista_image'])) . '" alt=""' . estiloPosicao($artistaTopo['artista_image_pos']) . '>'
             . '<strong>' . e($artistaTopo['artista_nome']) . '</strong><span class="tag">Artista</span>'
             . '<button type="button" class="card-play" data-action="play-url" data-url="api/faixas.php?tipo=artista&amp;id=' . (int) $artistaTopo['artista_id'] . '" aria-label="Tocar">' . icone('play') . '</button></a>';
     } elseif ($musicas) {

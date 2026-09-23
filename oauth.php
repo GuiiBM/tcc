@@ -1,13 +1,11 @@
 <?php
 require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
-// Inicia o login social: oauth.php?provedor=google|facebook|apple
+// Inicia o login social: oauth.php?provedor=facebook|apple
 iniciarSessaoSegura();
 include "Componentes/paginas/php/loginSocial.php";
 
 $provedor = $_GET['provedor'] ?? '';
-if ($provedor === 'google' && googleConfigurado()) {
-    header('Location: ' . getGoogleAuthUrl());
-} elseif ($provedor === 'facebook' && facebookConfigurado()) {
+if ($provedor === 'facebook' && facebookConfigurado()) {
     header('Location: ' . urlLoginFacebook());
 } elseif ($provedor === 'apple' && appleConfigurado()) {
     header('Location: ' . urlLoginApple());

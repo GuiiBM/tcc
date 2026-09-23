@@ -1,6 +1,7 @@
 <?php
 // Atualização do perfil do usuário logado.
-// POST acao=dados|foto|senha|qualidade|artista
+// POST acao=dados|foto|foto_artista|sobre|senha|qualidade|artista
+// (foto, foto_artista e sobre aceitam "posicao" = enquadramento "x% y%")
 include __DIR__ . '/../Componentes/paginas/php/app.php';
 exigirPostApi();
 exigirLoginApi();
@@ -8,6 +9,33 @@ exigirLoginApi();
 $dados = dadosRequisicao();
 $usuario = usuarioAtual();
 $uid = (int) $usuario['usuario_id'];
+
+// Apaga um arquivo antigo só se nenhuma foto (de usuário ou artista) usa ele.
+function removerSeSemUso($conexao, $caminho) {
+    if (!$caminho) {
+        return;
+    }
+    $emUso = consultarUm($conexao, "SELECT 1 FROM usuarios WHERE usuario_foto = ? UNION SELECT 1 FROM artista WHERE artista_image = ? OR artista_sobre = ?", "sss", [$caminho, $caminho, $caminho]);
+    if (!$emUso) {
+        removerArquivoArmazenado($caminho);
+    }
+}
+
+function artistaDoUsuario($conexao, $usuario) {
+    if (!$usuario['artista_id']) {
+        jsonErro('Sua conta não tem página de artista', 403);
+    }
+    return consultarUm($conexao, "SELECT * FROM artista WHERE artista_id = ?", "i", [$usuario['artista_id']]);
+}
+
+// Upload opcional de imagem; encerra com erro se o arquivo for inválido.
+function uploadImagemOpcional($campo) {
+    try {
+        return salvarUploadValidado($_FILES[$campo] ?? null, 'imagem');
+    } catch (Exception $e) {
+        jsonErro($e->getMessage());
+    }
+}
 
 switch ($dados['acao'] ?? '') {
     case 'dados':
@@ -27,30 +55,69 @@ switch ($dados['acao'] ?? '') {
 
     case 'foto':
         $fotoAntiga = $usuario['usuario_foto'];
+        $posicao = posicaoImagem($dados['posicao'] ?? '');
         if (!empty($dados['remover'])) {
             $novaFoto = null;
+            $posicao = null;
         } else {
-            try {
-                $novaFoto = salvarUploadValidado($_FILES['foto'] ?? null, 'imagem');
-            } catch (Exception $e) {
-                jsonErro($e->getMessage());
-            }
+            $novaFoto = uploadImagemOpcional('foto');
             if (!$novaFoto) {
-                jsonErro('Escolha uma imagem');
+                if (!$fotoAntiga) {
+                    jsonErro('Escolha uma imagem');
+                }
+                // Mesma foto, só o enquadramento mudou (a do artista acompanha se for a mesma imagem).
+                executar($conexao, "UPDATE usuarios SET usuario_foto_pos = ? WHERE usuario_id = ?", "si", [$posicao, $uid]);
+                if ($usuario['artista_id']) {
+                    executar($conexao, "UPDATE artista SET artista_image_pos = ? WHERE artista_id = ? AND artista_image = ?", "sis", [$posicao, $usuario['artista_id'], $fotoAntiga]);
+                }
+                jsonResposta(['success' => true, 'message' => 'Enquadramento salvo']);
             }
         }
-        executar($conexao, "UPDATE usuarios SET usuario_foto = ? WHERE usuario_id = ?", "si", [$novaFoto, $uid]);
+        executar($conexao, "UPDATE usuarios SET usuario_foto = ?, usuario_foto_pos = ? WHERE usuario_id = ?", "ssi", [$novaFoto, $posicao, $uid]);
         // Se a foto do artista era a mesma do perfil (ou a padrão), acompanha a mudança.
         if ($usuario['artista_id']) {
-            executar($conexao, "UPDATE artista SET artista_image = ? WHERE artista_id = ? AND (artista_image = ? OR artista_image IS NULL OR artista_image = '' OR artista_image = 'Componentes/icones/icone.png')",
-                "sis", [$novaFoto ?: 'Componentes/icones/icone.png', $usuario['artista_id'], (string) $fotoAntiga]);
+            executar($conexao, "UPDATE artista SET artista_image = ?, artista_image_pos = ? WHERE artista_id = ? AND (artista_image = ? OR artista_image IS NULL OR artista_image = '' OR artista_image = 'Componentes/icones/icone.png')",
+                "ssis", [$novaFoto ?: 'Componentes/icones/icone.png', $posicao, $usuario['artista_id'], (string) $fotoAntiga]);
         }
-        $emUso = consultarUm($conexao, "SELECT 1 FROM artista WHERE artista_image = ?", "s", [(string) $fotoAntiga]);
-        if (!$emUso) {
-            removerArquivoArmazenado($fotoAntiga);
-        }
+        removerSeSemUso($conexao, $fotoAntiga);
         $_SESSION['usuario_foto'] = $novaFoto;
         jsonResposta(['success' => true, 'message' => $novaFoto ? 'Foto atualizada' : 'Foto removida']);
+
+    case 'foto_artista':
+        $artista = artistaDoUsuario($conexao, $usuario);
+        $posicao = posicaoImagem($dados['posicao'] ?? '');
+        $nova = uploadImagemOpcional('foto');
+        if ($nova) {
+            executar($conexao, "UPDATE artista SET artista_image = ?, artista_image_pos = ? WHERE artista_id = ?", "ssi", [$nova, $posicao, $artista['artista_id']]);
+            removerSeSemUso($conexao, $artista['artista_image']);
+            jsonResposta(['success' => true, 'message' => 'Foto do artista atualizada']);
+        }
+        executar($conexao, "UPDATE artista SET artista_image_pos = ? WHERE artista_id = ?", "si", [$posicao, $artista['artista_id']]);
+        jsonResposta(['success' => true, 'message' => 'Enquadramento salvo']);
+
+    case 'sobre':
+        $artista = artistaDoUsuario($conexao, $usuario);
+        $antiga = $artista['artista_sobre'];
+        if (!empty($dados['remover'])) {
+            executar($conexao, "UPDATE artista SET artista_sobre = NULL, artista_sobre_pos = NULL WHERE artista_id = ?", "i", [$artista['artista_id']]);
+            removerSeSemUso($conexao, $antiga);
+            jsonResposta(['success' => true, 'message' => 'Imagem do "Sobre" removida. Sua foto de artista volta a ser usada.']);
+        }
+        $posicao = posicaoImagem($dados['posicao'] ?? '');
+        $nova = uploadImagemOpcional('foto');
+        if ($nova) {
+            executar($conexao, "UPDATE artista SET artista_sobre = ?, artista_sobre_pos = ? WHERE artista_id = ?", "ssi", [$nova, $posicao, $artista['artista_id']]);
+            removerSeSemUso($conexao, $antiga);
+            jsonResposta(['success' => true, 'message' => 'Imagem do "Sobre" atualizada']);
+        }
+        if ($antiga) {
+            executar($conexao, "UPDATE artista SET artista_sobre_pos = ? WHERE artista_id = ?", "si", [$posicao, $artista['artista_id']]);
+        } else {
+            // Sem imagem própria o "Sobre" usa a foto do artista: salva o enquadramento só para esta seção
+            // copiando a foto como imagem do "Sobre".
+            executar($conexao, "UPDATE artista SET artista_sobre = artista_image, artista_sobre_pos = ? WHERE artista_id = ? AND artista_image IS NOT NULL AND artista_image <> ''", "si", [$posicao, $artista['artista_id']]);
+        }
+        jsonResposta(['success' => true, 'message' => 'Enquadramento salvo']);
 
     case 'senha':
         $nova = (string) ($dados['nova_senha'] ?? '');
@@ -83,10 +150,7 @@ switch ($dados['acao'] ?? '') {
         jsonResposta(['success' => true, 'message' => 'Preferência salva. Vale a partir da próxima música.', 'qualidade' => $qualidade]);
 
     case 'artista':
-        if (!$usuario['artista_id']) {
-            jsonErro('Sua conta não tem página de artista', 403);
-        }
-        $artista = consultarUm($conexao, "SELECT * FROM artista WHERE artista_id = ?", "i", [$usuario['artista_id']]);
+        $artista = artistaDoUsuario($conexao, $usuario);
         $nome = trim($dados['artista_nome'] ?? '');
         if ($nome === '' || mb_strlen($nome) > 100) {
             jsonErro('Informe o nome artístico (até 100 caracteres)');
@@ -96,7 +160,7 @@ switch ($dados['acao'] ?? '') {
             jsonErro('A página oficial precisa começar com http:// ou https://');
         }
         try {
-            $imagem = salvarUploadValidado($_FILES['artista_image'] ?? null, 'imagem') ?: $artista['artista_image'];
+            $novaImagem = salvarUploadValidado($_FILES['artista_image'] ?? null, 'imagem');
             $capa = salvarUploadValidado($_FILES['artista_capa'] ?? null, 'imagem');
         } catch (Exception $e) {
             jsonErro($e->getMessage());
@@ -109,8 +173,11 @@ switch ($dados['acao'] ?? '') {
         } else {
             $capa = $artista['artista_capa'];
         }
-        executar($conexao, "UPDATE artista SET artista_nome = ?, artista_cidade = ?, artista_link = ?, artista_descricao = ?, artista_image = ?, artista_capa = ? WHERE artista_id = ?",
-            "ssssssi", [$nome, mb_substr(trim($dados['artista_cidade'] ?? ''), 0, 100), $link ?: null, mb_substr(trim($dados['artista_descricao'] ?? ''), 0, 2000), $imagem, $capa, $artista['artista_id']]);
+        // Foto nova começa centralizada; o enquadramento é ajustado em editarFoto.php.
+        $imagem = $novaImagem ?: $artista['artista_image'];
+        $posicaoImagem = $novaImagem ? null : $artista['artista_image_pos'];
+        executar($conexao, "UPDATE artista SET artista_nome = ?, artista_cidade = ?, artista_link = ?, artista_descricao = ?, artista_image = ?, artista_image_pos = ?, artista_capa = ? WHERE artista_id = ?",
+            "sssssssi", [$nome, mb_substr(trim($dados['artista_cidade'] ?? ''), 0, 100), $link ?: null, mb_substr(trim($dados['artista_descricao'] ?? ''), 0, 2000), $imagem, $posicaoImagem, $capa, $artista['artista_id']]);
         jsonResposta(['success' => true, 'message' => 'Página de artista atualizada']);
 
     default:

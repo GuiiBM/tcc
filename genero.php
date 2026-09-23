@@ -15,7 +15,7 @@ if (!$categoria):
 else:
     // Mesma lógica das recomendações: locais e pouco ouvidas primeiro.
     $musicas = consultarRecomendadas($conexao, ['categoria' => $categoria['categoria_id'], 'limite' => 200]);
-    $artistas = consultar($conexao, "SELECT DISTINCT a.artista_id, a.artista_nome, a.artista_image FROM artista a
+    $artistas = consultar($conexao, "SELECT DISTINCT a.artista_id, a.artista_nome, a.artista_image, a.artista_image_pos FROM artista a
         INNER JOIN musica m ON m.musica_artista = a.artista_id INNER JOIN musica_categoria mc ON mc.musica_id = m.musica_id
         WHERE mc.categoria_id = ? LIMIT 20", "i", [$categoria['categoria_id']]);
     $duracao = array_sum(array_column($musicas, 'musica_duracao'));

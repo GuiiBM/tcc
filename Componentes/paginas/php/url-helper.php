@@ -37,7 +37,18 @@ function getBasePath() {
     return '/';
 }
 
+// Endereço completo do site (usado nos retornos do login do Facebook/Apple).
+// Em hospedagens atrás de proxy o PHP pode não saber que a conexão é HTTPS;
+// nesse caso defina SITE_URL no dbConfig.php, ex:
+//   define('SITE_URL', 'https://ressonance.hyperphp.com/');
 function getBaseUrl() {
+    if (!defined('SITE_URL') && file_exists(__DIR__ . '/dbConfig.php')) {
+        include_once __DIR__ . '/dbConfig.php';
+    }
+    if (defined('SITE_URL') && SITE_URL !== '') {
+        return rtrim(SITE_URL, '/') . '/';
+    }
+
     $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
     $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $forwardedProto === 'https';
     $protocol = $isHttps ? 'https' : 'http';
