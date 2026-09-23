@@ -1,143 +1,17 @@
 <?php
+require_once __DIR__ . '/seguranca.php';
 include "DBConection.php";
 include_once __DIR__ . "/url-helper.php";
 
 echo "<div style='max-width: 800px; margin: 50px auto; padding: 20px; background: rgba(22, 27, 34, 0.9); border-radius: 16px; color: var(--text-primary);'>";
 echo "<h2 style='color: var(--accent); text-align: center; margin-bottom: 30px;'>Inicializando Banco de Dados</h2>";
 
-// Criar tabela artista
-echo "<p>Criando tabela 'artista'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS artista(
-artista_id INT PRIMARY KEY AUTO_INCREMENT,
-artista_nome VARCHAR(100) NOT NULL,
-artista_cidade VARCHAR(100),
-artista_image VARCHAR(255),
-artista_descricao TEXT,
-artista_link VARCHAR(255)
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'artista' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'artista': " . mysqli_error($conexao) . "</p>";
-}
-
-// Verificar e adicionar coluna de descrição se não existir (tabelas criadas antes desta versão)
-echo "<p>Verificando coluna 'artista_descricao'...</p>";
-$sql_check = "SHOW COLUMNS FROM artista LIKE 'artista_descricao'";
-$result = mysqli_query($conexao, $sql_check);
-if (mysqli_num_rows($result) == 0) {
-    $sql_alter = "ALTER TABLE artista ADD COLUMN artista_descricao TEXT";
-    if (mysqli_query($conexao, $sql_alter)) {
-        echo "<p style='color: var(--accent-info);'>✓ Coluna 'artista_descricao' adicionada!</p>";
-    } else {
-        echo "<p style='color: var(--danger);'>✗ Erro ao adicionar coluna: " . mysqli_error($conexao) . "</p>";
-    }
-} else {
-    echo "<p style='color: var(--accent-info);'>✓ Coluna 'artista_descricao' já existe!</p>";
-}
-
-// Verificar e adicionar coluna de link (página do artista) se não existir
-echo "<p>Verificando coluna 'artista_link'...</p>";
-$sql_check = "SHOW COLUMNS FROM artista LIKE 'artista_link'";
-$result = mysqli_query($conexao, $sql_check);
-if (mysqli_num_rows($result) == 0) {
-    $sql_alter = "ALTER TABLE artista ADD COLUMN artista_link VARCHAR(255)";
-    if (mysqli_query($conexao, $sql_alter)) {
-        echo "<p style='color: var(--accent-info);'>✓ Coluna 'artista_link' adicionada!</p>";
-    } else {
-        echo "<p style='color: var(--danger);'>✗ Erro ao adicionar coluna: " . mysqli_error($conexao) . "</p>";
-    }
-} else {
-    echo "<p style='color: var(--accent-info);'>✓ Coluna 'artista_link' já existe!</p>";
-}
-
-// Criar tabela musica
-echo "<p>Criando tabela 'musica'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS musica(
-musica_id INT PRIMARY KEY AUTO_INCREMENT,
-musica_titulo VARCHAR(100) NOT NULL,
-musica_capa VARCHAR(255),
-musica_link VARCHAR(255),
-musica_artista INT,
-musica_data_adicao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_musica_artista
-FOREIGN KEY (musica_artista) 
-REFERENCES artista(artista_id)
-ON DELETE CASCADE
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'musica' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'musica': " . mysqli_error($conexao) . "</p>";
-}
-
-// Verificar e adicionar coluna de data se não existir
-echo "<p>Verificando coluna 'musica_data_adicao'...</p>";
-$sql_check = "SHOW COLUMNS FROM musica LIKE 'musica_data_adicao'";
-$result = mysqli_query($conexao, $sql_check);
-if (mysqli_num_rows($result) == 0) {
-    echo "<p>Adicionando coluna 'musica_data_adicao'...</p>";
-    $sql_alter = "ALTER TABLE musica ADD COLUMN musica_data_adicao TIMESTAMP DEFAULT CURRENT_TIMESTAMP";
-    if (mysqli_query($conexao, $sql_alter)) {
-        echo "<p style='color: var(--accent-info);'>✓ Coluna 'musica_data_adicao' adicionada!</p>";
-    } else {
-        echo "<p style='color: var(--danger);'>✗ Erro ao adicionar coluna: " . mysqli_error($conexao) . "</p>";
-    }
-} else {
-    echo "<p style='color: var(--accent-info);'>✓ Coluna 'musica_data_adicao' já existe!</p>";
-}
-
-// Criar tabela usuarios
-echo "<p>Criando tabela 'usuarios'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS usuarios(
-usuario_id INT PRIMARY KEY AUTO_INCREMENT,
-usuario_email VARCHAR(255) UNIQUE NOT NULL,
-usuario_senha VARCHAR(255) NOT NULL,
-usuario_nome VARCHAR(100) NOT NULL,
-usuario_idade INT,
-usuario_cidade VARCHAR(100),
-usuario_descricao TEXT,
-usuario_foto VARCHAR(255),
-usuario_tipo ENUM("admin", "usuario") DEFAULT "usuario",
-usuario_data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-artista_id INT UNIQUE,
-CONSTRAINT fk_usuario_artista
-FOREIGN KEY (artista_id)
-REFERENCES artista(artista_id)
-ON DELETE SET NULL
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'usuarios' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'usuarios': " . mysqli_error($conexao) . "</p>";
-}
-
-// Criar tabela curtidas
-echo "<p>Criando tabela 'curtidas'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS curtidas(
-curtida_id INT PRIMARY KEY AUTO_INCREMENT,
-musica_id INT NOT NULL,
-usuario_id INT NOT NULL,
-tipo_curtida ENUM("curtida", "descurtida") NOT NULL,
-data_curtida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_curtida_musica
-FOREIGN KEY (musica_id) 
-REFERENCES musica(musica_id)
-ON DELETE CASCADE,
-CONSTRAINT fk_curtida_usuario
-FOREIGN KEY (usuario_id)
-REFERENCES usuarios(usuario_id)
-ON DELETE CASCADE,
-UNIQUE KEY unique_user_music (musica_id, usuario_id)
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'curtidas' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'curtidas': " . mysqli_error($conexao) . "</p>";
+// Cria/atualiza todas as tabelas (mesmas migrações que rodam sozinhas no
+// primeiro acesso ao site - ver migracoes.php).
+include_once __DIR__ . "/migracoes.php";
+foreach (executarMigracoes($conexao) as [$status, $mensagem]) {
+    $cor = $status === 'ok' ? 'var(--accent-info)' : 'var(--danger)';
+    echo "<p style='color: $cor;'>" . ($status === 'ok' ? '✓' : '✗') . ' ' . htmlspecialchars($mensagem) . "</p>";
 }
 
 // Migrar para usuario_id se necessário
@@ -212,7 +86,7 @@ if (mysqli_num_rows($result_google) > 0) {
     echo "<p>Gerando senhas temporárias para usuários do Google...</p>";
     while ($usuario = mysqli_fetch_assoc($result_google)) {
         $senha_temporaria = 'temp_' . substr(md5($usuario['usuario_id'] . time()), 0, 8);
-        $senha_hash = password_hash($senha_temporaria, PASSWORD_DEFAULT);
+        $senha_hash = hashSenha($senha_temporaria);
         
         $stmt_senha = mysqli_prepare($conexao, "UPDATE usuarios SET usuario_senha = ? WHERE usuario_id = ?");
         mysqli_stmt_bind_param($stmt_senha, "si", $senha_hash, $usuario['usuario_id']);
@@ -223,41 +97,6 @@ if (mysqli_num_rows($result_google) > 0) {
     }
 } else {
     echo "<p style='color: var(--accent-info);'>✓ Todos os usuários já possuem senha!</p>";
-}
-
-// Criar tabela visualizacoes
-echo "<p>Criando tabela 'visualizacoes'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS visualizacoes(
-visualizacao_id INT PRIMARY KEY AUTO_INCREMENT,
-musica_id INT NOT NULL,
-ip_usuario VARCHAR(45) NOT NULL,
-data_visualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_visualizacao_musica
-FOREIGN KEY (musica_id) 
-REFERENCES musica(musica_id)
-ON DELETE CASCADE
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'visualizacoes' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'visualizacoes': " . mysqli_error($conexao) . "</p>";
-}
-
-// Criar tabela propagandas
-echo "<p>Criando tabela 'propagandas'...</p>";
-$sql = 'CREATE TABLE IF NOT EXISTS propagandas(
-propaganda_id INT PRIMARY KEY AUTO_INCREMENT,
-propaganda_nome VARCHAR(255) NOT NULL,
-propaganda_ordem INT NOT NULL DEFAULT 0,
-propaganda_ativa BOOLEAN DEFAULT TRUE,
-data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);';
-
-if (mysqli_query($conexao, $sql)) {
-    echo "<p style='color: var(--accent-info);'>✓ Tabela 'propagandas' criada com sucesso!</p>";
-} else {
-    echo "<p style='color: var(--danger);'>✗ Erro ao criar tabela 'propagandas': " . mysqli_error($conexao) . "</p>";
 }
 
 // Migrar propagandas existentes

@@ -1,12 +1,11 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-include "Componentes/páginas/php/verificar_login.php";
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+iniciarSessaoSegura();
+include "Componentes/paginas/php/verificar_login.php";
 redirecionarSeNaoAdmin();
-include "Componentes/páginas/php/DBConection.php";
-include "Componentes/páginas/head.php";
-include "Componentes/páginas/header.php";
+include "Componentes/paginas/php/DBConection.php";
+include "Componentes/paginas/head.php";
+include "Componentes/paginas/header.php";
 
 // Capturar saída em buffer
 ob_start();
@@ -145,3 +144,4 @@ ob_end_clean();
     margin-bottom: 20px;
 }
 </style>
+<?php include "Componentes/paginas/footer.php"; ?>

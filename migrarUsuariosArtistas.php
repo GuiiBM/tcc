@@ -1,14 +1,13 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+iniciarSessaoSegura();
 
-include "Componentes/páginas/php/verificar_login.php";
+include "Componentes/paginas/php/verificar_login.php";
 redirecionarSeNaoAdmin();
-include "Componentes/páginas/php/DBConection.php";
-include_once "Componentes/páginas/php/verificarPerfilCompleto.php";
-include "Componentes/páginas/head.php";
-include "Componentes/páginas/header.php";
+include "Componentes/paginas/php/DBConection.php";
+include_once "Componentes/paginas/php/verificarPerfilCompleto.php";
+include "Componentes/paginas/head.php";
+include "Componentes/paginas/header.php";
 ?>
 
 <div style='max-width: 900px; margin: 50px auto; padding: 30px; background: var(--bg-surface); border-radius: 20px; color: var(--text-primary); border: 2px solid var(--border-accent); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);'>
@@ -58,7 +57,7 @@ if (mysqli_num_rows($result_usuarios) > 0) {
             echo "<div style='background: rgba(255, 255, 255, 0.05); padding: 8px 15px; margin: 3px 0; border-radius: 6px;'><p style='margin: 0; color: var(--text-primary); font-size: 0.9rem;'>🔐 Gerando senha temporária para: " . htmlspecialchars($usuario['usuario_nome']) . "</p></div>";
             
             $senha_temporaria = 'temp_' . substr(md5($usuario['usuario_id'] . time()), 0, 8);
-            $senha_hash = password_hash($senha_temporaria, PASSWORD_DEFAULT);
+            $senha_hash = hashSenha($senha_temporaria);
             
             $stmt_senha = mysqli_prepare($conexao, "UPDATE usuarios SET usuario_senha = ? WHERE usuario_id = ?");
             mysqli_stmt_bind_param($stmt_senha, "si", $senha_hash, $usuario['usuario_id']);
@@ -94,5 +93,5 @@ echo "<a href='admin.php' style='background: var(--accent-info); color: white; p
 echo "</div>";
 echo "</div>";
 echo "</div>";
-echo "</body></html>";
+include "Componentes/paginas/footer.php";
 ?>

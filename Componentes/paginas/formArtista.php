@@ -1,14 +1,13 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/php/seguranca.php';
+iniciarSessaoSegura();
 include_once 'php/verificar_login.php';
 redirecionarSeNaoAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_artista'])) {
     try {
-        if (file_exists('Componentes/páginas/php/processarUpload.php')) {
-            include 'Componentes/páginas/php/processarUpload.php';
+        if (file_exists('Componentes/paginas/php/processarUpload.php')) {
+            include 'Componentes/paginas/php/processarUpload.php';
         }
         
         $artista_nome = trim($_POST['artista_nome']);

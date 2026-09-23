@@ -1,0 +1,6 @@
+<?php
+// Copie este arquivo para adminEmails.php e coloque os e-mails (separados
+// por vírgula) que devem ser administradores do site. Em hospedagens com
+// variáveis de ambiente, prefira definir ADMIN_EMAILS no painel.
+define('ADMIN_EMAILS', 'seu_email@gmail.com');
+?>

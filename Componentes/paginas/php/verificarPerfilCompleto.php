@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/seguranca.php';
 function verificarPerfilCompleto($usuario_id, $conexao) {
     $stmt = mysqli_prepare($conexao, "SELECT u.*, a.artista_id FROM usuarios u LEFT JOIN artista a ON u.artista_id = a.artista_id WHERE u.usuario_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $usuario_id);
@@ -72,7 +73,7 @@ function completarPerfilAutomatico($usuario_id, $conexao) {
     // Se usuário do Google não tem senha, gerar uma temporária
     if (empty($usuario['usuario_senha'])) {
         $senha_temporaria = 'temp_' . substr(md5($usuario_id . time()), 0, 8);
-        $senha_hash = password_hash($senha_temporaria, PASSWORD_DEFAULT);
+        $senha_hash = hashSenha($senha_temporaria);
         
         $stmt_senha = mysqli_prepare($conexao, "UPDATE usuarios SET usuario_senha = ? WHERE usuario_id = ?");
         mysqli_stmt_bind_param($stmt_senha, "si", $senha_hash, $usuario_id);
@@ -93,7 +94,7 @@ function mostrarAlertaPerfilIncompleto() {
         echo "<strong>Senha temporária criada!</strong><br>";
         echo "Sua senha temporária é: <strong>" . $_SESSION['senha_temporaria'] . "</strong><br>";
         echo "<small>Recomendamos alterar sua senha nas configurações.</small>";
-        echo "<button onclick='this.parentElement.style.display=\"none\"' style='float: right; background: none; border: none; color: white; font-size: 18px; cursor: pointer;'>&times;</button>";
+        echo "<button type='button' data-action='dismiss-alert' aria-label='Fechar aviso' style='float: right; background: none; border: none; color: white; font-size: 18px; cursor: pointer;'>&times;</button>";
         echo "</div>";
         unset($_SESSION['senha_temporaria']);
     }

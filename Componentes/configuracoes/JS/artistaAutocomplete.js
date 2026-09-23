@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             timeout = setTimeout(() => {
-                fetch(`Componentes/páginas/php/buscarArtistas.php?q=${encodeURIComponent(query)}`)
+                fetch(`Componentes/paginas/php/buscarArtistas.php?q=${encodeURIComponent(query)}`)
                     .then(response => {
                         if (!response.ok) throw new Error('Network response was not ok');
                         return response.json();
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             cidadeTimeout = setTimeout(() => {
-                fetch(`Componentes/páginas/php/buscarCidades.php?q=${encodeURIComponent(query)}`)
+                fetch(`Componentes/paginas/php/buscarCidades.php?q=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(data => {
                         cidadeSuggestions.innerHTML = '';
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para mostrar artistas por cidade
     window.showArtistsByCity = function(cidade) {
-        fetch(`Componentes/páginas/php/buscarArtistasPorCidade.php?cidade=${encodeURIComponent(cidade)}`)
+        fetch(`Componentes/paginas/php/buscarArtistasPorCidade.php?cidade=${encodeURIComponent(cidade)}`)
             .then(response => response.json())
             .then(data => {
                 const artistList = document.getElementById('artistList');

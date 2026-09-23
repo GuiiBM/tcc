@@ -1,13 +1,12 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+iniciarSessaoSegura();
 
-include "Componentes/páginas/php/verificar_login.php";
+include "Componentes/paginas/php/verificar_login.php";
 redirecionarSeNaoAdmin();
 
-include "Componentes/páginas/php/DBConection.php";
-include "Componentes/páginas/php/funcoesDuplicados.php";
+include "Componentes/paginas/php/DBConection.php";
+include "Componentes/paginas/php/funcoesDuplicados.php";
 
 if (!isset($_GET['principal']) || !isset($_GET['secundario'])) {
     header('Location: gerenciarUsuarios.php');
@@ -46,10 +45,9 @@ if (!$dados_principal || !$dados_secundario) {
 $curtidas_principal = strpos($usuario_principal, 'A') === 0 ? 0 : contarCurtidas($conexao, $usuario_principal);
 $curtidas_secundario = strpos($usuario_secundario, 'A') === 0 ? 0 : contarCurtidas($conexao, $usuario_secundario);
 
-include "Componentes/páginas/head.php";
+include "Componentes/paginas/head.php";
+include "Componentes/paginas/header.php";
 ?>
-
-<body>
 <div style='max-width: 1000px; margin: 50px auto; padding: 30px; background: var(--bg-surface); border-radius: 20px; color: var(--text-primary); border: 2px solid var(--border-accent);'>
 
 <h2 style='color: var(--accent); text-align: center; margin-bottom: 30px;'>🔍 Preview da Combinação</h2>
@@ -138,5 +136,4 @@ include "Componentes/páginas/head.php";
 </div>
 
 </div>
-</body>
-</html>
+<?php include "Componentes/paginas/footer.php"; ?>

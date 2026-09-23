@@ -1,7 +1,6 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/php/seguranca.php';
+iniciarSessaoSegura();
 include_once 'php/verificar_login.php';
 redirecionarSeNaoAdmin();
 include_once 'php/funcoesPropaganda.php';
@@ -57,17 +56,13 @@ $propagandas = listarPropagandasOrdenadas();
                     <div class="size-guide-text">
                         <h3>Tamanho ideal</h3>
                         <p>
-                            O espaço da propaganda na lateral do site é <strong>dinâmico</strong>: a largura
-                            fica entre 220px e 300px (se ajusta à tela) e a altura preenche todo o espaço
-                            vertical disponível — por isso não existe um tamanho fixo em pixels que sirva
-                            para toda tela.
+                            As propagandas aparecem num quadro <strong>retrato 4:5</strong> na barra lateral
+                            (computador) e no início (celular), trocando sozinhas a cada 7 segundos.
                         </p>
                         <p>
-                            Use imagens <strong>verticais (retrato)</strong>, com proporção entre
-                            <strong>9:16 e 3:4</strong>, e mantenha o conteúdo mais importante
-                            (texto, logo, chamada) <strong>centralizado</strong> — a imagem preenche todo o
-                            espaço sem barras (recorta as bordas para caber), então detalhes muito perto do
-                            topo ou da base podem ser cortados em telas mais baixas.
+                            Tamanho ideal: <strong>1080 × 1350 px</strong> (o mesmo de um post retrato do Instagram).
+                            A arte aparece <strong>inteira</strong>, sem cortes; se tiver outra proporção, as sobras
+                            são preenchidas com a própria imagem desfocada.
                         </p>
                         <p>A pré-visualização ao lado mostra exatamente como a imagem escolhida vai aparecer na sua tela agora.</p>
                     </div>

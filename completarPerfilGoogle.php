@@ -1,7 +1,6 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+iniciarSessaoSegura();
 
 // Verificar se usuário está logado e veio do Google
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['google_incomplete'])) {
@@ -9,28 +8,26 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['google_incomplete'])) {
     exit;
 }
 
-include "Componentes/páginas/head.php";
-include "Componentes/páginas/php/DBConection.php";
+include "Componentes/paginas/head.php";
+include "Componentes/paginas/php/DBConection.php";
 
 $erro = '';
 $sucesso = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idade = intval($_POST['idade']);
-    $cidade = mysqli_real_escape_string($conexao, $_POST['cidade']);
-    $descricao = mysqli_real_escape_string($conexao, $_POST['descricao']);
-    $senha = isset($_POST['senha']) ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : '';
+    $cidade = trim($_POST['cidade'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+    $senha = !empty($_POST['senha']) ? hashSenha($_POST['senha']) : '';
     
     // Upload da foto (opcional, já tem do Google)
     $foto_atual = $_SESSION['usuario_foto'] ?? '';
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
-        $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-        $nomeArquivo = md5(uniqid()) . '.' . $extensao;
-        $caminhoDestino = 'Componentes/Armazenamento/imagens/' . $nomeArquivo;
-        
-        if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminhoDestino)) {
-            $foto_atual = $caminhoDestino;
-        }
+    // Só imagens: extensão e tipo real validados (antes aceitava qualquer
+    // extensão, o que permitiria enviar um .php e executá-lo no servidor).
+    try {
+        $foto_atual = salvarUploadValidado($_FILES['foto'] ?? null, 'imagem') ?: $foto_atual;
+    } catch (Exception $e) {
+        $erro = 'Foto: ' . $e->getMessage();
     }
     
     // Atualizar usuário
@@ -42,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_bind_param($stmt, "isssi", $idade, $cidade, $descricao, $foto_atual, $_SESSION['usuario_id']);
     }
     
-    if (mysqli_stmt_execute($stmt)) {
+    if (!$erro && mysqli_stmt_execute($stmt)) {
         // Atualizar também o perfil de artista
         if (isset($_SESSION['artista_id'])) {
             $stmt_artista = mysqli_prepare($conexao, "UPDATE artista SET artista_cidade = ?, artista_image = ? WHERE artista_id = ?");
@@ -63,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="login-container">
     <?php if ($erro): ?>
-        <div class="alert alert-error"><?= $erro ?></div>
+        <div class="alert alert-error"><?= htmlspecialchars($erro) ?></div>
     <?php endif; ?>
 
     <div id="registroForm">
         <h2>Complete seu Perfil</h2>
         <p style="color: #8b949e; text-align: center; margin-bottom: 20px;">
-            Olá <?= $_SESSION['usuario_nome'] ?>! Complete algumas informações para finalizar seu cadastro.
+            Olá <?= htmlspecialchars($_SESSION['usuario_nome']) ?>! Complete algumas informações para finalizar seu cadastro.
         </p>
         
         <form method="POST" enctype="multipart/form-data">

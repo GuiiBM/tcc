@@ -1,14 +1,13 @@
-<?php 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-include "Componentes/páginas/php/verificar_login.php";
+<?php
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php'; 
+iniciarSessaoSegura();
+include "Componentes/paginas/php/verificar_login.php";
 redirecionarSeNaoAdmin();
 
-include "Componentes/páginas/php/DBConection.php";
-include "Componentes/páginas/php/funcoesDuplicados.php";
-include "Componentes/páginas/head.php";
-include "Componentes/páginas/header.php";
+include "Componentes/paginas/php/DBConection.php";
+include "Componentes/paginas/php/funcoesDuplicados.php";
+include "Componentes/paginas/head.php";
+include "Componentes/paginas/header.php";
 
 // Processar combinação de usuários
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['combinar_usuarios'])) {
@@ -32,12 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vincular_artista'])) 
     $artista_id = intval($_POST['artista_id']);
     
     if ($usuario_id && $artista_id) {
-        $result = mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_id WHERE usuario_id = $usuario_id");
-        
-        if ($result) {
+        // Relação 1-para-1: desvincula o artista de outro usuário antes.
+        $stmt = mysqli_prepare($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = ? AND usuario_id <> ?");
+        mysqli_stmt_bind_param($stmt, "ii", $artista_id, $usuario_id);
+        mysqli_stmt_execute($stmt);
+        $stmt = mysqli_prepare($conexao, "UPDATE usuarios SET artista_id = ? WHERE usuario_id = ?");
+        mysqli_stmt_bind_param($stmt, "ii", $artista_id, $usuario_id);
+
+        if (mysqli_stmt_execute($stmt)) {
             $mensagem = "✅ Artista vinculado ao usuário com sucesso!";
         } else {
-            $erro = "❌ Erro ao vincular: " . mysqli_error($conexao);
+            error_log('Vincular artista: ' . mysqli_error($conexao));
+            $erro = "❌ Erro ao vincular. Tente novamente.";
         }
     } else {
         $erro = "❌ Selecione um usuário e um artista para vincular.";
@@ -200,7 +205,7 @@ function buscarParesSimilares($conexao, $threshold = 0) {
                     </div>
                 </div>
                 <div style='text-align: center;'>
-                    <button onclick="selecionarUsuario('<?php echo $usuario['usuario_id']; ?>', '<?php echo addslashes($usuario['usuario_nome']); ?>')" 
+                    <button onclick="selecionarUsuario(<?php echo htmlspecialchars(json_encode((string) $usuario['usuario_id']), ENT_QUOTES); ?>, <?php echo htmlspecialchars(json_encode((string) $usuario['usuario_nome']), ENT_QUOTES); ?>)" 
                             class="btn-neon" style='background: linear-gradient(135deg, var(--accent-info), #0099cc); padding: 8px 15px; font-size: 0.8rem;'>
                         🎯 Selecionar
                     </button>
@@ -504,6 +509,4 @@ document.addEventListener('DOMContentLoaded', function() {
     mostrarSecao('duplicados');
 });
 </script>
-
-</body>
-</html>
+<?php include "Componentes/paginas/footer.php"; ?>

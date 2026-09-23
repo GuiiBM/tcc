@@ -1,0 +1,16 @@
+<?php
+// Copie para oauthConfig.php (ignorado pelo git) para ativar os botões de
+// login com Facebook e Apple. Provedor sem credenciais não aparece no login.
+
+// Facebook - https://developers.facebook.com/apps -> Login do Facebook
+// URI de redirecionamento válida: https://SEU-DOMINIO/callbackFacebook.php
+define('FACEBOOK_APP_ID', '');
+define('FACEBOOK_APP_SECRET', '');
+
+// Apple - https://developer.apple.com (exige conta paga de desenvolvedor)
+// Services ID com "Sign in with Apple"; Return URL: https://SEU-DOMINIO/callbackApple.php
+define('APPLE_CLIENT_ID', '');   // Services ID, ex: com.seudominio.ressonance
+define('APPLE_TEAM_ID', '');     // Team ID (10 caracteres)
+define('APPLE_KEY_ID', '');      // Key ID da chave "Sign in with Apple"
+define('APPLE_PRIVATE_KEY', ''); // conteúdo do arquivo AuthKey_XXXX.p8 (-----BEGIN PRIVATE KEY----- ...)
+?>

@@ -1,85 +1,127 @@
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-0 border-top">
+<?php
+// Fim do casco do app: fecha a área de conteúdo e adiciona o painel lateral
+// (fila/letra), o player fixo, a navegação inferior (mobile), os ícones e os
+// scripts. Tudo aqui fica na página enquanto o usuário navega (só o
+// #app-content é trocado), por isso a música não para.
+$usuarioFooter = usuarioAtual();
+$configApp = [
+    'logado' => (bool) $usuarioFooter,
+    'usuario' => $usuarioFooter ? [
+        'id' => (int) $usuarioFooter['usuario_id'],
+        'nome' => $usuarioFooter['usuario_nome'],
+        'admin' => $usuarioFooter['usuario_tipo'] === 'admin',
+        'qualidade' => $usuarioFooter['usuario_qualidade'] ?? 'auto',
+    ] : null,
+    'curtidas' => array_keys(idsCurtidos($conexao)),
+    'playlists' => $usuarioFooter ? array_map(function ($p) {
+        return ['id' => (int) $p['playlist_id'], 'nome' => $p['playlist_nome']];
+    }, playlistsDoUsuario($conexao, $usuarioFooter['usuario_id'])) : [],
+];
+?>
+        </div><!-- /#app-content -->
+    </div><!-- /.app-main -->
+
+    <aside class="side-panel" id="sidePanel" aria-labelledby="sidePanelTitle" hidden>
+        <div class="side-head">
+            <h2 id="sidePanelTitle">Fila</h2>
+            <div class="side-head-tools">
+                <button type="button" class="btn-text" id="queueClear" data-action="queue-clear">Limpar fila</button>
+                <button type="button" class="icon-btn" data-action="close-panel" aria-label="Fechar painel"><?= icone('close') ?></button>
+            </div>
+        </div>
+        <div class="side-body" id="queuePanel" data-panel="queue">
+            <h3 class="side-sub">Tocando agora</h3>
+            <div id="queueNow"></div>
+            <h3 class="side-sub" id="queueNextTitle">A seguir</h3>
+            <p class="side-hint">Arraste pela alça <?= icone('drag') ?> para reordenar.</p>
+            <ol class="queue-list" id="queueList"></ol>
+        </div>
+        <div class="side-body lyrics-body" id="lyricsPanel" data-panel="lyrics" hidden>
+            <div class="lyrics-lines" id="lyricsLines"></div>
+        </div>
+    </aside>
+
+    <section class="player is-empty" id="player" aria-label="Player de áudio">
         <audio id="audioPlayer" preload="metadata"></audio>
-        
-        <div class="music-info col-md-4">
-            <div id="songTitle">Selecione uma música</div>
-            <div id="songArtist">Artista</div>
-            <div id="playStatus" class="play-status no-music">
-                🎵 Nenhuma música
-                <div class="sound-wave" style="display: none;">
-                    <span></span><span></span><span></span><span></span>
+        <div class="mini-progress" aria-hidden="true"><div class="mini-progress-fill" id="miniProgress"></div></div>
+        <button type="button" class="icon-btn player-collapse" data-action="player-collapse" aria-label="Minimizar player"><?= icone('chevron-down') ?></button>
+
+        <div class="player-now">
+            <button type="button" class="player-cover-btn" data-action="player-expand" aria-label="Abrir player">
+                <img id="playerCover" class="player-cover" src="Componentes/icones/icone.png" alt="">
+            </button>
+            <div class="player-meta">
+                <a id="playerTitle" class="player-title" href="#">Nada tocando</a>
+                <a id="playerArtist" class="player-artist" href="#">Escolha uma música</a>
+            </div>
+            <button type="button" class="like-toggle player-like" id="playerLike" data-like-id="" aria-pressed="false" aria-label="Salvar em Músicas Curtidas" title="Curtir (C)" disabled>
+                <?= icone('heart', 'icon-heart-outline') ?><?= icone('heart-fill', 'icon-heart-fill') ?>
+            </button>
+            <button type="button" class="icon-btn player-dislike" id="playerDislike" aria-pressed="false" aria-label="Não gostei" title="Não gostei" disabled><?= icone('thumb-down') ?><span id="dislikeCount"></span></button>
+            <button type="button" class="mini-play" id="btnMiniPlay" aria-label="Tocar"><?= icone('play', 'icon-play') ?><?= icone('pause', 'icon-pause') ?></button>
+            <button type="button" class="icon-btn player-close close-mini" data-close-player aria-label="Fechar o player" title="Fechar o player (X)"><?= icone('close') ?></button>
+        </div>
+
+        <div class="player-center">
+            <div class="player-controls">
+                <button type="button" class="ctrl toggle music-only" id="btnShuffle" aria-pressed="false" aria-label="Modo aleatório" title="Aleatório (S)"><?= icone('shuffle') ?></button>
+                <button type="button" class="ctrl podcast-only" id="btnBack15" aria-label="Voltar 15 segundos" title="Voltar 15 s (←)"><?= icone('replay15') ?></button>
+                <button type="button" class="ctrl" id="btnPrev" aria-label="Anterior" title="Anterior (Shift + ←)"><?= icone('prev') ?></button>
+                <button type="button" class="ctrl ctrl-play" id="btnPlay" aria-label="Tocar" title="Tocar/Pausar (Espaço)"><?= icone('play', 'icon-play') ?><?= icone('pause', 'icon-pause') ?></button>
+                <button type="button" class="ctrl" id="btnNext" aria-label="Próxima" title="Próxima (Shift + →)"><?= icone('next') ?></button>
+                <button type="button" class="ctrl podcast-only" id="btnFwd15" aria-label="Avançar 15 segundos" title="Avançar 15 s (→)"><?= icone('forward15') ?></button>
+                <button type="button" class="ctrl toggle music-only" id="btnRepeat" aria-pressed="false" aria-label="Repetir: desligado" title="Repetir (R)"><?= icone('repeat', 'icon-repeat') ?><?= icone('repeat-one', 'icon-repeat-one') ?></button>
+            </div>
+            <div class="player-scrub">
+                <span class="time" id="timeElapsed">0:00</span>
+                <div class="scrubber" id="scrubber" role="slider" tabindex="0" aria-label="Posição da música" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00">
+                    <div class="scrub-track"><div class="scrub-buffer" id="scrubBuffer"></div><div class="scrub-fill" id="scrubFill"></div><div class="scrub-thumb" id="scrubThumb"></div></div>
+                    <div class="scrub-tooltip" id="scrubTooltip" hidden>0:00</div>
                 </div>
+                <button type="button" class="time time-toggle" id="timeRight" title="Alternar entre tempo restante e duração total">-0:00</button>
             </div>
         </div>
 
-        <div class="player-controls-center">
-            <button type="button" class="circulo circulo2 player-btn mx-2" id="rewindBtn" title="Retroceder 5 segundos" aria-label="Retroceder 5 segundos" disabled>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-            </button>
-            <button type="button" class="circulo player-btn player-btn-main mx-2 paused" id="playBtn" title="Play/Pause" aria-label="Play/Pause" disabled>
-                <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
-            </button>
-            <button type="button" class="circulo player-btn stop-btn mx-2" id="stopBtn" title="Parar" aria-label="Parar música" disabled>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
-            </button>
-            <button type="button" class="circulo circulo2 player-btn mx-2" id="forwardBtn" title="Avançar 5 segundos" aria-label="Avançar 5 segundos" disabled>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 6v12l8.5-6L13 6zm-.5 6L4 6v12l8.5-6z"/></svg>
-            </button>
-        </div>
-
-        <div class="player-right-controls">
-            <?php if (isset($_SESSION['usuario_id'])): ?>
-            <div class="like-controls col-md-2 d-flex justify-content-center align-items-center">
-                <button class="like-btn" id="likeBtn" onclick="curtirMusica('curtida')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    <span id="likeCount">0</span>
+        <div class="player-extra">
+            <button type="button" class="speed-btn podcast-only" id="btnSpeed" aria-label="Velocidade de reprodução" title="Velocidade (Shift + > / <)">1x</button>
+            <button type="button" class="ctrl toggle" id="btnLyrics" data-action="toggle-lyrics" aria-pressed="false" aria-label="Letra" title="Letra (Y)"><?= icone('lyrics') ?></button>
+            <button type="button" class="ctrl toggle" id="btnQueue" data-action="toggle-queue" aria-pressed="false" aria-label="Fila" title="Fila (Q)"><?= icone('queue') ?></button>
+            <div class="volume">
+                <button type="button" class="ctrl" id="btnMute" aria-label="Silenciar" title="Mudo (M)">
+                    <?= icone('volume-high', 'vol-high') ?><?= icone('volume-mid', 'vol-mid') ?><?= icone('volume-low', 'vol-low') ?><?= icone('volume-off', 'vol-off') ?>
                 </button>
-                <button class="dislike-btn" id="dislikeBtn" onclick="curtirMusica('descurtida')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                    </svg>
-                    <span id="dislikeCount">0</span>
-                </button>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70" aria-label="Volume">
             </div>
-            <?php else: ?>
-            <div class="col-md-2 d-flex justify-content-center align-items-center">
-                <div class="login-prompt">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 10px;">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10,17 15,12 10,7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                    <a href="login.php" class="login-link">Login para curtir</a>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            <div class="volume-control col-md-2 d-flex justify-content-end align-items-center">
-                <div class="volume-icon" id="volumeIcon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="volumeSvg">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                    </svg>
-                </div>
-                <div class="volume-slider-container">
-                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50">
-                    <div class="volume-percentage" id="volumePercentage">50%</div>
-                </div>
-            </div>
+            <button type="button" class="ctrl player-close close-full" data-close-player aria-label="Fechar o player" title="Fechar o player (X)"><?= icone('close') ?></button>
         </div>
-        <div class="container">
-            <div class="progress-container">
-                <span id="currentTime">0:00</span>
-                <div id="progressBar" class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                <span id="totalTime">0:00</span>
-            </div>
-        </div>
-</footer>
+    </section>
 
-<script src="Componentes/configuracoes/JS/botton.js?v=<?php echo time(); ?>"></script>
+    <nav class="bottom-nav" aria-label="Navegação">
+        <a class="bottom-item<?= linkAtivo(['index.php', '']) ?>" data-nav="index.php" href="index.php"><?= icone('home') ?><span>Início</span></a>
+        <a class="bottom-item<?= linkAtivo(['buscar.php', 'genero.php']) ?>" data-nav="buscar.php" href="buscar.php"><?= icone('search') ?><span>Buscar</span></a>
+        <a class="bottom-item<?= linkAtivo(['biblioteca.php', 'curtidas.php', 'historico.php', 'playlist.php']) ?>" data-nav="biblioteca.php" href="biblioteca.php"><?= icone('library') ?><span>Biblioteca</span></a>
+        <a class="bottom-item<?= linkAtivo('recomendados.php') ?>" data-nav="recomendados.php" href="recomendados.php"><?= icone('explore') ?><span>Para você</span></a>
+        <?php if ($usuarioFooter): ?>
+        <a class="bottom-item<?= linkAtivo('perfil.php') ?>" data-nav="perfil.php" href="perfil.php"><?= icone('user') ?><span>Perfil</span></a>
+        <?php else: ?>
+        <a class="bottom-item" href="login.php" data-no-spa><?= icone('user') ?><span>Entrar</span></a>
+        <?php endif; ?>
+    </nav>
+</div><!-- /.app-shell -->
+
+<div class="ctx-menu" id="ctxMenu" role="menu" hidden></div>
+<div class="modal-root" id="modalRoot"></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<div class="page-loading" id="pageLoading" hidden></div>
+
+<?php include __DIR__ . '/icones.php'; ?>
+
+<script nonce="<?= e(nonceCsp()) ?>">window.APP = <?= json_encode($configApp, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
+<script src="<?= asset('Componentes/configuracoes/JS/player.js') ?>"></script>
+<script src="<?= asset('Componentes/configuracoes/JS/app.js') ?>"></script>
+<script src="<?= asset('Componentes/configuracoes/JS/paginas.js') ?>"></script>
+<?php if (!$paginaSpa): ?>
+<script src="<?= asset('Componentes/configuracoes/JS/artistaAutocomplete.js') ?>"></script>
+<?php endif; ?>
 </body>
 </html>

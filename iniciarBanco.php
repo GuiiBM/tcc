@@ -1,10 +1,10 @@
 <?php
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-    include "Componentes/páginas/php/verificar_login.php";
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+    iniciarSessaoSegura();
+    include "Componentes/paginas/php/verificar_login.php";
     redirecionarSeNaoAdmin();
-    include "Componentes/páginas/head.php";
-    include "Componentes/páginas/header.php";
-    include "Componentes/páginas/php/banco.php";
+    include "Componentes/paginas/head.php";
+    include "Componentes/paginas/header.php";
+    include "Componentes/paginas/php/banco.php";
+include "Componentes/paginas/footer.php";
 ?>

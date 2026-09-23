@@ -1,3 +1,56 @@
-RewriteEngine On
+# ===== Ressonance - configuração do Apache (InfinityFree / XAMPP) =====
 
-# Configurações existentes (se houver)
+# Não listar o conteúdo das pastas
+Options -Indexes
+
+DirectoryIndex index.php
+
+# Arquivos que nunca devem ser baixados pelo navegador
+<FilesMatch "(\.(example|md|sql|sh|py|log|ini)|^\.git.*|^(dbConfig|clientId|clientSecret|adminEmails|oauthConfig)\.php)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Tipos de áudio corretos (alguns servidores servem .m4a/.flac como download)
+<IfModule mod_mime.c>
+    AddType audio/mpeg .mp3
+    AddType audio/mp4 .m4a
+    AddType audio/ogg .ogg
+    AddType audio/flac .flac
+    AddType audio/wav .wav
+    AddType image/webp .webp
+</IfModule>
+
+# Cache no navegador: CSS/JS têm a versão na URL (?v=data), então podem
+# ficar em cache por muito tempo; imagens e áudios não mudam de nome.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType audio/mpeg "access plus 1 month"
+    ExpiresByType audio/mp4 "access plus 1 month"
+    ExpiresByType audio/ogg "access plus 1 month"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+# Páginas PHP enviam os cabeçalhos de segurança pelo próprio PHP (com CSP);
+# aqui só os arquivos estáticos, para não duplicar.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpe?g|webp|gif|svg|ico|woff2?)$">
+        Header always set X-Content-Type-Options "nosniff"
+        Header always set X-Frame-Options "SAMEORIGIN"
+    </FilesMatch>
+</IfModule>

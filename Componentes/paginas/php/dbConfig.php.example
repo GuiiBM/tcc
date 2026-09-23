@@ -1,9 +1,9 @@
 <?php
-// Copie este arquivo para dbConfig.php e preencha com as credenciais do
-// banco de dados MySQL da sua hospedagem (fornecidas pelo painel dela).
+// Copie este arquivo para dbConfig.php e preencha com os dados do MySQL da
+// hospedagem. No InfinityFree ficam em: Painel > MySQL Databases.
 // Sem esse arquivo, o site usa os valores padrão do XAMPP local.
-define('DB_HOST', 'localhost');
-define('DB_USER', 'usuario_do_banco');
-define('DB_PASS', 'senha_do_banco');
-define('DB_NAME', 'nome_do_banco');
+define('DB_HOST', 'sql123.infinityfree.com'); // "MySQL Host Name"
+define('DB_USER', 'if0_12345678');            // "MySQL User Name"
+define('DB_PASS', 'senha_da_conta');          // a senha da conta de hospedagem (vPanel)
+define('DB_NAME', 'if0_12345678_musicas');    // "MySQL DB Name"
 ?>

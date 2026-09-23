@@ -4,7 +4,7 @@
 // domínio) sem precisar trocar nada no código na hora de publicar.
 
 // Caminho absoluto da raiz do projeto, calculado a partir deste arquivo (que
-// está sempre em Componentes/páginas/php/), não do arquivo que faz o include -
+// está sempre em Componentes/paginas/php/), não do arquivo que faz o include -
 // assim funciona não importa de onde é chamado.
 function getProjectRoot() {
     return rtrim(str_replace('\\', '/', dirname(__DIR__, 3)), '/');

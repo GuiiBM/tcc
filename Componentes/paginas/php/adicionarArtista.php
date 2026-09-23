@@ -1,7 +1,6 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/seguranca.php';
+iniciarSessaoSegura();
 
 include "DBConection.php";
 include "verificar_login.php";
@@ -78,7 +77,7 @@ if (mysqli_stmt_execute($stmt)) {
     // Criar usuário para o artista
     $email = strtolower(str_replace(' ', '', $nome)) . '@artista.local';
     $senha_temp = 'temp_' . substr(md5($artista_id . time()), 0, 8);
-    $senha_hash = password_hash($senha_temp, PASSWORD_DEFAULT);
+    $senha_hash = hashSenha($senha_temp);
     
     $stmt_user = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_cidade, usuario_descricao, usuario_foto, artista_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt_user, "ssssssi", $email, $senha_hash, $nome, $cidade, $descricao, $imagemPath, $artista_id);

@@ -1,3 +1,7 @@
-Componentes/páginas/php/clientId.php
-Componentes/páginas/php/clientSecret.php
-Componentes/páginas/php/dbConfig.php
+Componentes/paginas/php/clientId.php
+Componentes/paginas/php/clientSecret.php
+Componentes/paginas/php/dbConfig.php
+Componentes/paginas/php/adminEmails.php
+Componentes/paginas/php/oauthConfig.php
+Componentes/privado/*
+!Componentes/privado/.htaccess

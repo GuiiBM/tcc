@@ -1,13 +1,12 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-include "Componentes/páginas/php/DBConection.php";
-include "Componentes/páginas/php/configGoogle.php";
+require_once __DIR__ . '/Componentes/paginas/php/seguranca.php';
+// Retorno do login com Google (URL cadastrada no Google Cloud Console).
+iniciarSessaoSegura();
+include "Componentes/paginas/php/DBConection.php";
+include "Componentes/paginas/php/loginSocial.php";
 
 if (!isset($_GET['code'])) {
-    header('Location: login.php?erro=google_auth_failed');
+    header('Location: login.php?erro=' . (isset($_GET['error']) ? 'cancelado' : 'google_auth_failed'));
     exit;
 }
 
@@ -19,97 +18,22 @@ if (!$stateEsperado || !isset($_GET['state']) || !hash_equals($stateEsperado, $_
     exit;
 }
 
-// Trocar código por token
-$postData = [
+$tokenData = requisicaoJson(GOOGLE_TOKEN_URL, [
     'client_id' => GOOGLE_CLIENT_ID,
     'client_secret' => GOOGLE_CLIENT_SECRET,
     'redirect_uri' => GOOGLE_REDIRECT_URI,
     'grant_type' => 'authorization_code',
-    'code' => $_GET['code']
-];
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, GOOGLE_TOKEN_URL);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-$tokenData = json_decode($response, true);
-
+    'code' => $_GET['code'],
+]);
 if (!isset($tokenData['access_token'])) {
     header('Location: login.php?erro=google_token_failed');
     exit;
 }
 
-// Obter dados do usuário
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, GOOGLE_USER_INFO_URL . '?access_token=' . $tokenData['access_token']);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$userResponse = curl_exec($ch);
-curl_close($ch);
-
-$userData = json_decode($userResponse, true);
-
-if (!isset($userData['email'])) {
+$userData = requisicaoJson(GOOGLE_USER_INFO_URL . '?access_token=' . urlencode($tokenData['access_token']));
+if (empty($userData['email']) || (isset($userData['verified_email']) && !$userData['verified_email'])) {
     header('Location: login.php?erro=google_user_failed');
     exit;
 }
 
-// Verificar se usuário já existe
-$email = mysqli_real_escape_string($conexao, $userData['email']);
-$stmt = mysqli_prepare($conexao, "SELECT usuario_id, usuario_nome, usuario_tipo FROM usuarios WHERE usuario_email = ?");
-mysqli_stmt_bind_param($stmt, "s", $email);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-
-if ($user = mysqli_fetch_assoc($result)) {
-    // Usuário já existe, fazer login
-    $_SESSION['usuario_id'] = $user['usuario_id'];
-    $_SESSION['usuario_nome'] = $user['usuario_nome'];
-    $_SESSION['usuario_tipo'] = $user['usuario_tipo'];
-} else {
-    // Criar novo usuário
-    $nome = mysqli_real_escape_string($conexao, $userData['name']);
-    $foto = isset($userData['picture']) ? mysqli_real_escape_string($conexao, $userData['picture']) : '';
-    
-    // Primeiro criar o perfil de artista
-    $foto_artista = $foto ?: 'Componentes/icones/icone.png';
-    $descricao_padrao = "Artista conectado via Google. Complete seu perfil para personalizar esta descrição.";
-    $stmt_artista = mysqli_prepare($conexao, "INSERT INTO artista (artista_nome, artista_cidade, artista_image, artista_descricao) VALUES (?, '', ?, ?)");
-    mysqli_stmt_bind_param($stmt_artista, "sss", $nome, $foto_artista, $descricao_padrao);
-    
-    if (mysqli_stmt_execute($stmt_artista)) {
-        $artista_id = mysqli_insert_id($conexao);
-        
-        // Agora criar o usuário vinculado ao artista
-        $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (usuario_email, usuario_senha, usuario_nome, usuario_foto, usuario_tipo, artista_id) VALUES (?, '', ?, ?, 'usuario', ?)");
-        mysqli_stmt_bind_param($stmt, "sssi", $email, $nome, $foto, $artista_id);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            $usuario_id = mysqli_insert_id($conexao);
-            $_SESSION['usuario_id'] = $usuario_id;
-            $_SESSION['usuario_nome'] = $nome;
-            $_SESSION['usuario_tipo'] = 'usuario';
-            $_SESSION['usuario_foto'] = $foto;
-            $_SESSION['artista_id'] = $artista_id;
-            $_SESSION['google_incomplete'] = true;
-            header('Location: completarPerfilGoogle.php');
-            exit;
-        } else {
-            header('Location: login.php?erro=registro_failed');
-            exit;
-        }
-    } else {
-        header('Location: login.php?erro=artista_creation_failed');
-        exit;
-    }
-}
-
-header('Location: index.php');
-exit;
-?>
+concluirLoginSocial($conexao, 'google', $userData['email'], $userData['name'] ?? '', $userData['picture'] ?? '');

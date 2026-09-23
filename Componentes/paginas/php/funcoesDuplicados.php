@@ -102,19 +102,36 @@ function contarCurtidas($conexao, $usuario_id) {
     return $row['total'];
 }
 
+// Executa um comando preparado com parâmetros inteiros.
+function sqlInteiros($conexao, $sql, ...$valores) {
+    $stmt = mysqli_prepare($conexao, $sql);
+    if (!$stmt) {
+        return false;
+    }
+    if ($valores) {
+        mysqli_stmt_bind_param($stmt, str_repeat('i', count($valores)), ...$valores);
+    }
+    return mysqli_stmt_execute($stmt) ? $stmt : false;
+}
+
+// Combina dois cadastros duplicados. IDs de artista vêm com prefixo "A".
+// Tudo numa transação: ou a combinação acontece por inteiro, ou nada muda.
 function combinarUsuarios($conexao, $usuario_principal, $usuario_secundario) {
     $principal_eh_artista = strpos($usuario_principal, 'A') === 0;
     $secundario_eh_artista = strpos($usuario_secundario, 'A') === 0;
+    $ok = true;
+    mysqli_begin_transaction($conexao);
 
     if ($principal_eh_artista && $secundario_eh_artista) {
-        // Artista + Artista: migrar músicas do artista secundário antes de removê-lo
-        // (artista_secundario tem ON DELETE CASCADE em musica.musica_artista)
+        // Artista + Artista: migrar músicas e álbuns do secundário antes de removê-lo
+        // (o artista secundário tem ON DELETE CASCADE em músicas e álbuns)
         $artista_principal = intval(substr($usuario_principal, 1));
         $artista_secundario = intval(substr($usuario_secundario, 1));
-
-        mysqli_query($conexao, "UPDATE musica SET musica_artista = $artista_principal WHERE musica_artista = $artista_secundario");
-        mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_principal WHERE artista_id = $artista_secundario");
-        mysqli_query($conexao, "DELETE FROM artista WHERE artista_id = $artista_secundario");
+        $ok = sqlInteiros($conexao, "UPDATE musica SET musica_artista = ? WHERE musica_artista = ?", $artista_principal, $artista_secundario)
+            && sqlInteiros($conexao, "UPDATE album SET album_artista = ? WHERE album_artista = ?", $artista_principal, $artista_secundario)
+            && sqlInteiros($conexao, "UPDATE IGNORE seguidores SET artista_id = ? WHERE artista_id = ?", $artista_principal, $artista_secundario)
+            && sqlInteiros($conexao, "UPDATE usuarios SET artista_id = ? WHERE artista_id = ? AND NOT EXISTS (SELECT 1 FROM (SELECT artista_id FROM usuarios WHERE artista_id = ?) x)", $artista_principal, $artista_secundario, $artista_principal)
+            && sqlInteiros($conexao, "DELETE FROM artista WHERE artista_id = ?", $artista_secundario);
 
     } else if (!$principal_eh_artista && !$secundario_eh_artista) {
         // Usuário + Usuário
@@ -122,40 +139,40 @@ function combinarUsuarios($conexao, $usuario_principal, $usuario_secundario) {
         $usuario_secundario = intval($usuario_secundario);
 
         // Remove curtidas do secundário que colidiriam com a chave única (musica_id, usuario_id)
-        // do principal antes de reatribuir o restante, para não perder o UPDATE por erro silencioso
-        mysqli_query($conexao, "DELETE c2 FROM curtidas c2 INNER JOIN curtidas c1 ON c1.musica_id = c2.musica_id AND c1.usuario_id = $usuario_principal WHERE c2.usuario_id = $usuario_secundario");
-        mysqli_query($conexao, "UPDATE curtidas SET usuario_id = $usuario_principal WHERE usuario_id = $usuario_secundario");
+        // do principal antes de reatribuir o restante
+        $ok = sqlInteiros($conexao, "DELETE c2 FROM curtidas c2 INNER JOIN curtidas c1 ON c1.musica_id = c2.musica_id AND c1.usuario_id = ? WHERE c2.usuario_id = ?", $usuario_principal, $usuario_secundario)
+            && sqlInteiros($conexao, "UPDATE curtidas SET usuario_id = ? WHERE usuario_id = ?", $usuario_principal, $usuario_secundario)
+            && sqlInteiros($conexao, "UPDATE playlist SET usuario_id = ? WHERE usuario_id = ?", $usuario_principal, $usuario_secundario)
+            && sqlInteiros($conexao, "UPDATE historico SET usuario_id = ? WHERE usuario_id = ?", $usuario_principal, $usuario_secundario)
+            && sqlInteiros($conexao, "UPDATE IGNORE seguidores SET usuario_id = ? WHERE usuario_id = ?", $usuario_principal, $usuario_secundario);
 
-        $result = mysqli_query($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = $usuario_principal");
-        $principal_data = mysqli_fetch_assoc($result);
-
-        if (!$principal_data['artista_id']) {
-            $result2 = mysqli_query($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = $usuario_secundario");
-            $secundario_data = mysqli_fetch_assoc($result2);
-            if ($secundario_data['artista_id']) {
-                mysqli_query($conexao, "UPDATE usuarios SET artista_id = {$secundario_data['artista_id']} WHERE usuario_id = $usuario_principal");
+        if ($ok) {
+            $stmt = sqlInteiros($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = ?", $usuario_principal);
+            $principal_data = $stmt ? mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) : null;
+            $stmt = sqlInteiros($conexao, "SELECT artista_id FROM usuarios WHERE usuario_id = ?", $usuario_secundario);
+            $secundario_data = $stmt ? mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) : null;
+            // Apaga o secundário primeiro (libera o artista_id único) e depois
+            // passa o artista dele para o principal, se o principal não tiver.
+            $ok = sqlInteiros($conexao, "DELETE FROM usuarios WHERE usuario_id = ?", $usuario_secundario);
+            if ($ok && empty($principal_data['artista_id']) && !empty($secundario_data['artista_id'])) {
+                $ok = sqlInteiros($conexao, "UPDATE usuarios SET artista_id = ? WHERE usuario_id = ?", (int) $secundario_data['artista_id'], $usuario_principal);
             }
         }
 
-        mysqli_query($conexao, "DELETE FROM usuarios WHERE usuario_id = $usuario_secundario");
-
-    } else if ($principal_eh_artista && !$secundario_eh_artista) {
-        // Artista + Usuário: vincula o usuário ao artista, garantindo relação 1-para-1
-        $artista_id = intval(substr($usuario_principal, 1));
-        $usuario_id = intval($usuario_secundario);
-
-        mysqli_query($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = $artista_id AND usuario_id != $usuario_id");
-        mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_id WHERE usuario_id = $usuario_id");
-
     } else {
-        // Usuário + Artista: mesmo vínculo do caso acima, só muda a ordem dos parâmetros
-        $usuario_id = intval($usuario_principal);
-        $artista_id = intval(substr($usuario_secundario, 1));
-
-        mysqli_query($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = $artista_id AND usuario_id != $usuario_id");
-        mysqli_query($conexao, "UPDATE usuarios SET artista_id = $artista_id WHERE usuario_id = $usuario_id");
+        // Artista + Usuário (em qualquer ordem): vincula o usuário ao artista, relação 1-para-1
+        $artista_id = intval(substr($principal_eh_artista ? $usuario_principal : $usuario_secundario, 1));
+        $usuario_id = intval($principal_eh_artista ? $usuario_secundario : $usuario_principal);
+        $ok = sqlInteiros($conexao, "UPDATE usuarios SET artista_id = NULL WHERE artista_id = ? AND usuario_id <> ?", $artista_id, $usuario_id)
+            && sqlInteiros($conexao, "UPDATE usuarios SET artista_id = ? WHERE usuario_id = ?", $artista_id, $usuario_id);
     }
 
+    if (!$ok) {
+        error_log('Combinar usuários: ' . mysqli_error($conexao));
+        mysqli_rollback($conexao);
+        return false;
+    }
+    mysqli_commit($conexao);
     return true;
 }
 ?>

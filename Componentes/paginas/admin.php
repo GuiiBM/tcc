@@ -7,6 +7,9 @@
             <div class="admin-toolbar">
                 <button class="btn-neon" onclick="showForm('musica')" id="btnMusica">Cadastrar Música</button>
                 <button class="btn-neon" onclick="showForm('artista')" id="btnArtista">Cadastrar Artista</button>
+                <a href="musicas.php" class="btn-neon">Músicas e Álbuns</a>
+                <a href="gerenciarCategorias.php" class="btn-neon">Gêneros e Humores</a>
+                <a href="gerenciarPodcasts.php" class="btn-neon">Podcasts</a>
                 <a href="migrarUsuariosArtistas.php" class="btn-neon">Migrar Usuários</a>
                 <a href="gerenciarUsuarios.php" class="btn-neon">Gerenciar Usuários</a>
                 <a href="iniciarBanco.php" class="btn-neon">Configurar BD</a>
@@ -45,11 +48,11 @@
             </script>
             
             <div id="formMusica">
-                <?php include "Componentes/páginas/formMusica.php"; ?>
+                <?php include "Componentes/paginas/formMusica.php"; ?>
             </div>
             
             <div id="formArtista" style="display: none;">
-                <?php include "Componentes/páginas/formArtista.php"; ?>
+                <?php include "Componentes/paginas/formArtista.php"; ?>
                 
             </div>
         </section>

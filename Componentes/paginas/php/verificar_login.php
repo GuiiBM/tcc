@@ -1,11 +1,10 @@
 <?php
+require_once __DIR__ . '/seguranca.php';
 include_once 'verificarPerfilCompleto.php';
 include_once 'DBConection.php';
 
 function verificarLogin() {
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+    iniciarSessaoSegura();
     
     if (isset($_SESSION['usuario_id'])) {
         // Verificar se o perfil está completo
@@ -20,9 +19,7 @@ function verificarLogin() {
 }
 
 function verificarAdmin() {
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+    iniciarSessaoSegura();
     
     return isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'admin';
 }

@@ -10,12 +10,13 @@ if (file_exists(__DIR__ . '/clientSecret.php')) {
     include_once 'clientSecret.php';
 }
 
-// Define valores padrão se não foram carregados
+// Se não houver arquivos, usa as variáveis de ambiente da hospedagem
+// (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET) ou um valor padrão.
 if (!defined('GOOGLE_CLIENT_ID')) {
-    define('GOOGLE_CLIENT_ID', 'SEU_GOOGLE_CLIENT_ID_AQUI');
+    define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: 'SEU_GOOGLE_CLIENT_ID_AQUI');
 }
 if (!defined('GOOGLE_CLIENT_SECRET')) {
-    define('GOOGLE_CLIENT_SECRET', 'SEU_GOOGLE_CLIENT_SECRET_AQUI');
+    define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: 'SEU_GOOGLE_CLIENT_SECRET_AQUI');
 }
 
 // Monta o redirect_uri a partir do host atual, para funcionar tanto em

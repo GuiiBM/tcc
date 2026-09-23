@@ -1,0 +1,7 @@
+# Acesso direto bloqueado (áudios só via stream.php; segredo e sessões nunca).
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>
